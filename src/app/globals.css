@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #C23B22;
+  --color-gold: #D4AF37;
+  --color-jade: #2E8B57;
+  --color-cloud-blue: #6BA3BE;
+  --color-parchment: #FDF8F0;
+  --color-ink: #2B2B2B;
+
+  --font-calligraphy: var(--font-calligraphy);
+  --font-body: var(--font-body);
+  --font-serif: var(--font-serif);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-fade-in-up: fadeInUp 0.6s ease-out forwards;
+  --animate-particle-drift: particleDrift 8s linear infinite;
+  --animate-cloud-drift: cloudDrift 20s linear infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--drift-x, 50px), var(--drift-y, -100px)) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes cloudDrift {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-parchment text-ink font-body antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-calligraphy;
+  }
+}
+
+@layer components {
+  .prose-custom {
+    @apply prose prose-lg max-w-none
+      prose-headings:font-calligraphy
+      prose-p:font-body
+      prose-strong:text-primary
+      prose-code:font-serif
+      prose-pre:bg-ink prose-pre:text-parchment
+      prose-blockquote:border-l-primary prose-blockquote:italic;
+  }
+}
