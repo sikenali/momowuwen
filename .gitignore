@@ -38,3 +38,4 @@ next-env.d.ts
 
 # Velite build output
 .velite
+scratch/
