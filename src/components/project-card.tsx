@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { RiCalendarFill, RiFolderFill, RiArrowRightUpLine } from '@remixicon/react';
-import Image from 'next/image';
 
 interface ProjectCardProps {
   project: { title: string; description: string; tags: string[]; category: string; cover?: string; slug: string; link?: string; date: string };

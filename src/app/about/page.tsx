@@ -1,5 +1,4 @@
 import { RiBrushFill, RiUserFill, RiMapPinFill, RiCodeFill, RiTimeFill } from '@remixicon/react';
-import Link from 'next/link';
 
 const infoItems = [
   { icon: RiUserFill, label: '姓名', value: '墨韵', color: 'bg-[#FDE8E4]' },

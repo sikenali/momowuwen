@@ -4,13 +4,13 @@ import nextPlugin from '@next/eslint-plugin-next';
 
 export default [
   {
-    ignores: ['.next/**', 'node_modules/**'],
+    ignores: ['.next/**', 'node_modules/**', '.velite/**'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     plugins: {
-      '@next/eslint-plugin-next': nextPlugin,
+      '@next/next': nextPlugin,
     },
     rules: {
       ...nextPlugin.configs['core-web-vitals'].rules,

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Post } from '@/lib/content';
-import { RiCalendarFill, RiFolderFill, RiEyeFill, RiHeartFill } from '@remixicon/react';
+import { RiCalendarFill, RiEyeFill, RiHeartFill } from '@remixicon/react';
 import Image from 'next/image';
 
 interface PostCardProps {

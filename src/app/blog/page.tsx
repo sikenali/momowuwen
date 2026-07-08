@@ -1,7 +1,6 @@
 import { BlogListItem } from '@/components/blog-list-item';
 import { getPosts } from '@/lib/content';
 import { RiSearchLine, RiArrowLeftSLine, RiArrowRightSLine, RiBrushFill } from '@remixicon/react';
-import Link from 'next/link';
 
 const categories = ['全部', '前端', '后端', '设计', '技术笔记', '生活随笔', '读书'];
 
@@ -20,6 +19,7 @@ export default function BlogPage() {
       category: ['技术', '前端', '前端', '后端'][i - 1] || '技术',
       date: new Date(Date.now() - i * 86400000 * 7).toISOString(),
       cover: undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
   }
 

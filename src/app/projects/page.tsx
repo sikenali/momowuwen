@@ -12,8 +12,8 @@ const fakeProjects = [
 ];
 
 export default function ProjectsPage() {
-  const projects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const displayProjects = fakeProjects;
+  const realProjects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const displayProjects = realProjects.length >= 6 ? realProjects : fakeProjects;
 
   return (
     <div className="min-h-screen bg-parchment">
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
               { value: '6', label: '技术栈' },
               { value: '98%', label: '满意度' },
               { value: '4.8K', label: 'Star' },
-            ].map((stat, i) => (
+            ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="text-3xl sm:text-4xl font-bold text-primary font-serif">{stat.value}</p>
                 <p className="text-xs text-ink/50 font-body mt-1">{stat.label}</p>
