@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { RiCalendarFill, RiFolderFill, RiExternalLinkLine, RiArrowRightUpLine } from '@remixicon/react';
+import { RiCalendarFill, RiFolderFill, RiArrowRightUpLine } from '@remixicon/react';
 import Image from 'next/image';
 
 interface ProjectCardProps {
@@ -63,8 +63,8 @@ export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
 
         {/* Stats row */}
         <div className="flex items-center gap-4 text-xs text-ink/40 font-body mb-4">
-          <span className="flex items-center gap-1"><RiCalendarFill className="w-3.5 h-3-5" />{new Date(project.date).toLocaleDateString('zh-CN')}</span>
-          <span className="flex items-center gap-1"><RiFolderFill className="w-3.5 h-3-5" />{project.category}</span>
+          <span className="flex items-center gap-1"><RiCalendarFill className="w-3.5 h-3.5" />{new Date(project.date).toLocaleDateString('zh-CN')}</span>
+          <span className="flex items-center gap-1"><RiFolderFill className="w-3.5 h-3.5" />{project.category}</span>
         </div>
 
         {/* Action button */}

@@ -35,20 +35,19 @@ export function MountainCanvas() {
     ];
   }, []);
 
-  const draw = useCallback((ctx: CanvasRenderingContext2D, layers: MountainLayer[], scrollY: number) => {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    const h = ctx.canvas.height;
-    const w = ctx.canvas.width;
-
+  const draw = useCallback((ctx: CanvasRenderingContext2D, layers: MountainLayer[], scrollY: number, w: number, h: number) => {
+    ctx.clearRect(0, 0, w, h);
     layers.forEach((layer) => {
       ctx.beginPath();
       ctx.moveTo(0, h);
       layer.points.forEach((p, i) => {
         const py = p.y + scrollY * layer.speed;
-        if (i === 0) ctx.lineTo(p.x, py);
+        if (i === 0) ctx.lineTo((p.x / 1920) * w, py);
         else {
           const prev = layer.points[i - 1];
-          ctx.quadraticCurveTo(prev.x, prev.y + scrollY * layer.speed, (prev.x + p.x) / 2, (prev.y + py) / 2);
+          const ppx = (prev.x / 1920) * w;
+          const px = (p.x / 1920) * w;
+          ctx.quadraticCurveTo(ppx, prev.y + scrollY * layer.speed, (ppx + px) / 2, (prev.y + py) / 2);
         }
       });
       ctx.lineTo(w, h);
@@ -65,18 +64,24 @@ export function MountainCanvas() {
     if (!ctx) return;
 
     const layers = generateMountains();
-    const onScroll = () => { scrollRef.current = window.scrollY; };
-    const animate = () => {
+    const setSize = () => {
       canvas.width = window.innerWidth;
       canvas.height = 540;
-      draw(ctx, layers, scrollRef.current);
+    };
+    setSize();
+    const onScroll = () => { scrollRef.current = window.scrollY; };
+    const onResize = () => { setSize(); };
+    const animate = () => {
+      draw(ctx, layers, scrollRef.current, canvas.width, canvas.height);
       animationRef.current = requestAnimationFrame(animate);
     };
 
     window.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onResize);
     animate();
     return () => {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
       cancelAnimationFrame(animationRef.current);
     };
   }, [generateMountains, draw]);

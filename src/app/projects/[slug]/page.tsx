@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getProjectBySlug, getProjects } from '@/lib/content';
 import { MDXContent } from '@/components/mdx-content';
 import { ProjectCard } from '@/components/project-card';
-import { RiCalendarFill, RiFolderFill, RiTimeFill, RiExternalLinkLine } from '@remixicon/react';
+import { RiCalendarFill, RiTimeFill, RiExternalLinkLine } from '@remixicon/react';
 import Image from 'next/image';
 import Link from 'next/link';
 

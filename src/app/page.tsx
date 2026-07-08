@@ -1,7 +1,7 @@
 import { Hero } from '@/components/hero';
 import { PostCard } from '@/components/post-card';
 import { getPosts } from '@/lib/content';
-import { RiBrushFill, RiArrowRightLine, RiGithubFill, RiTwitterFill, RiMailFill, RiRssFill, RiEyeFill, RiHeartFill, RiBookmarkFill } from '@remixicon/react';
+import { RiBrushFill, RiArrowRightLine, RiGithubFill, RiTwitterFill, RiMailFill, RiRssFill } from '@remixicon/react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
       <Hero />
 
       {/* 最新文章区域 */}
-      <section className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+      <section id="posts" className="relative z-10 py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">

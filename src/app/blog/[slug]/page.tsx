@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getPostBySlug, getPosts } from '@/lib/content';
 import { MDXContent } from '@/components/mdx-content';
 import { PostCard } from '@/components/post-card';
-import { RiCalendarFill, RiFolderFill, RiTimeFill } from '@remixicon/react';
+import { RiCalendarFill, RiTimeFill } from '@remixicon/react';
 import Image from 'next/image';
 import Link from 'next/link';
 
