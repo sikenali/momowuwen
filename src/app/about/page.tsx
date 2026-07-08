@@ -1,54 +1,114 @@
-'use client';
+import { RiBrushFill, RiUserFill, RiMapPinFill, RiCodeFill, RiTimeFill } from '@remixicon/react';
+import Link from 'next/link';
 
-import { useState } from 'react';
-import { Modal } from '@/components/modal';
-import { RiBrushFill, RiCodeFill, RiBookReadFill, RiLightbulbFill, RiTeamFill, RiRocketFill } from '@remixicon/react';
+const infoItems = [
+  { icon: RiUserFill, label: '姓名', value: '墨韵', color: 'bg-[#FDE8E4]' },
+  { icon: RiMapPinFill, label: '坐标', value: '中国·杭州', color: 'bg-[#E0F0E4]' },
+  { icon: RiCodeFill, label: '领域', value: '前端开发 / UI 设计', color: 'bg-[#FAF0D0]' },
+  { icon: RiTimeFill, label: '经验', value: '5 年', color: 'bg-[#E8F0F8]' },
+];
 
 export default function AboutPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const skills = [
-    { icon: RiCodeFill, title: '前端开发', desc: 'React, Next.js, TypeScript, Tailwind CSS' },
-    { icon: RiBrushFill, title: 'UI/UX 设计', desc: '交互设计、视觉设计、动效设计' },
-    { icon: RiBookReadFill, title: '持续学习', desc: '技术博客、开源贡献、知识分享' },
-    { icon: RiLightbulbFill, title: '问题解决', desc: '逻辑思维、架构设计、性能优化' },
-    { icon: RiTeamFill, title: '团队协作', desc: '敏捷开发、代码审查、文档编写' },
-    { icon: RiRocketFill, title: '高效交付', desc: 'CI/CD、自动化测试、持续集成' },
-  ];
-
   return (
-    <>
-      <section className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl text-primary font-calligraphy text-center mb-4">关于我</h1>
-        <p className="text-center text-ink/60 font-body mb-12">了解更多，请点击下方按钮</p>
-        <div className="text-center mb-12">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-8 py-4 bg-primary text-parchment font-calligraphy text-lg rounded-lg hover:bg-primary/90 transition-colors shadow-lg"
-          >
-            查看详细信息
-          </button>
+    <div className="min-h-screen bg-parchment">
+      {/* 页面标题区 */}
+      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="absolute rounded-full bg-primary/10"
+              style={{ width: `${Math.random() * 8 + 4}px`, height: `${Math.random() * 8 + 4}px`, left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
+            />
+          ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skills.map((skill) => {
-            const Icon = skill.icon;
-            return (
-              <div key={skill.title} className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-gold/10 hover:border-primary/30 transition-all duration-300 hover:shadow-lg">
-                <Icon className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-lg text-primary font-calligraphy mb-2">{skill.title}</h3>
-                <p className="text-ink/60 font-body text-sm">{skill.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-        <div className="mt-16 text-center">
-          <h2 className="text-2xl text-primary font-calligraphy mb-6">博客理念</h2>
-          <p className="text-ink/70 font-body leading-relaxed max-w-2xl mx-auto">
-            这个博客是一个融合中国传统美学与现代技术的空间。每一篇文章都是一幅水墨画，每一个项目都是一次探索。希望通过这个平台，分享技术心得，记录成长历程。
-          </p>
+        <div className="max-w-6xl mx-auto text-center relative z-10">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-primary/30 flex items-center justify-center">
+            <RiBrushFill className="w-6 h-6 text-primary" />
+          </div>
+          <h1 className="text-4xl sm:text-5xl text-primary font-calligraphy mb-4">关于我</h1>
+          <p className="text-ink/50 font-body text-sm sm:text-base mb-6">了解更多关于我的故事</p>
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-16 h-px bg-gold/30" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
+            <div className="w-16 h-px bg-gold/30" />
+          </div>
         </div>
       </section>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
+
+      {/* 个人信息区 */}
+      <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pb-20">
+        <div className="flex flex-col lg:flex-row gap-10">
+          {/* 左侧基本信息 */}
+          <div className="lg:w-[360px] shrink-0">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <RiBrushFill className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl text-primary font-calligraphy">基本信息</h2>
+                <p className="text-[10px] text-ink/30 font-body tracking-widest">BASIC INFO</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {infoItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className={`${item.color} rounded-lg p-4 flex items-center gap-4`}>
+                    <Icon className="w-5 h-5 shrink-0" style={{ color: item.label === '姓名' ? '#C23B22' : item.label === '坐标' ? '#4A8C6D' : item.label === '领域' ? '#B8860B' : '#5B7FA8' }} />
+                    <div>
+                      <p className="text-xs text-ink/50 font-body">{item.label}</p>
+                      <p className="text-sm text-ink/80 font-body font-medium">{item.value}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 右侧个人简介 */}
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <RiBrushFill className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl text-primary font-calligraphy">个人简介</h2>
+                <p className="text-[10px] text-ink/30 font-body tracking-widest">ABOUT ME</p>
+              </div>
+            </div>
+
+            <div className="space-y-5 text-ink/60 font-body text-sm sm:text-base leading-relaxed">
+              <p>
+                你好，我是墨韵，一名热爱技术与设计的前端开发者。我相信代码可以像诗歌一样优美，界面可以如水墨画般意境深远。
+              </p>
+              <p>
+                拥有 5 年前端开发经验，专注于 React/Next.js 生态，同时也关注 UI/UX 设计。曾在多家互联网公司担任前端工程师，参与过电商、数据可视化、低代码平台等多个大型项目。
+              </p>
+              <p>
+                工作之余，我喜欢写技术博客、参与开源项目，以及探索中国传统文化与现代技术的融合之道。这个博客就是我对这一理念的实践。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 页脚 */}
+      <footer className="border-t border-gold/20 bg-white/50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <RiBrushFill className="w-4 h-4 text-primary" />
+              </div>
+              <div>
+                <p className="text-primary font-calligraphy">墨韵</p>
+                <p className="text-[10px] text-ink/30 font-body tracking-widest">INK & SILENCE</p>
+              </div>
+            </div>
+            <p className="text-xs text-ink/30 font-body">© 2026 墨韵. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
