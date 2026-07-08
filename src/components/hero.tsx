@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { MountainCanvas } from './mountain-canvas';
 
 interface Particle {
   id: number;
@@ -108,6 +109,8 @@ export function Hero() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
+
+      <MountainCanvas />
     </section>
   );
 }
