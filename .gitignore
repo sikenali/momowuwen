@@ -35,7 +35,8 @@ next-env.d.ts
 
 # velite generated
 .velite/
-
-# Velite build output
 .velite
+
+# worktrees
+.worktrees/
 scratch/
