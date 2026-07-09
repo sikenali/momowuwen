@@ -47,6 +47,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to get access token', details: data }, { status: 500 });
     }
 
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
     const html =
       '<!DOCTYPE html><html><body>' +
       '<script>' +
@@ -55,7 +56,7 @@ export async function GET(req: NextRequest) {
       '  window.removeEventListener("message", receiveMessage);' +
       '}' +
       'window.addEventListener("message", receiveMessage, false);' +
-      "window.opener.postMessage('authorizing:" + accessToken + "', '*');" +
+      "window.opener.postMessage('authorizing:" + accessToken + "', '" + origin + "');" +
       '</scr' + 'ipt></body></html>';
 
     return new NextResponse(html, {

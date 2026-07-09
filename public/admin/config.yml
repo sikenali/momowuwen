@@ -2,7 +2,7 @@ backend:
   name: github
   repo: sikenali/momowuwen
   branch: main
-  base_url: http://localhost:3000
+  base_url: https://www.10012049.xyz
   auth_endpoint: api/oauth
 
 # 本地开发（无需 OAuth）请换为：
