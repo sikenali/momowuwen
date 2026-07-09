@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { RiGithubFill, RiEyeLine } from '@remixicon/react';
+import { RiGithubFill } from '@remixicon/react';
 
 interface ProjectCardProps {
   project: { title: string; description: string; tags: string[]; category: string; slug: string; link?: string; date: string };

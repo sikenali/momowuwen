@@ -1,13 +1,15 @@
 'use client';
 
-import { RiArrowLeftLine, RiArrowRightLine, RiHeartLine, RiBookmarkLine, RiShareForwardLine, RiWechatFill, RiTwitterXFill, RiLinksLine } from '@remixicon/react';
+import { RiArrowLeftLine, RiArrowRightLine, RiHeartLine, RiBookmarkLine, RiShareForwardLine, RiWechatFill, RiTwitterXFill, RiLinksLine, RiUserLine, RiCalendarLine, RiBookReadLine, RiEyeLine } from '@remixicon/react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 const mockPost = {
   title: '竹林深处：React 性能优化之道',
+  subtitle: '深入探讨 React 应用的性能瓶颈与优化策略，如竹林般层层递进，直指核心问题',
   date: '2024-01-05',
   category: '技术笔记',
+  author: '墨轩主人',
   tags: ['React', '性能优化', '前端开发', 'JavaScript'],
   readingTime: 12,
   views: 3156,
@@ -102,16 +104,41 @@ export default function ArticleDetail() {
 
       {/* 文章头部 */}
       <article className="article-detail-header">
-        <div className="article-detail-meta">
-          <span className="article-detail-category">{mockPost.category}</span>
-          <span className="article-detail-date">{new Date(mockPost.date).toLocaleDateString('zh-CN')}</span>
-          <span className="article-detail-reading">{mockPost.readingTime} 分钟阅读</span>
+        {/* 标签行 */}
+        <div className="article-header-tags">
+          <span className="article-header-tag article-header-tag--green">技术笔记</span>
+          <span className="article-header-tag article-header-tag--blue">React</span>
         </div>
+
+        {/* 标题 */}
         <h1 className="article-detail-title">{mockPost.title}</h1>
-        <div className="article-detail-tags">
-          {mockPost.tags.map(tag => (
-            <span key={tag} className="article-detail-tag">{tag}</span>
-          ))}
+
+        {/* 副标题 */}
+        <p className="article-detail-subtitle">深入探讨 React 应用的性能瓶颈与优化策略，如竹林般层层递进，直指核心问题</p>
+
+        {/* 作者信息行 */}
+        <div className="article-author-row">
+          <div className="article-author-avatar">
+            <RiUserLine className="author-avatar-icon" />
+          </div>
+          <div className="article-author-info">
+            <span className="article-author-name">{mockPost.author}</span>
+            <div className="article-author-meta">
+              <RiCalendarLine className="meta-icon" />
+              <span className="meta-text">{new Date(mockPost.date).toLocaleDateString('zh-CN')}</span>
+              <span className="meta-separator"></span>
+              <RiBookReadLine className="meta-icon" />
+              <span className="meta-text">{mockPost.readingTime} 分钟阅读</span>
+              <span className="meta-separator"></span>
+              <RiEyeLine className="meta-icon" />
+              <span className="meta-text">{mockPost.views.toLocaleString()} 次阅读</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 封面大图 */}
+        <div className="article-cover-image">
+          <img src="https://picsum.photos/seed/react-perf/1280/480" alt={mockPost.title} />
         </div>
       </article>
 

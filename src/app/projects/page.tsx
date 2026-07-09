@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getProjects } from '@/lib/content';
-import { RiGithubFill, RiEyeLine } from '@remixicon/react';
+import { RiGithubFill } from '@remixicon/react';
 
 const cardThemes = [
   { tagClass: 'project-card-tag--red', btnBg: 'rgba(194,58,43,1)' },
