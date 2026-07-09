@@ -1,15 +1,16 @@
-# 墨韵 - 个人博客平台
+# 墨墨梧文
 
-中国古典水墨风格个人博客，基于 Next.js + Decap CMS + Vercel。
+中国古典水墨风格个人博客。基于 Next.js 15 + React 19 + Tailwind CSS v4。
 
-## 功能特性
+## 功能
 
-- 水墨风格设计（朱红主色调）
-- CSS 云层漂浮 + 粒子飘散动画
-- Canvas 水墨山峦视差效果
-- Markdown 内容管理（Velite + Decap CMS）
-- 响应式设计
-- Vercel 一键部署
+- **水墨主题** — 宣纸底色、朱红印章、金色点缀、墨色山峦
+- **Canvas 山峦视差** — 滚动时多层水墨山脉交叠
+- **粒子飘散** — 浮动粒子营造墨韵氛围
+- **滑动导航** — 弹簧弹性动画指示器，hover 预览 + 点击即时切换
+- **响应式布局** — 桌面/平板/手机自适应
+- **文章 & 项目** — Velite 内容管道，Markdown 驱动
+- **图标** — Remixicon 羽毛笔/水滴图标，自定义 favicon
 
 ## 本地开发
 
@@ -20,49 +21,35 @@ npm run dev
 
 访问 http://localhost:3000
 
-## 内容管理
+## 构建
 
-### 方式一：直接编辑 Markdown 文件
-
-在 `content/posts/` 或 `content/projects/` 目录下创建 `.md` 文件。
-
-### 方式二：Decap CMS 可视化编辑
-
-访问 `https://你的域名/admin` 使用可视化编辑器。
-
-首次使用需要配置 GitHub OAuth：
-
-1. 前往 [GitHub Developer Settings](https://github.com/settings/developers)
-2. 创建 OAuth App
-3. 在 Vercel 环境变量中添加 `GITHUB_CLIENT_ID` 和 `GITHUB_SECRET`
-
-## 部署到 Vercel
-
-1. 将代码推送到 GitHub 仓库
-2. 登录 [Vercel](https://vercel.com)
-3. 点击 "New Project" → 导入你的 GitHub 仓库
-4. Vercel 自动检测 Next.js 配置，点击 "Deploy"
-5. 部署完成后，访问你的站点域名
+```bash
+npm run build
+```
 
 ## 技术栈
 
 - Next.js 15.5.10 + React 19.2.4
-- TypeScript 5.9.3 (strict)
+- TypeScript 5.9.3
 - Tailwind CSS v4.2.1
-- Velite v0.3.1（内容管道）
-- Decap CMS（可视化内容管理）
+- Velite v0.3.1（内容生成）
+- Remixicon v4.9（图标库）
 
 ## 目录结构
 
 ```
 content/
-├── posts/          # 博客文章
-└── projects/       # 项目内容
+├── posts/          # 博客文章 Markdown
+└── projects/       # 项目 Markdown
 src/
-├── app/            # Next.js 页面
-├── components/     # 可复用组件
-└── lib/            # 工具函数和配置
+├── app/            # 页面
+├── components/     # 组件（导航/山峦/文章卡片等）
+└── lib/            # 配置与工具
 public/
-├── images/         # 静态图片
-└── admin/          # Decap CMS
+├── images/         # 静态资源
+└── favicon.svg     # 站点图标
 ```
+
+## 许可
+
+MIT
