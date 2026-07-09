@@ -1,6 +1,6 @@
-'use client';
-
 import { siteConfig } from '@/lib/site-config';
+
+const SOCIAL_YEAR = new Date().getFullYear();
 
 const socialLinks = [
   { label: 'GitHub', icon: 'ri-github-fill', href: siteConfig.social.github },
@@ -39,7 +39,7 @@ export function Footer() {
         </div>
 
         <div className="copyright">
-          <span>&copy; {new Date().getFullYear()} 墨墨梧文 · Powered by LightOS</span>
+          <span>&copy; {SOCIAL_YEAR} 墨墨梧文 · Powered by LightOS</span>
         </div>
       </div>
     </footer>

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Post } from '@/lib/content';
-import { RiCalendarFill, RiEyeFill, RiHeartFill } from '@remixicon/react';
+import { RiCalendarFill } from '@remixicon/react';
 import Image from 'next/image';
 
 interface PostCardProps {
@@ -9,10 +9,6 @@ interface PostCardProps {
 }
 
 export function PostCard({ post, index = 0 }: PostCardProps) {
-  // Fake stats for design demo
-  const fakeViews = Math.floor(Math.random() * 1000) + 100;
-  const fakeLikes = Math.floor(Math.random() * 100) + 10;
-
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -47,10 +43,6 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
             <RiCalendarFill className="w-3.5 h-3.5" />
             {new Date(post.date).toLocaleDateString('zh-CN')}
           </span>
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1"><RiEyeFill className="w-3.5 h-3.5" />{fakeViews}</span>
-            <span className="flex items-center gap-1"><RiHeartFill className="w-3.5 h-3.5" />{fakeLikes}</span>
-          </div>
         </div>
       </div>
     </Link>

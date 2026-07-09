@@ -5,10 +5,10 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-  { id: 'home', label: '首页', icon: 'ri-home-5-line', href: '/' },
-  { id: 'blog', label: '我的博客', icon: 'ri-article-line', href: '/blog' },
-  { id: 'projects', label: '我的项目', icon: 'ri-briefcase-4-line', href: '/projects' },
-  { id: 'about', label: '关于我', icon: 'ri-user-heart-line', href: '/about' }
+  { id: 'home', label: 'Home', icon: 'ri-home-5-line', href: '/' },
+  { id: 'blog', label: 'Blog', icon: 'ri-article-line', href: '/blog' },
+  { id: 'projects', label: 'Project', icon: 'ri-briefcase-4-line', href: '/projects' },
+  { id: 'about', label: 'About', icon: 'ri-user-heart-line', href: '/about' }
 ];
 
 function getActiveFromPath(p: string) {

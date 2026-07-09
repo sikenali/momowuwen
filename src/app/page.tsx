@@ -1,18 +1,21 @@
 import { Footer } from '@/components/footer';
 import { getPosts, getProjects } from '@/lib/content';
 
-export default function Home() {
-  const postCount = getPosts().length || 128;
-  const projectCount = getProjects().length || 36;
-  const firstPostDate = getPosts().length > 0
-    ? new Date(getPosts().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].date)
-    : new Date('2022-01-01');
-  const daysPersisting = Math.floor((Date.now() - firstPostDate.getTime()) / (1000 * 60 * 60 * 24));
+const posts = getPosts();
+const projects = getProjects();
 
+const postCount = posts.length || 128;
+const projectCount = projects.length || 36;
+const firstPostDate = posts.length > 0
+  ? new Date(posts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].date)
+  : new Date('2022-01-01');
+const daysPersisting = Math.floor((Date.now() - firstPostDate.getTime()) / (1000 * 60 * 60 * 24));
+
+export default function Home() {
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* 主容器 - 紧凑布局 */}
-      <div className="main-container-compact">
+      <div className="main-container-compact" style={{ flex: 1 }}>
         {/* 云层装饰1 */}
         <div className="cloud-decoration">
           <div className="cloud"></div>
@@ -84,9 +87,7 @@ export default function Home() {
         </div>
       </div>
 
-
-
       <Footer />
-      </>
-    );
-  }
+    </div>
+  );
+}

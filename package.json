@@ -7,7 +7,7 @@
   },
   "scripts": {
     "predev": "velite generate",
-    "dev": "next dev",
+    "dev": "concurrently \"velite dev --watch\" \"next dev\"",
     "prebuild": "velite generate",
     "build": "next build",
     "start": "next start",
@@ -34,6 +34,7 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "concurrently": "^10.0.3",
     "eslint": "^9.25.0",
     "eslint-config-next": "15.5.10",
     "postcss": "^8.5.3",

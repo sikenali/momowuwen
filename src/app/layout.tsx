@@ -26,11 +26,12 @@ export default function RootLayout({
       className={`${maShanzheng.variable} ${zcoXiaoWei.variable} ${notoSerifSC.variable}`}
     >
       <head>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
       </head>
-      <body className="overflow-x-hidden" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
+      <body className="overflow-x-hidden flex flex-col min-h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
         <Nav />
-        <main className="min-h-screen">{children}</main>
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );

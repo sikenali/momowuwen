@@ -1,7 +1,17 @@
 backend:
-  name: sikenali
-  repo: https://github.com/sikenali/momowuwen
+  name: github
+  repo: sikenali/momowuwen
   branch: main
+  base_url: https://你的域名.com
+  auth_endpoint: api/oauth
+
+# 本地开发（无需 OAuth）请换为：
+# backend:
+#   name: proxy
+#   proxy_url: http://localhost:8081/api/v1
+#  然后运行: npx decap-cms-proxy-server
+
+locale: zh_Hans
 
 media_folder: public/images
 public_folder: /images
