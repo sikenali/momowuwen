@@ -11,17 +11,24 @@ const navItems = [
   { id: 'about', label: '关于我', icon: 'ri-user-heart-line', href: '/about' }
 ];
 
+function getActiveFromPath(p: string) {
+  if (p === '/') return 'home';
+  if (p === '/blog') return 'blog';
+  if (p === '/projects') return 'projects';
+  if (p === '/about') return 'about';
+  return 'home';
+}
+
 export function Nav() {
   const pathname = usePathname();
-  const [activeNav, setActiveNav] = useState('home');
+  const [activeNav, setActiveNav] = useState(getActiveFromPath(pathname));
   const [indicatorStyle, setIndicatorStyle] = useState<{ left?: string; width?: string }>({});
+  const [menuOpen, setMenuOpen] = useState(false);
   const navMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (pathname === '/') setActiveNav('home');
-    else if (pathname === '/blog') setActiveNav('blog');
-    else if (pathname === '/projects') setActiveNav('projects');
-    else if (pathname === '/about') setActiveNav('about');
+    setActiveNav(getActiveFromPath(pathname));
+    setMenuOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -38,8 +45,10 @@ export function Nav() {
     };
 
     updateIndicator();
+    const ro = new ResizeObserver(updateIndicator);
+    if (navMenuRef.current) ro.observe(navMenuRef.current);
     window.addEventListener('resize', updateIndicator);
-    return () => window.removeEventListener('resize', updateIndicator);
+    return () => { ro.disconnect(); window.removeEventListener('resize', updateIndicator); };
   }, [activeNav]);
 
   return (
@@ -54,7 +63,7 @@ export function Nav() {
         </div>
       </Link>
 
-      <div className="nav-menu" ref={navMenuRef}>
+      <div className={`nav-menu${menuOpen ? ' open' : ''}`} ref={navMenuRef}>
         <div
           className="nav-indicator active"
           style={indicatorStyle}
@@ -69,7 +78,6 @@ export function Nav() {
               href={item.href}
               data-nav={item.id}
               className={`nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => setActiveNav(item.id)}
             >
               <i className={`${item.icon} nav-icon`}></i>
               <span className="nav-label">{item.label}</span>
@@ -77,6 +85,10 @@ export function Nav() {
           );
         })}
       </div>
+
+      <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="菜单">
+        <i className={`ri-${menuOpen ? 'close' : 'menu'}-line`}></i>
+      </button>
     </nav>
   );
 }

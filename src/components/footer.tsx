@@ -39,7 +39,7 @@ export function Footer() {
         </div>
 
         <div className="copyright">
-          <span>© 2049 墨墨梧文 · Powered by LightOS</span>
+          <span>&copy; {new Date().getFullYear()} 墨墨梧文 · Powered by LightOS</span>
         </div>
       </div>
     </footer>

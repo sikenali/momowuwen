@@ -10,7 +10,7 @@ export async function GET() {
     return new NextResponse(config, {
       headers: {
         'Content-Type': 'text/yaml',
-        'Cache-Control': 'public, max-age=31536000, immutable',
+        'Cache-Control': 'no-cache, must-revalidate',
       },
     });
   } catch {

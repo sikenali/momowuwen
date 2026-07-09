@@ -52,7 +52,7 @@ export default function About() {
             {/* 信息行 */}
             <div className="about-info-row">
               <div className="about-info-item">
-                <div className="about-icon-box" style={{ backgroundColor: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' }}>
+                <div className="about-icon-box about-icon-box--red">
                   <i className="ri-user-line"></i>
                 </div>
                 <div className="about-info-content">
@@ -62,7 +62,7 @@ export default function About() {
               </div>
 
               <div className="about-info-item">
-                <div className="about-icon-box" style={{ backgroundColor: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' }}>
+                <div className="about-icon-box about-icon-box--green">
                   <i className="ri-briefcase-line"></i>
                 </div>
                 <div className="about-info-content">
@@ -72,7 +72,7 @@ export default function About() {
               </div>
 
               <div className="about-info-item">
-                <div className="about-icon-box" style={{ backgroundColor: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' }}>
+                <div className="about-icon-box about-icon-box--gold">
                   <i className="ri-map-pin-line"></i>
                 </div>
                 <div className="about-info-content">
@@ -82,7 +82,7 @@ export default function About() {
               </div>
 
               <div className="about-info-item">
-                <div className="about-icon-box" style={{ backgroundColor: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' }}>
+                <div className="about-icon-box about-icon-box--blue">
                   <i className="ri-graduation-cap-line"></i>
                 </div>
                 <div className="about-info-content">

@@ -67,8 +67,12 @@ export default function AdminPage() {
       
       document.head.appendChild(script);
     };
-    
+
     loadCMS();
+    return () => {
+      const s = document.querySelector('script[src*="decap-cms"]');
+      if (s) s.remove();
+    };
   }, []);
 
   return <div id="cms"></div>;
