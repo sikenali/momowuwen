@@ -4,8 +4,8 @@ import { getPosts, getProjects } from '@/lib/content';
 const posts = getPosts();
 const projects = getProjects();
 
-const postCount = posts.length || 128;
-const projectCount = projects.length || 36;
+const postCount = posts.length;
+const projectCount = projects.length;
 const firstPostDate = posts.length > 0
   ? new Date(posts.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())[0].date)
   : new Date('2022-01-01');
@@ -13,16 +13,13 @@ const daysPersisting = Math.floor((Date.now() - firstPostDate.getTime()) / (1000
 
 export default function Home() {
   return (
-    <>
-      <div className="main-container-compact" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* 云层装饰1 */}
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="main-container-compact" style={{ flex: 1 }}>
         <div className="cloud-decoration">
           <div className="cloud"></div>
         </div>
 
-        {/* 主视觉区域 - 紧凑版 */}
         <section className="hero-section-compact">
-          {/* 主题印章 */}
           <div className="seal-container">
             <div className="seal-main">
               <span>墨</span>
@@ -35,12 +32,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 主标题组 */}
           <div className="title-group-compact">
             <p className="title-sub-compact">一 个 人 的 文 字 长 征</p>
           </div>
 
-          {/* 装饰分隔线 */}
           <div className="divider-compact">
             <div className="divider-line"></div>
             <div className="divider-dots">
@@ -51,42 +46,34 @@ export default function Home() {
             <div className="divider-line"></div>
           </div>
 
-          {/* 引言区域 */}
           <div className="quote-section-compact">
             <p className="quote-text">以代码为笔，以设计为墨，在数字世界里书写属于自己的山水长卷。</p>
           </div>
 
-          {/* 数据统计组 - 紧凑排列 */}
           <div className="stats-section-compact">
             <div className="stat-item-compact">
               <span className="stat-number red">{postCount}</span>
-              <span className="stat-label">篇文章</span>
+              <span className="stat-label">{postCount === 1 ? '篇文章' : '篇文章'}</span>
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item-compact">
               <span className="stat-number green">{projectCount}</span>
-              <span className="stat-label">个项目</span>
+              <span className="stat-label">{projectCount === 1 ? '个项目' : '个项目'}</span>
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item-compact">
               <span className="stat-number gold">{daysPersisting}</span>
               <span className="stat-label">天坚持</span>
             </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item-compact">
-              <span className="stat-number blue">50K</span>
-              <span className="stat-label">位访客</span>
-            </div>
           </div>
         </section>
 
-        {/* 云层装饰2 */}
         <div className="cloud-decoration-2">
           <div className="cloud-2"></div>
         </div>
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 }
