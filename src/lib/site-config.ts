@@ -3,10 +3,11 @@ export const siteConfig = {
   description: '中国古典水墨风格个人博客',
   url: 'https://momowuwen.vercel.app',
   author: '墨墨梧文',
-  email: 'hi@moyun.blog',
+  email: 'hi@momowuwen.blog',
   social: {
-    github: 'https://github.com/yourusername',
-    wechat: '',
+    github: 'https://github.com/sikenali',
+    twitter: 'https://x.com/sikenali',
+    rss: '/rss.xml',
   },
   themeColors: {
     primary: '#C23B22',

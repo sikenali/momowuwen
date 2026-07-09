@@ -52,4 +52,4 @@ public/
 
 ## 许可
 
-MIT
+[MIT](LICENSE)

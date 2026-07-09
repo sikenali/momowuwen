@@ -1,6 +1,6 @@
 backend:
-  name: github
-  repo: YOUR_USERNAME/YOUR_REPO_NAME
+  name: sikenali
+  repo: https://github.com/sikenali/momowuwen
   branch: main
 
 media_folder: public/images

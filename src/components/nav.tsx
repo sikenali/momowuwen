@@ -1,44 +1,81 @@
+'use client';
+
 import Link from 'next/link';
-import { siteConfig } from '@/lib/site-config';
-import { RiBrushFill, RiHomeFill, RiBookFill, RiCodeSSlashFill, RiUserFill } from '@remixicon/react';
+import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+
+const navItems = [
+  { id: 'home', label: '首页', icon: 'ri-home-5-line', href: '/' },
+  { id: 'blog', label: '我的博客', icon: 'ri-article-line', href: '/blog' },
+  { id: 'projects', label: '我的项目', icon: 'ri-briefcase-4-line', href: '/projects' },
+  { id: 'about', label: '关于我', icon: 'ri-user-heart-line', href: '/about' }
+];
 
 export function Nav() {
-  const navItems = [
-    { href: '/', label: '首页', icon: RiHomeFill },
-    { href: '/blog', label: '博客', icon: RiBookFill },
-    { href: '/projects', label: '项目', icon: RiCodeSSlashFill },
-    { href: '/about', label: '关于', icon: RiUserFill },
-  ];
+  const pathname = usePathname();
+  const [activeNav, setActiveNav] = useState('home');
+  const [indicatorStyle, setIndicatorStyle] = useState<{ left?: string; width?: string }>({});
+  const navMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (pathname === '/') setActiveNav('home');
+    else if (pathname === '/blog') setActiveNav('blog');
+    else if (pathname === '/projects') setActiveNav('projects');
+    else if (pathname === '/about') setActiveNav('about');
+  }, [pathname]);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      if (!navMenuRef.current) return;
+      const el = navMenuRef.current.querySelector(`[data-nav="${activeNav}"]`);
+      if (el) {
+        const r = (el as HTMLElement).getBoundingClientRect();
+        const m = navMenuRef.current.getBoundingClientRect();
+        requestAnimationFrame(() => {
+          setIndicatorStyle({ left: r.left - m.left + 'px', width: r.width + 'px' });
+        });
+      }
+    };
+
+    updateIndicator();
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [activeNav]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 bg-parchment/90 backdrop-blur-sm border-b border-gold/20">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 group">
-            <RiBrushFill className="w-6 h-6 text-primary group-hover:text-gold transition-colors" />
-            <span className="text-xl font-calligraphy text-primary">{siteConfig.title}</span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-1.5 text-ink/70 hover:text-primary transition-colors font-body"
-                >
-                  <Icon className="w-4 h-4" />
-                  {item.label}
-                </Link>
-              );
-            })}
-          </div>
-
-          <button className="md:hidden p-2 text-ink/70 hover:text-primary">
-            <RiBrushFill className="w-6 h-6" />
-          </button>
+    <nav className="navbar">
+      <Link href="/" className="logo-area">
+        <div className="logo-seal">
+          <i className="ri-quill-pen-line"></i>
         </div>
+        <div className="blog-title">
+          <h1>墨墨梧文</h1>
+          <span>INK · CHRONICLE</span>
+        </div>
+      </Link>
+
+      <div className="nav-menu" ref={navMenuRef}>
+        <div
+          className="nav-indicator active"
+          style={indicatorStyle}
+        ></div>
+
+        {navItems.map((item) => {
+          const isActive = activeNav === item.id;
+
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              data-nav={item.id}
+              className={`nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => setActiveNav(item.id)}
+            >
+              <i className={`${item.icon} nav-icon`}></i>
+              <span className="nav-label">{item.label}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );

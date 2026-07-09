@@ -1,5 +1,8 @@
 'use client';
 
+import { Nav } from '@/components/nav';
+import { Footer } from '@/components/footer';
+
 export default function Projects() {
   const projects = [
     {
@@ -79,48 +82,10 @@ export default function Projects() {
   return (
     <>
       <main className="min-h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
-        {/* 顶部导航栏 */}
-        <nav className="navbar">
-          <div className="logo-area">
-            <div className="logo-seal">
-              <i className="ri-quill-pen-line"></i>
-            </div>
-            <div className="blog-title">
-              <h1>墨墨梧文</h1>
-              <span>INK · CHRONICLE</span>
-            </div>
-          </div>
-          
-          <div className="nav-menu">
-            <div className="nav-item">
-              <i className="ri-home-5-line"></i>
-              <span>首页</span>
-            </div>
-            <div className="nav-item">
-              <i className="ri-article-line"></i>
-              <span>我的博客</span>
-            </div>
-            <div className="nav-item active">
-              <i className="ri-briefcase-4-line"></i>
-              <span>我的项目</span>
-            </div>
-            <div className="nav-item">
-              <i className="ri-user-heart-line"></i>
-              <span>关于我</span>
-            </div>
-          </div>
-        </nav>
+        <Nav />
 
         {/* 页面标题区 */}
         <section className="page-hero">
-          {/* 装饰粒子 */}
-          <div className="particles">
-            <div className="particle particle-1"></div>
-            <div className="particle particle-2"></div>
-            <div className="particle particle-3"></div>
-            <div className="particle particle-4"></div>
-          </div>
-
           {/* 装饰印章 */}
           <div className="page-seal">
             <span>焰</span>
@@ -217,42 +182,7 @@ export default function Projects() {
           </div>
         </section>
 
-        {/* 页脚区域 */}
-        <footer className="footer-section">
-          <div className="footer-content">
-            {/* 页脚Logo */}
-            <div className="footer-logo">
-              <div className="footer-logo-seal">
-                 <i className="ri-quill-pen-fill"></i>
-              </div>
-              <div className="footer-blog-info">
-                <h4>墨墨梧文</h4>
-                <span>INK · CHRONICLE</span>
-              </div>
-            </div>
-
-            {/* 社交链接 */}
-            <div className="social-links">
-              <a href="#" className="social-icon" aria-label="GitHub">
-                <i className="ri-github-fill"></i>
-              </a>
-              <a href="#" className="social-icon" aria-label="Twitter">
-                <i className="ri-twitter-x-fill"></i>
-              </a>
-              <a href="#" className="social-icon" aria-label="Email">
-                <i className="ri-mail-fill"></i>
-              </a>
-              <a href="#" className="social-icon" aria-label="RSS">
-                <i className="ri-rss-fill"></i>
-              </a>
-            </div>
-
-            {/* 版权信息 */}
-            <div className="copyright">
-              <span>© 2024 墨墨梧文 · 默默无闻的博客</span>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </main>
     </>
   );

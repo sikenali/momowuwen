@@ -1,120 +1,13 @@
 'use client';
 
-import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
-import { usePathname } from 'next/navigation';
+import { Nav } from '@/components/nav';
+import { Footer } from '@/components/footer';
 
 export default function Home() {
-  const pathname = usePathname();
-  const [activeNav, setActiveNav] = useState('home');
-  const [indicatorStyle, setIndicatorStyle] = useState<{ left?: string; width?: string }>({});
-  const navMenuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (pathname === '/') setActiveNav('home');
-    else if (pathname === '/blog') setActiveNav('blog');
-    else if (pathname === '/projects') setActiveNav('projects');
-    else if (pathname === '/about') setActiveNav('about');
-  }, [pathname]);
-
-  useEffect(() => {
-    const updateIndicator = () => {
-      if (!navMenuRef.current) return;
-      const el = navMenuRef.current.querySelector(`[data-nav="${activeNav}"]`);
-      if (el) {
-        const r = (el as HTMLElement).getBoundingClientRect();
-        const m = navMenuRef.current.getBoundingClientRect();
-        requestAnimationFrame(() => {
-          setIndicatorStyle({ left: r.left - m.left + 'px', width: r.width + 'px' });
-        });
-      }
-    };
-
-    updateIndicator();
-    const ro = new ResizeObserver(updateIndicator);
-    ro.observe(navMenuRef.current!);
-    window.addEventListener('resize', updateIndicator);
-    return () => { ro.disconnect(); window.removeEventListener('resize', updateIndicator); };
-  }, [activeNav]);
-
-  const navItems = [
-    { id: 'home', label: '首页', icon: 'ri-home-5-line', href: '/' },
-    { id: 'blog', label: '我的博客', icon: 'ri-article-line', href: '/blog' },
-    { id: 'projects', label: '我的项目', icon: 'ri-briefcase-4-line', href: '/projects' },
-    { id: 'about', label: '关于我', icon: 'ri-user-heart-line', href: '/about' }
-  ];
-
   return (
     <>
       <main className="min-h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
-      {/* 顶部导航栏 */}
-      <nav className="navbar">
-        <Link href="/" className="logo-area">
-          <div className="logo-seal">
-            <i className="ri-quill-pen-line"></i>
-          </div>
-          <div className="blog-title">
-            <h1>墨墨梧文</h1>
-            <span>INK · CHRONICLE</span>
-          </div>
-        </Link>
-        
-        <div className="nav-menu" ref={navMenuRef}>
-          {/* 滑动指示器 */}
-          <div 
-            className={`nav-indicator ${indicatorStyle.left !== undefined ? 'active' : ''}`}
-            style={indicatorStyle}
-          ></div>
-          
-          {navItems.map((item) => {
-            const isActive = activeNav === item.id;
-            
-            return (
-              <Link 
-                key={item.id}
-                href={item.href}
-                data-nav={item.id}
-                className={`nav-item ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveNav(item.id)}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget;
-                  const m = navMenuRef.current;
-                  if (m) {
-                    const r = el.getBoundingClientRect();
-                    const mr = m.getBoundingClientRect();
-                    const indicator = m.querySelector('.nav-indicator');
-                    if (indicator && !indicator.classList.contains('active')) {
-                      (indicator as HTMLElement).style.setProperty('transition', 'left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease');
-                      (indicator as HTMLElement).style.left = r.left - mr.left + 'px';
-                      (indicator as HTMLElement).style.width = r.width + 'px';
-                      (indicator as HTMLElement).style.opacity = '0.55';
-                    }
-                  }
-                }}
-                onMouseLeave={() => {
-                  const m = navMenuRef.current;
-                  if (m) {
-                    const indicator = m.querySelector('.nav-indicator');
-                    if (indicator) {
-                      setTimeout(() => {
-                        if (indicator && !(indicator as HTMLElement).classList.contains('active')) {
-                          (indicator as HTMLElement).style.removeProperty('transition');
-                        }
-                      }, 350);
-                    }
-                  }
-                }}
-              >
-                <div className="nav-icon-wrapper">
-                  <i className={`${item.icon} nav-icon`}></i>
-                  <i className={`${item.icon} nav-icon nav-icon-hover`}></i>
-                </div>
-                <span className="nav-label">{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+      <Nav />
 
       {/* 主容器 - 紧凑布局 */}
       <div className="main-container-compact">
@@ -125,17 +18,6 @@ export default function Home() {
 
         {/* 主视觉区域 - 紧凑版 */}
         <section className="hero-section-compact">
-          {/* 粒子装饰组 */}
-          <div className="particles">
-            <div className="particle particle-1"></div>
-            <div className="particle particle-2"></div>
-            <div className="particle particle-3"></div>
-            <div className="particle particle-4"></div>
-            <div className="particle particle-5"></div>
-            <div className="particle particle-6"></div>
-            <div className="particle particle-7"></div>
-          </div>
-
           {/* 主题印章 */}
           <div className="seal-container">
             <div className="seal-main">
@@ -319,42 +201,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 页脚区域 */}
-      <footer className="footer-section">
-        <div className="footer-content">
-          {/* 页脚Logo */}
-          <div className="footer-logo">
-            <div className="footer-logo-seal">
-              <i className="ri-quill-pen-fill"></i>
-            </div>
-            <div className="footer-blog-info">
-              <h4>墨墨梧文</h4>
-              <span>INK · CHRONICLE</span>
-            </div>
-          </div>
-
-          {/* 社交链接 */}
-          <div className="social-links">
-            <a href="#" className="social-icon" aria-label="GitHub">
-              <i className="ri-github-fill"></i>
-            </a>
-            <a href="#" className="social-icon" aria-label="Twitter">
-              <i className="ri-twitter-x-fill"></i>
-            </a>
-            <a href="#" className="social-icon" aria-label="Email">
-              <i className="ri-mail-fill"></i>
-            </a>
-            <a href="#" className="social-icon" aria-label="RSS">
-              <i className="ri-rss-fill"></i>
-            </a>
-          </div>
-
-          {/* 版权信息 */}
-          <div className="copyright">
-            <span>© 2024 墨墨梧文 · 默默无闻的博客</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
       </main>
       </>
     );
