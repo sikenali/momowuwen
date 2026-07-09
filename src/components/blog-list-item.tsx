@@ -68,7 +68,7 @@ export function BlogListItem({ post, index = 0 }: BlogListItemProps) {
               <span className="text-xs text-primary font-calligraphy">墨</span>
             </div>
             <div>
-              <p className="text-sm text-ink/70 font-body leading-tight">墨韵</p>
+              <p className="text-sm text-ink/70 font-body leading-tight">墨墨梧文</p>
               <p className="text-xs text-ink/40 font-body">博主</p>
             </div>
           </div>

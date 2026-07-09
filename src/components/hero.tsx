@@ -77,13 +77,13 @@ export function Hero() {
         </div>
 
         {/* Main title */}
-        <h1 className="text-6xl sm:text-8xl md:text-9xl text-primary font-calligraphy mb-6 tracking-wider">
-          墨韵
+        <h1 className="text-4xl sm:text-5xl md:text-6xl text-primary font-calligraphy mb-4 tracking-wider">
+          墨墨梧文
         </h1>
 
         {/* Subtitle */}
-        <p className="text-lg sm:text-xl text-ink/60 font-body mb-8 tracking-widest">
-          水墨丹青 · 诗书礼乐
+        <p className="text-sm sm:text-base text-ink/60 font-body mb-6 tracking-widest">
+          默默无闻的博客
         </p>
 
         {/* Decorative divider */}

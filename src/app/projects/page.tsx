@@ -1,90 +1,259 @@
-import { ProjectCard } from '@/components/project-card';
-import { getProjects } from '@/lib/content';
-import { RiBrushFill } from '@remixicon/react';
+'use client';
 
-const fakeProjects = [
-  { title: '墨境·电商平台', description: '一个融合东方美学与现代交互的电商平台，采用 Next.js 全栈架构，支持 SSR、ISR 等多种渲染策略。', tags: ['Next.js', 'TypeScript', '全栈'], category: 'Web 应用', date: '2026-06-15', slug: 'mojing-ecommerce' },
-  { title: '万物·设计系统', description: '企业级 UI 组件库，基于 React + Storybook 构建，提供 60+ 原子化组件，支持主题定制与无障碍访问。', tags: ['React', 'Storybook', '组件库'], category: '前端框架', date: '2026-05-20', slug: 'wanwu-design-system' },
-  { title: '流光·可视化工具', description: '实时数据可视化平台，支持拖拽式仪表盘配置，集成 ECharts/D3.js，实现毫秒级数据刷新。', tags: ['Vue3', 'D3.js', '数据可视化'], category: '数据工具', date: '2026-04-10', slug: 'liuguang-viz' },
-  { title: '知音·AI 助手', description: '基于大语言模型的智能编程助手，支持代码补全、Bug 检测、重构建议，集成 VS Code 插件。', tags: ['AI', 'Python', 'LLM'], category: 'AI 工具', date: '2026-03-05', slug: 'zhiyin-ai' },
-  { title: '墨客·博客引擎', description: '高性能静态博客引擎，支持 Markdown/MDX，自动优化图片与代码高亮，CI/CD 一键发布。', tags: ['Rust', 'WASM', '静态站点'], category: '开发工具', date: '2026-02-18', slug: 'moke-blog-engine' },
-  { title: '星河·低代码平台', description: '可视化搭建平台，通过拖拽生成企业级后台应用，支持自定义组件与数据源接入。', tags: ['React', 'Node.js', '低代码'], category: '平台工具', date: '2026-01-08', slug: 'xinghe-lowcode' },
-];
-
-export default function ProjectsPage() {
-  const realProjects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  const displayProjects = realProjects.length >= 6 ? realProjects : fakeProjects;
+export default function Projects() {
+  const projects = [
+    {
+      id: '壹',
+      name: '赤焰',
+      fullTitle: '赤焰 · 设计系统',
+      gradient: ['rgba(245, 208, 200, 1)', 'rgba(194, 58, 43, 1)'],
+      icon: 'ri-brush-4-line',
+      tags: [{ name: 'React', color: '#c23a2b', bg: '#fde8e4' }],
+      description: '一套基于东方美学的企业级 React 组件库，包含 60+ 精美组件，支持主题定制与国际化。',
+      stars: '2.3k',
+      forks: '856',
+      license: 'MIT'
+    },
+    {
+      id: '贰',
+      name: '青鸾',
+      fullTitle: '青鸾 · 全栈框架',
+      gradient: ['rgba(200, 230, 201, 1)', 'rgba(74, 140, 109, 1)'],
+      icon: 'ri-code-s-slash-line',
+      tags: [{ name: 'Vue', color: '#4a8c6d', bg: '#c8e6c9' }],
+      description: '基于 Vue 3 的全栈开发框架，集成路由、状态管理、API 请求等核心功能，助力快速开发。',
+      stars: '1.8k',
+      forks: '623',
+      license: 'Apache 2.0'
+    },
+    {
+      id: '叁',
+      name: '玄冥',
+      fullTitle: '玄冥 · 数据中台',
+      gradient: ['rgba(200, 215, 230, 1)', 'rgba(91, 127, 168, 1)'],
+      icon: 'ri-database-2-line',
+      tags: [{ name: 'Node.js', color: '#5b7fa8', bg: '#c8d7e6' }],
+      description: '企业级数据中台解决方案，提供数据采集、处理、可视化全流程能力，支撑百万级数据并发。',
+      stars: '1.5k',
+      forks: '412',
+      license: 'MPL 2.0'
+    },
+    {
+      id: '肆',
+      name: '白玉',
+      fullTitle: '白玉 · 文档引擎',
+      gradient: ['rgba(240, 240, 235, 1)', 'rgba(184, 168, 138, 1)'],
+      icon: 'ri-file-text-line',
+      tags: [{ name: 'Markdown', color: '#b8a88a', bg: '#f0f0eb' }],
+      description: '高性能 Markdown 文档引擎，支持版本管理、全文搜索、多语言翻译，打造知识管理体系。',
+      stars: '986',
+      forks: '234',
+      license: 'BSD 3'
+    },
+    {
+      id: '伍',
+      name: '紫金',
+      fullTitle: '紫金 · 区块链平台',
+      gradient: ['rgba(230, 215, 200, 1)', 'rgba(160, 110, 60, 1)'],
+      icon: 'ri-link-m',
+      tags: [{ name: 'Web3', color: '#a06e3c', bg: '#e6d7c8' }],
+      description: '去中心化应用开发平台，提供智能合约部署、Token 发行、DApp 框架等核心能力。',
+      stars: '756',
+      forks: '189',
+      license: 'GPL 3'
+    },
+    {
+      id: '陆',
+      name: '墨影',
+      fullTitle: '墨影 · AI 助手',
+      gradient: ['rgba(220, 220, 220, 1)', 'rgba(44, 36, 22, 1)'],
+      icon: 'ri-robot-line',
+      tags: [{ name: 'AI', color: '#2c2416', bg: '#dcdcdc' }],
+      description: '基于大语言模型的智能写作助手，支持文章生成、风格迁移、灵感激发，让创作更高效。',
+      stars: '3.2k',
+      forks: '1.2k',
+      license: 'CC BY 4.0'
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-parchment">
-      {/* 页面标题区 */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="absolute rounded-full bg-primary/10"
-              style={{ width: `${Math.random() * 8 + 4}px`, height: `${Math.random() * 8 + 4}px`, left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
-            />
-          ))}
-        </div>
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-primary/30 flex items-center justify-center">
-            <RiBrushFill className="w-6 h-6 text-primary" />
+    <>
+      <main className="min-h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
+        {/* 顶部导航栏 */}
+        <nav className="navbar">
+          <div className="logo-area">
+            <div className="logo-seal">
+              <i className="ri-quill-pen-line"></i>
+            </div>
+            <div className="blog-title">
+              <h1>墨墨梧文</h1>
+              <span>INK · CHRONICLE</span>
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl text-primary font-calligraphy mb-4">项目</h1>
-          <p className="text-ink/50 font-body text-sm sm:text-base mb-6">展示我的作品与探索</p>
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-16 h-px bg-gold/30" />
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-            <div className="w-16 h-px bg-gold/30" />
+          
+          <div className="nav-menu">
+            <div className="nav-item">
+              <i className="ri-home-5-line"></i>
+              <span>首页</span>
+            </div>
+            <div className="nav-item">
+              <i className="ri-article-line"></i>
+              <span>我的博客</span>
+            </div>
+            <div className="nav-item active">
+              <i className="ri-briefcase-4-line"></i>
+              <span>我的项目</span>
+            </div>
+            <div className="nav-item">
+              <i className="ri-user-heart-line"></i>
+              <span>关于我</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </nav>
 
-      {/* 项目卡片 - 6大故事卡片 */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayProjects.map((project, index) => (
-            <ProjectCard key={project.slug} project={project} index={index} />
-          ))}
-        </div>
-      </section>
+        {/* 页面标题区 */}
+        <section className="page-hero">
+          {/* 装饰粒子 */}
+          <div className="particles">
+            <div className="particle particle-1"></div>
+            <div className="particle particle-2"></div>
+            <div className="particle particle-3"></div>
+            <div className="particle particle-4"></div>
+          </div>
 
-      {/* 项目统计区 */}
-      <section className="border-t border-gold/10 bg-white/40">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex items-center justify-center gap-12 sm:gap-24">
-            {[
-              { value: '32', label: '完成项目' },
-              { value: '6', label: '技术栈' },
-              { value: '98%', label: '满意度' },
-              { value: '4.8K', label: 'Star' },
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-3xl sm:text-4xl font-bold text-primary font-serif">{stat.value}</p>
-                <p className="text-xs text-ink/50 font-body mt-1">{stat.label}</p>
+          {/* 装饰印章 */}
+          <div className="page-seal">
+            <span>焰</span>
+          </div>
+
+          {/* 页面标题 */}
+          <h2 className="page-title">炼 丹 炉</h2>
+          
+          {/* 副标题 */}
+          <p className="page-subtitle">六 大 经 典 · 项 目 长 卷</p>
+
+          {/* 装饰分隔线 */}
+          <div className="divider-page">
+            <div className="divider-line"></div>
+            <div className="divider-icon">
+              <i className="ri-briefcase-4-line"></i>
+            </div>
+            <div className="divider-line"></div>
+          </div>
+
+          {/* 引言 */}
+          <p className="page-quote">每一个项目都是一段取经之路，历经九九八十一难，终得真经。</p>
+        </section>
+
+        {/* 项目卡片网格 */}
+        <section className="projects-section">
+          <div className="projects-grid">
+            {projects.map((project, index) => (
+              <div key={index} className="project-card">
+                {/* 项目封面区 */}
+                <div 
+                  className="project-cover"
+                  style={{
+                    background: `linear-gradient(to bottom, ${project.gradient[0]}, ${project.gradient[1]})`
+                  }}
+                >
+                  {/* 项目图标 */}
+                  <div className="project-icon">
+                    <i className={project.icon}></i>
+                  </div>
+                  
+                  {/* 项目编号 */}
+                  <div className="project-badge">
+                    <span>{project.id} · {project.name}</span>
+                  </div>
+
+                  {/* 装饰云纹 */}
+                  <div className="cloud-pattern cloud-pattern-1"></div>
+                  <div className="cloud-pattern cloud-pattern-2"></div>
+                </div>
+
+                {/* 项目内容 */}
+                <div className="project-content">
+                  {/* 标签行 */}
+                  <div className="project-tags">
+                    {project.tags.map((tag, tagIndex) => (
+                      <span 
+                        key={tagIndex} 
+                        className="project-tag"
+                        style={{
+                          color: tag.color,
+                          backgroundColor: tag.bg
+                        }}
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* 项目名称 */}
+                  <h3 className="project-name">{project.fullTitle}</h3>
+                  
+                  {/* 项目描述 */}
+                  <p className="project-desc">{project.description}</p>
+
+                  {/* 项目数据 */}
+                  <div className="project-stats">
+                    <div className="stat-item">
+                      <i className="ri-star-line" style={{ color: 'rgba(212, 168, 67, 1)' }}></i>
+                      <span>{project.stars}</span>
+                    </div>
+                    <div className="stat-item">
+                      <i className="ri-git-merge-line" style={{ color: 'rgba(139, 115, 85, 1)' }}></i>
+                      <span>{project.forks}</span>
+                    </div>
+                    <div className="stat-item">
+                      <i className="ri-price-tag-3-line" style={{ color: 'rgba(139, 115, 85, 1)' }}></i>
+                      <span>{project.license}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 页脚 */}
-      <footer className="border-t border-gold/20 bg-white/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <RiBrushFill className="w-4 h-4 text-primary" />
+        {/* 页脚区域 */}
+        <footer className="footer-section">
+          <div className="footer-content">
+            {/* 页脚Logo */}
+            <div className="footer-logo">
+              <div className="footer-logo-seal">
+                 <i className="ri-quill-pen-fill"></i>
               </div>
-              <div>
-                <p className="text-primary font-calligraphy">墨韵</p>
-                <p className="text-[10px] text-ink/30 font-body tracking-widest">INK & SILENCE</p>
+              <div className="footer-blog-info">
+                <h4>墨墨梧文</h4>
+                <span>INK · CHRONICLE</span>
               </div>
             </div>
-            <p className="text-xs text-ink/30 font-body">© 2026 墨韵. All rights reserved.</p>
+
+            {/* 社交链接 */}
+            <div className="social-links">
+              <a href="#" className="social-icon" aria-label="GitHub">
+                <i className="ri-github-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="Twitter">
+                <i className="ri-twitter-x-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="Email">
+                <i className="ri-mail-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="RSS">
+                <i className="ri-rss-fill"></i>
+              </a>
+            </div>
+
+            {/* 版权信息 */}
+            <div className="copyright">
+              <span>© 2024 墨墨梧文 · 默默无闻的博客</span>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </main>
+    </>
   );
 }

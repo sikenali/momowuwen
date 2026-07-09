@@ -1,148 +1,261 @@
-import { BlogListItem } from '@/components/blog-list-item';
-import { getPosts } from '@/lib/content';
-import { RiSearchLine, RiArrowLeftSLine, RiArrowRightSLine, RiBrushFill } from '@remixicon/react';
+'use client';
 
-const categories = ['全部', '前端', '后端', '设计', '技术笔记', '生活随笔', '读书'];
+import Link from 'next/link';
 
-export default function BlogPage() {
-  const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  // Pad with fake posts for design demo
-  const displayPosts = [...posts];
-  while (displayPosts.length < 5) {
-    const i = displayPosts.length;
-    displayPosts.push({
-      ...displayPosts[0],
-      slug: `fake-post-${i}`,
-      title: ['从零搭建React组件库实践', 'CSS Grid布局完全指南', '2024年前端趋势总结', '设计模式在实际项目中的应用'][i - 1] || `示例文章 ${i}`,
-      description: ['记录搭建组件库过程中的设计决策与技术选型', '深入理解CSS Grid布局的各种用法与最佳实践', '总结过去一年的前端技术发展趋势', '聊聊常见设计模式在业务项目中的实际应用'][i - 1] || '这是一篇示例文章的详细描述',
-      tags: [['前端', 'React'], ['CSS', '布局'], ['前端', '趋势'], ['设计模式', '架构']][i - 1] || ['技术'],
-      category: ['技术', '前端', '前端', '后端'][i - 1] || '技术',
-      date: new Date(Date.now() - i * 86400000 * 7).toISOString(),
-      cover: undefined,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any);
-  }
+export default function Blog() {
+  const categories = [
+    { name: '全部文章', active: true },
+    { name: '前端开发', active: false },
+    { name: '后端架构', active: false },
+    { name: '设计思考', active: false },
+    { name: '技术笔记', active: false },
+    { name: '生活随笔', active: false },
+    { name: '读书笔记', active: false }
+  ];
+
+  const articles = [
+    {
+      id: 1,
+      cover: 'linear-gradient(135deg, rgba(245, 208, 200, 0.8), rgba(194, 58, 43, 0.6))',
+      tags: ['React', 'TypeScript'],
+      title: 'Next.js 14 全新特性深度解析与实践',
+      excerpt: '全面解读 Next.js 14 带来的 App Router、Server Components、Route Handlers 等核心特性，并通过实际项目演示最佳实践。',
+      views: '2.3K',
+      likes: 128,
+      date: '2024-01-15'
+    },
+    {
+      id: 2,
+      cover: 'linear-gradient(135deg, rgba(200, 230, 201, 0.8), rgba(74, 140, 109, 0.6))',
+      tags: ['Vue', '设计'],
+      title: '水墨风格在现代网页设计中的创新应用',
+      excerpt: '探讨如何将中国传统水墨元素与现代网页设计相结合，创造出独特的东方美学视觉体验。',
+      views: '1.8K',
+      likes: 96,
+      date: '2024-01-12'
+    },
+    {
+      id: 3,
+      cover: 'linear-gradient(135deg, rgba(200, 215, 230, 0.8), rgba(91, 127, 168, 0.6))',
+      tags: ['Node.js', '架构'],
+      title: '微服务架构下的 API 网关设计与实现',
+      excerpt: '深入分析微服务架构中 API 网关的核心作用，详解路由、鉴权、限流等关键功能的实现方案。',
+      views: '3.1K',
+      likes: 215,
+      date: '2024-01-10'
+    },
+    {
+      id: 4,
+      cover: 'linear-gradient(135deg, rgba(240, 240, 235, 0.8), rgba(184, 168, 138, 0.6))',
+      tags: ['CSS', '动画'],
+      title: 'CSS 动画进阶：从入门到精通的完整指南',
+      excerpt: '系统梳理 CSS 动画相关知识，涵盖 transition、animation、keyframes 等核心概念的实战应用技巧。',
+      views: '1.5K',
+      likes: 87,
+      date: '2024-01-08'
+    },
+    {
+      id: 5,
+      cover: 'linear-gradient(135deg, rgba(230, 215, 200, 0.8), rgba(160, 110, 60, 0.6))',
+      tags: ['数据库', '性能'],
+      title: 'PostgreSQL 查询优化实战：从原理到实践',
+      excerpt: '通过真实案例讲解 PostgreSQL 查询优化的核心思路，包括索引策略、执行计划分析和慢查询调优。',
+      views: '2.7K',
+      likes: 164,
+      date: '2024-01-05'
+    },
+    {
+      id: 6,
+      cover: 'linear-gradient(135deg, rgba(220, 220, 220, 0.8), rgba(44, 36, 22, 0.6))',
+      tags: ['AI', '前沿'],
+      title: '大语言模型应用开发：从 Prompt 到 Agent',
+      excerpt: '介绍基于大语言模型的 AI 应用开发流程，涵盖 Prompt Engineering、RAG、Agent 等核心技术栈。',
+      views: '4.2K',
+      likes: 298,
+      date: '2024-01-02'
+    }
+  ];
 
   return (
-    <div className="min-h-screen bg-parchment">
-      {/* 页面标题区 */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(4)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-primary/10"
-              style={{
-                width: `${Math.random() * 8 + 4}px`,
-                height: `${Math.random() * 8 + 4}px`,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-            />
-          ))}
+    <>
+      <main className="min-h-screen blog-page" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
+        {/* 滚动进度条 */}
+        <div className="progress-bar">
+          <div className="progress-indicator"></div>
         </div>
 
-        <div className="max-w-6xl mx-auto text-center relative z-10">
-          {/* Seal */}
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-primary/30 flex items-center justify-center">
-            <RiBrushFill className="w-6 h-6 text-primary" />
+        {/* 顶部导航栏 */}
+        <nav className="navbar">
+          <Link href="/" className="logo-area">
+            <div className="logo-seal">
+              <i className="ri-brush-line"></i>
+            </div>
+            <div className="blog-title">
+              <h1>墨墨梧文</h1>
+              <span>INK · CHRONICLE</span>
+            </div>
+          </Link>
+          
+          <div className="nav-menu">
+            <Link href="/" className="nav-item">
+              <i className="ri-home-5-line"></i>
+              <span>首页</span>
+            </Link>
+            <div className="nav-item active">
+              <i className="ri-article-line"></i>
+              <span>我的博客</span>
+            </div>
+            <Link href="/projects" className="nav-item">
+              <i className="ri-briefcase-4-line"></i>
+              <span>我的项目</span>
+            </Link>
+            <div className="nav-item">
+              <i className="ri-user-heart-line"></i>
+              <span>关于我</span>
+            </div>
+          </div>
+        </nav>
+
+        {/* 页面标题区 */}
+        <section className="page-hero">
+          {/* 装饰粒子 */}
+          <div className="particles">
+            <div className="particle particle-1"></div>
+            <div className="particle particle-2"></div>
+            <div className="particle particle-3"></div>
+            <div className="particle particle-4"></div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl text-primary font-calligraphy mb-4">博客</h1>
-          <p className="text-ink/50 font-body text-sm sm:text-base mb-6">记录思考，分享技术</p>
-
-          {/* Decorative divider */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-16 h-px bg-gold/30" />
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60" />
-            <div className="w-16 h-px bg-gold/30" />
+          {/* 装饰印章 */}
+          <div className="page-seal">
+            <span>卷</span>
           </div>
-        </div>
-      </section>
 
-      {/* 筛选搜索区 */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4 border-y border-gold/10">
-          {/* Category tabs */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className={`px-4 py-1.5 text-sm font-body rounded-full transition-colors ${
-                  cat === '全部'
-                    ? 'bg-primary text-parchment'
-                    : 'text-ink/50 hover:text-primary hover:bg-primary/5'
-                }`}
-              >
-                {cat}
-              </button>
+          {/* 页面标题 */}
+          <h2 className="page-title">文 章 卷 轴</h2>
+          
+          {/* 副标题 */}
+          <p className="page-subtitle">慢 慢 翻 阅 · 细 细 品 味</p>
+
+          {/* 装饰分隔线 */}
+          <div className="divider-page">
+            <div className="divider-line"></div>
+            <div className="divider-icon">
+              <i className="ri-article-line"></i>
+            </div>
+            <div className="divider-line"></div>
+          </div>
+        </section>
+
+        {/* 筛选搜索区 */}
+        <section className="filter-section">
+          <div className="filter-container">
+            {/* 分类标签组 */}
+            <div className="category-tags">
+              {categories.map((cat, index) => (
+                <div 
+                  key={index}
+                  className={`category-tag ${cat.active ? 'active' : ''}`}
+                >
+                  <span>{cat.name}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* 搜索框 */}
+            <div className="search-box">
+              <i className="ri-search-line"></i>
+              <span className="search-placeholder">搜索文章标题或关键词...</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 文章列表区 */}
+        <section className="articles-section">
+          <div className="articles-list">
+            {articles.map((article) => (
+              <article key={article.id} className="article-card-large">
+                {/* 封面区 */}
+                <div 
+                  className="article-cover-large"
+                  style={{ background: article.cover }}
+                >
+                  <div className="cover-overlay"></div>
+                </div>
+
+                {/* 内容区 */}
+                <div className="article-content-large">
+                  {/* 标签 */}
+                  <div className="article-tags-large">
+                    {article.tags.map((tag, index) => (
+                      <span key={index} className="tag-large">{tag}</span>
+                    ))}
+                  </div>
+
+                  {/* 标题 */}
+                  <h3 className="article-title-large">{article.title}</h3>
+                  
+                  {/* 摘要 */}
+                  <p className="article-excerpt">{article.excerpt}</p>
+
+                  {/* 底部信息 */}
+                  <div className="article-meta-large">
+                    <div className="meta-item">
+                      <i className="ri-eye-line"></i>
+                      <span>{article.views}</span>
+                    </div>
+                    <div className="meta-item">
+                      <i className="ri-heart-line"></i>
+                      <span>{article.likes}</span>
+                    </div>
+                    <div className="meta-item">
+                      <i className="ri-calendar-line"></i>
+                      <span>{article.date}</span>
+                    </div>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
+        </section>
 
-          {/* Search */}
-          <div className="relative w-full sm:w-64">
-            <RiSearchLine className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/30" />
-            <input
-              type="text"
-              placeholder="搜索文章..."
-              className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-gold/20 rounded-lg text-ink/70 font-body placeholder:text-ink/30 focus:outline-none focus:border-primary/40 transition-colors"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 文章列表 */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-16">
-        <div className="space-y-6">
-          {displayPosts.map((post, index) => (
-            <BlogListItem key={post.slug} post={post} index={index} />
-          ))}
-        </div>
-      </section>
-
-      {/* 分页 */}
-      <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto pb-20">
-        <div className="flex items-center justify-center gap-1">
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg text-ink/40 hover:text-primary hover:bg-primary/5 transition-colors">
-            <RiArrowLeftSLine className="w-5 h-5" />
-          </button>
-          {[1, 2, 3, 4].map((p) => (
-            <button
-              key={p}
-              className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-body transition-colors ${
-                p === 1 ? 'bg-primary text-parchment' : 'text-ink/50 hover:text-primary hover:bg-primary/5'
-              }`}
-            >
-              {p}
-            </button>
-          ))}
-          <span className="w-9 h-9 flex items-center justify-center text-ink/30">...</span>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg text-ink/50 hover:text-primary hover:bg-primary/5 transition-colors text-sm font-body">
-            末
-          </button>
-          <button className="w-9 h-9 flex items-center justify-center rounded-lg text-ink/40 hover:text-primary hover:bg-primary/5 transition-colors">
-            <RiArrowRightSLine className="w-5 h-5" />
-          </button>
-        </div>
-      </section>
-
-      {/* 页脚 */}
-      <footer className="border-t border-gold/20 bg-white/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <RiBrushFill className="w-4 h-4 text-primary" />
+        {/* 页脚区域 */}
+        <footer className="footer-section">
+          <div className="footer-content">
+            {/* 页脚Logo */}
+            <div className="footer-logo">
+              <div className="footer-logo-seal">
+                <i className="ri-brush-fill"></i>
               </div>
-              <div>
-                <p className="text-primary font-calligraphy">墨韵</p>
-                <p className="text-[10px] text-ink/30 font-body tracking-widest">INK & SILENCE</p>
+              <div className="footer-blog-info">
+                <h4>墨墨梧文</h4>
+                <span>INK · CHRONICLE</span>
               </div>
             </div>
-            <p className="text-xs text-ink/30 font-body">© 2026 墨韵. All rights reserved.</p>
+
+            {/* 社交链接 */}
+            <div className="social-links">
+              <a href="#" className="social-icon" aria-label="GitHub">
+                <i className="ri-github-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="Twitter">
+                <i className="ri-twitter-x-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="Email">
+                <i className="ri-mail-fill"></i>
+              </a>
+              <a href="#" className="social-icon" aria-label="RSS">
+                <i className="ri-rss-fill"></i>
+              </a>
+            </div>
+
+            {/* 版权信息 */}
+            <div className="copyright">
+              <span>© 2024 墨墨梧文 · 默默无闻的博客</span>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </main>
+    </>
   );
 }
