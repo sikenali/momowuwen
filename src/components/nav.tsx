@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: 'ri-home-5-line', href: '/' },
-  { id: 'blog', label: 'Blog', icon: 'ri-article-line', href: '/blog' },
-  { id: 'projects', label: 'Project', icon: 'ri-briefcase-4-line', href: '/projects' },
+  { id: 'blog', label: 'Blog', icon: 'ri-book-open-line', href: '/blog' },
+  { id: 'projects', label: 'Project', icon: 'ri-folder-open-line', href: '/projects' },
   { id: 'about', label: 'About', icon: 'ri-user-heart-line', href: '/about' }
 ];
 
@@ -37,10 +37,8 @@ export function Nav() {
       const el = navMenuRef.current.querySelector(`[data-nav="${activeNav}"]`);
       if (el) {
         const r = (el as HTMLElement).getBoundingClientRect();
-        const m = navMenuRef.current.getBoundingClientRect();
-        requestAnimationFrame(() => {
-          setIndicatorStyle({ left: r.left - m.left + 'px', width: r.width + 'px' });
-        });
+        const m = navMenuRef.current!.getBoundingClientRect();
+        setIndicatorStyle({ left: r.left - m.left + 'px', width: r.width + 'px' });
       }
     };
 
@@ -50,6 +48,10 @@ export function Nav() {
     window.addEventListener('resize', updateIndicator);
     return () => { ro.disconnect(); window.removeEventListener('resize', updateIndicator); };
   }, [activeNav]);
+
+  const handleNavClick = (id: string) => {
+    setActiveNav(id);
+  };
 
   return (
     <nav className="navbar">
@@ -78,6 +80,7 @@ export function Nav() {
               href={item.href}
               data-nav={item.id}
               className={`nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => handleNavClick(item.id)}
             >
               <i className={`${item.icon} nav-icon`}></i>
               <span className="nav-label">{item.label}</span>

@@ -5,7 +5,7 @@ export default function About() {
         {/* 页面标题区 */}
         <section className="page-hero">
           {/* 装饰印章 */}
-          <div className="page-seal-about">
+          <div className="page-seal">
             <span>我</span>
           </div>
 
@@ -23,25 +23,11 @@ export default function About() {
             </div>
             <div className="divider-line"></div>
           </div>
-
-          {/* 引言 */}
-          <p className="page-quote">一名热爱技术与设计的全栈工程师，在代码世界里不断取经的行者。</p>
         </section>
 
         {/* 个人信息区 */}
         <section className="info-section">
           <div className="about-container">
-            {/* 区域标题 */}
-            <div className="about-title-row">
-              <div className="about-title-seal">
-                <i className="ri-user-heart-line"></i>
-              </div>
-              <div className="about-title-text">
-                <h3>关于墨轩主人</h3>
-                <span>ABOUT ME</span>
-              </div>
-            </div>
-
             {/* 信息行 */}
             <div className="about-info-row">
               <div className="about-info-item">

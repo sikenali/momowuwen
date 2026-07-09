@@ -1,4 +1,6 @@
+'use client';
 import { getPosts, getProjects } from '@/lib/content';
+import { useEffect, useState, useCallback } from 'react';
 
 const posts = getPosts();
 const projects = getProjects();
@@ -10,7 +12,42 @@ const firstPostDate = posts.length > 0
   : new Date('2022-01-01');
 const daysPersisting = Math.floor((Date.now() - firstPostDate.getTime()) / (1000 * 60 * 60 * 24));
 
+const badgePositions = [
+  { top: '-12px', right: '15%' },
+  { top: '15%', right: '-14px' },
+  { bottom: '-12px', right: '15%' },
+  { top: '15%', left: '-14px' },
+  { top: '45%', right: '-16px' },
+  { top: '-14px', left: '25%' },
+];
+
+const leafIcons = ['ri-leaf-line', 'ri-plant-line', 'ri-flask-line', 'ri-drop-line'];
+const fireIcons = ['ri-fire-line', 'ri-flashlight-line', 'ri-sparkling-line', 'ri-star-smile-line'];
+
+function getRandomItem<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
 export default function Home() {
+  const [badgeGreen, setBadgeGreen] = useState<{ icon: string; pos: Record<string, string> }>({ icon: '', pos: {} });
+  const [badgeRed, setBadgeRed] = useState<{ icon: string; pos: Record<string, string> }>({ icon: '', pos: {} });
+
+  const refreshBadges = useCallback(() => {
+    const usedIndices = new Set<number>();
+    usedIndices.add(Math.floor(Math.random() * badgePositions.length));
+    let idx2 = Math.floor(Math.random() * badgePositions.length);
+    while (usedIndices.has(idx2)) idx2 = Math.floor(Math.random() * badgePositions.length);
+
+    setBadgeGreen({ icon: getRandomItem(leafIcons), pos: badgePositions[usedIndices.values().next().value] });
+    setBadgeRed({ icon: getRandomItem(fireIcons), pos: badgePositions[idx2] });
+  }, []);
+
+  useEffect(() => {
+    refreshBadges();
+    const interval = setInterval(refreshBadges, 5000);
+    return () => clearInterval(interval);
+  }, [refreshBadges]);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div className="main-container-compact" style={{ flex: 1 }}>
@@ -23,11 +60,11 @@ export default function Home() {
             <div className="seal-main">
               <span>墨</span>
             </div>
-            <div className="seal-badge-green">
-              <i className="ri-leaf-line"></i>
+            <div className="seal-badge-green" style={badgeGreen.pos}>
+              <i className={badgeGreen.icon}></i>
             </div>
-            <div className="seal-badge-red">
-              <i className="ri-fire-line"></i>
+            <div className="seal-badge-red" style={badgeRed.pos}>
+              <i className={badgeRed.icon}></i>
             </div>
           </div>
 
