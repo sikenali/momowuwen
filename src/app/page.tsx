@@ -1,4 +1,3 @@
-import { Footer } from '@/components/footer';
 import { getPosts, getProjects } from '@/lib/content';
 
 const posts = getPosts();
@@ -72,8 +71,6 @@ export default function Home() {
           <div className="cloud-2"></div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

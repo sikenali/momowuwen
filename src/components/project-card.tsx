@@ -1,102 +1,72 @@
 import Link from 'next/link';
-import { RiStarFill, RiBookMarkFill, RiArrowRightUpLine } from '@remixicon/react';
+import { RiStarLine, RiEyeLine, RiHeart3Line, RiExternalLinkLine } from '@remixicon/react';
 
 interface ProjectCardProps {
-  project: { title: string; description: string; tags: string[]; category: string; cover?: string; slug: string; link?: string; date: string; stars?: number; forks?: number; issues?: number };
+  project: { title: string; description: string; tags: string[]; category: string; cover?: string; slug: string; link?: string; date: string };
   index?: number;
 }
 
-const cardThemes = ['赤焰', '鎏金', '玉绿', '云蓝', '墨玄', '紫霞'];
-const romanNumerals = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
+const cardThemes = [
+  { gradient: ['rgba(212,90,70,1)', 'rgba(160,50,30,1)'], icon: 'ri-fire-line' },
+  { gradient: ['rgba(220,180,80,1)', 'rgba(160,120,40,1)'], icon: 'ri-vip-crown-2-line' },
+  { gradient: ['rgba(80,160,120,1)', 'rgba(40,100,70,1)'], icon: 'ri-leaf-line' },
+  { gradient: ['rgba(100,150,200,1)', 'rgba(50,90,140,1)'], icon: 'ri-cloud-line' },
+  { gradient: ['rgba(107,90,78,1)', 'rgba(44,36,22,1)'], icon: 'ri-palette-line' },
+  { gradient: ['rgba(160,100,180,1)', 'rgba(110,60,130,1)'], icon: 'ri-sparkling-line' },
+];
 
 export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
   const theme = cardThemes[index % 6];
-  const romanNumeral = romanNumerals[index % 10];
-  const projectNumber = `${romanNumeral} · ${theme}`;
 
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="block group bg-white/80 backdrop-blur-sm rounded-[20px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-[#F0D8D0]/50"
-      style={{
-        boxShadow: '0 8px 30px rgba(194,58,43,0.08)',
-        animationDelay: `${index * 100}ms`,
-      }}
+      className="block group"
+      style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* 项目封面区 */}
-      <div className="relative h-52 overflow-hidden" style={{
-        background: 'linear-gradient(to bottom, rgba(245,208,200,1), rgba(194,58,43,1))',
-      }}>
-        {/* 项目图标 */}
-        <div className="absolute left-0 bottom-10 w-16 h-16 rounded-2xl flex items-center justify-center" style={{
-          backgroundColor: 'rgba(255,255,255,0.25)',
+      <div className="project-card-new">
+        <div className="project-card-cover" style={{
+          background: `linear-gradient(135deg, ${theme.gradient[0]}, ${theme.gradient[1]})`,
         }}>
-          <span className="text-3xl text-white">{theme[0]}</span>
+          <div className="project-card-icon">
+            <i className={theme.icon}></i>
+          </div>
+          <div className="project-card-badge">
+            <span>{(index + 1).toString().padStart(2, '0')}</span>
+          </div>
+          <div className="project-card-cloud project-card-cloud--1"></div>
+          <div className="project-card-cloud project-card-cloud--2"></div>
         </div>
-
-        {/* 项目编号 */}
-        <div className="absolute top-1 right-4 px-3 py-1 rounded-full text-xs font-medium" style={{
-          backgroundColor: 'rgba(255,255,255,0.25)',
-          color: '#fff',
-        }}>
-          {projectNumber}
-        </div>
-
-        {/* 装饰云纹 */}
-        <div className="absolute top-1 right-8 w-20 h-10 rounded-full opacity-20" style={{ backgroundColor: '#fff' }}></div>
-        <div className="absolute bottom-6 right-4 w-16 h-8 rounded-full opacity-15" style={{ backgroundColor: '#fff' }}></div>
-      </div>
-
-      {/* 项目内容 */}
-      <div className="p-6">
-        {/* 标签行 */}
-        {project.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-3">
+        <div className="project-card-body">
+          <div className="project-card-tags">
             {project.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="px-2 py-0.5 text-xs rounded" style={{
-                backgroundColor: 'rgba(253,232,228,1)',
-                color: 'rgba(194,58,43,1)',
-              }}>
-                {tag}
-              </span>
+              <span key={tag} className="project-card-tag">{tag}</span>
             ))}
           </div>
-        )}
-
-        {/* 标题 */}
-        <h3 className="text-[26px] text-[#2C2416] font-normal mb-1.5">{project.title}</h3>
-
-        {/* 描述 */}
-        <p className="text-[14px] text-[#6B5A3E] leading-relaxed line-clamp-2 mb-5">{project.description}</p>
-
-        {/* 项目数据 */}
-        <div className="flex items-center gap-6 text-xs text-[#5C4A32]">
-          <span className="flex items-center gap-1">
-            <RiStarFill className="w-3.5 h-3.5 text-[#D4A843]" />
-            <span className="font-medium">{project.stars || '0'}</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <RiBookMarkFill className="w-3.5 h-3.5 text-[#8B7355]" />
-            <span>{project.forks || '0'}</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <RiArrowRightUpLine className="w-3.5 h-3.5 text-[#8B7355]" />
-            <span>{project.issues || '0'}</span>
-          </span>
-        </div>
-
-        {/* 操作按钮 */}
-        <div className="flex items-center gap-3 mt-5 pt-4 border-t border-[#E0D4BC]/30">
-          <div className="flex-1 h-10 rounded-lg flex items-center justify-center gap-2" style={{
-            backgroundColor: 'rgba(194,58,43,1)',
-          }}>
-            <RiArrowRightUpLine className="w-4 h-4 text-white" />
-            <span className="text-sm text-white font-medium">查看项目</span>
+          <h3 className="project-card-title">{project.title}</h3>
+          <p className="project-card-desc">{project.description}</p>
+          <div className="project-card-stats">
+            <span className="project-card-stat">
+              <RiStarLine className="project-card-stat-icon project-card-stat-icon--gold" />
+              4.2k
+            </span>
+            <span className="project-card-stat">
+              <RiEyeLine className="project-card-stat-icon" />
+              50k+
+            </span>
+            <span className="project-card-stat">
+              <RiHeart3Line className="project-card-stat-icon" />
+              800+
+            </span>
           </div>
-          <div className="w-10 h-10 rounded-lg border border-[#E0D4BC] flex items-center justify-center cursor-pointer hover:bg-[#FDF8F0]/50 transition-colors" style={{
-            borderColor: 'rgba(224,212,188,1)',
-          }}>
-            <RiBookMarkFill className="w-4 h-4 text-[#8B7355]" />
+          <div className="project-card-actions">
+            <span className="project-card-btn">
+              <i className="ri-eye-line"></i>
+              <span>查看项目</span>
+            </span>
+            <span className="project-card-btn-icon">
+              <RiExternalLinkLine />
+            </span>
           </div>
         </div>
       </div>

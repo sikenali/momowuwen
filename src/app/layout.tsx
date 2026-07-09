@@ -32,7 +32,8 @@ export default function RootLayout({
       </head>
       <body className="overflow-hidden flex flex-col h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
         <Nav />
-        <main className="flex-1 overflow-auto">{children}</main>
+<main className="flex-1 overflow-auto">{children}</main>
+        <Footer />
       </body>
     </html>
   );

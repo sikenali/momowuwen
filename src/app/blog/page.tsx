@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { Footer } from '@/components/footer';
 import { BlogFilter } from '@/components/blog-filter';
 import { getPosts } from '@/lib/content';
-import { RiCalendarLine } from '@remixicon/react';
+import { RiCalendarLine, RiArrowRightUpLine, RiHeart3Line, RiEyeLine } from '@remixicon/react';
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string }>;
 }
+
+const authorName = '墨轩主人';
 
 export default async function Blog({ searchParams }: Props) {
   const { category, q } = await searchParams;
@@ -63,34 +64,49 @@ export default async function Blog({ searchParams }: Props) {
         ) : (
           <div className="articles-list">
             {posts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="article-card-large">
-                <div className="article-cover-large">
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="article-card-new">
+                <div className="article-card-cover">
                   {post.cover ? (
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      backgroundImage: `url(${post.cover})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }} />
+                    <div className="article-cover-img" style={{ backgroundImage: `url(${post.cover})` }} />
                   ) : (
-                    <div className="cover-overlay" style={{
-                      background: `linear-gradient(135deg, rgba(245, 240, 230, 0.8), rgba(184, 168, 138, 0.6))`
-                    }} />
+                    <div className="article-cover-placeholder" />
                   )}
                 </div>
-                <div className="article-content-large">
-                  <div className="article-tags-large">
-                    {post.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="tag-large">{tag}</span>
+                <div className="article-card-body">
+                  <div className="article-card-tags">
+                    {post.tags.slice(0, 2).map((tag, i) => (
+                      <span key={tag} className={`article-card-tag article-card-tag--${i === 0 ? 'green' : 'blue'}`}>{tag}</span>
                     ))}
+                    <span className="article-card-date">
+                      <RiCalendarLine className="article-card-date-icon" />
+                      {new Date(post.date).toLocaleDateString('zh-CN')}
+                    </span>
                   </div>
-                  <h3 className="article-title-large">{post.title}</h3>
-                  <p className="article-excerpt">{post.description}</p>
-                  <div className="article-meta-large">
-                    <div className="meta-item">
-                      <RiCalendarLine className="w-3 h-3" />
-                      <span>{new Date(post.date).toLocaleDateString('zh-CN')}</span>
+                  <h3 className="article-card-title">{post.title}</h3>
+                  <p className="article-card-desc">{post.description}</p>
+                  <div className="article-card-footer">
+                    <div className="article-card-author">
+                      <div className="article-card-avatar">
+                        <i className="ri-user-line"></i>
+                      </div>
+                      <div className="article-card-author-info">
+                        <span className="article-card-author-name">{authorName}</span>
+                        <span className="article-card-reading">{post.metadata?.readingTime || 5} 分钟阅读</span>
+                      </div>
+                    </div>
+                    <div className="article-card-actions">
+                      <span className="article-card-stat">
+                        <RiEyeLine className="article-card-stat-icon" />
+                        267
+                      </span>
+                      <span className="article-card-stat">
+                        <RiHeart3Line className="article-card-stat-icon" />
+                        56
+                      </span>
+                      <span className="article-card-read-btn">
+                        阅读全文
+                        <RiArrowRightUpLine className="article-card-read-icon" />
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -99,8 +115,6 @@ export default async function Blog({ searchParams }: Props) {
           </div>
         )}
       </section>
-
-      <Footer />
     </div>
   );
 }
