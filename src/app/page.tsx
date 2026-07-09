@@ -13,9 +13,8 @@ const daysPersisting = Math.floor((Date.now() - firstPostDate.getTime()) / (1000
 
 export default function Home() {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      {/* 主容器 - 紧凑布局 */}
-      <div className="main-container-compact" style={{ flex: 1 }}>
+    <>
+      <div className="main-container-compact" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {/* 云层装饰1 */}
         <div className="cloud-decoration">
           <div className="cloud"></div>
@@ -88,6 +87,6 @@ export default function Home() {
       </div>
 
       <Footer />
-    </div>
+    </>
   );
 }
