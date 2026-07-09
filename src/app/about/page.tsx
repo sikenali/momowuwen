@@ -1,14 +1,9 @@
-'use client';
-
-import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
 
 export default function About() {
   return (
     <>
-      <main className="min-h-screen about-page" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
-        <Nav />
-
+      <div className="about-page">
         {/* 页面标题区 */}
         <section className="page-hero">
           {/* 装饰印章 */}
@@ -110,7 +105,7 @@ export default function About() {
         </section>
 
         <Footer />
-      </main>
+      </div>
     </>
   );
 }

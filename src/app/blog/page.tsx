@@ -1,6 +1,3 @@
-'use client';
-
-import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
 
 export default function Blog() {
@@ -78,14 +75,12 @@ export default function Blog() {
   ];
 
   return (
-    <>
-      <main className="min-h-screen blog-page" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
-        {/* 滚动进度条 */}
-        <div className="progress-bar">
-          <div className="progress-indicator"></div>
-        </div>
+    <div className="blog-page">
+      {/* 滚动进度条 */}
+      <div className="progress-bar">
+        <div className="progress-indicator"></div>
+      </div>
 
-        <Nav />
 
         {/* 页面标题区 */}
         <section className="page-hero">
@@ -183,7 +178,6 @@ export default function Blog() {
         </section>
 
         <Footer />
-      </main>
-    </>
+    </div>
   );
 }

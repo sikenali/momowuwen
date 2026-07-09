@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { siteConfig } from '@/lib/site-config';
 import { maShanzheng, zcoXiaoWei, notoSerifSC } from '@/lib/fonts';
+import { Nav } from '@/components/nav';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -27,10 +28,9 @@ export default function RootLayout({
       <head>
         <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
       </head>
-      <body className="overflow-x-hidden">
-        <div className="min-h-screen">
-          <main>{children}</main>
-        </div>
+      <body className="overflow-x-hidden" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
+        <Nav />
+        <main className="min-h-screen">{children}</main>
       </body>
     </html>
   );

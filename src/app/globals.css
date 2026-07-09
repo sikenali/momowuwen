@@ -794,12 +794,13 @@ body {
   }
   
   .footer-section {
-    padding: 20px 32px;
+    height: auto;
+    padding: 12px 32px;
   }
   
   .footer-content {
     flex-direction: column;
-    gap: 24px;
+    gap: 8px;
     text-align: center;
   }
   
@@ -815,13 +816,15 @@ body {
 /* 页脚区域 */
 .footer-section {
   width: 100%;
+  height: 55px;
   background-color: rgba(44, 36, 22, 1);
-  padding: 24px 64px;
-  margin-top: 32px;
+  padding: 8px 64px;
+  margin-top: 24px;
 }
 
 .footer-content {
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -834,15 +837,15 @@ body {
 }
 
 .footer-logo-seal {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   background-color: var(--accent-red);
-  border-radius: 6px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .footer-blog-info {
@@ -853,36 +856,33 @@ body {
 }
 
 .footer-blog-info h4 {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   color: rgba(245, 239, 224, 1);
   line-height: 1.2;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .footer-blog-info span {
-  font-size: 10px;
-  color: rgba(139, 115, 85, 1);
-  letter-spacing: 2px;
-  font-weight: 300;
+  display: none;
 }
 
 .social-links {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 }
 
 .social-icon {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-color: rgba(61, 51, 34, 1);
-  border-radius: 20px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(212, 196, 160, 1);
-  font-size: 18px;
+  font-size: 13px;
   transition: all 0.3s ease;
   text-decoration: none;
 }
@@ -893,7 +893,7 @@ body {
 }
 
 .copyright {
-  font-size: 13px;
+  font-size: 11px;
   color: rgba(139, 115, 85, 1);
   letter-spacing: 1px;
 }
@@ -903,7 +903,7 @@ body {
 /* 页面标题区 */
 .page-hero {
   width: 100%;
-  padding: 48px 64px;
+  padding: 24px 64px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -912,18 +912,18 @@ body {
 
 /* 装饰印章 */
 .page-seal {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 52px;
+  height: 52px;
+  border-radius: 26px;
   background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(194, 58, 43, 0.15);
+  box-shadow: 0 3px 8px rgba(194, 58, 43, 0.12);
 }
 
 .page-seal span {
-  font-size: 32px;
+  font-size: 22px;
   font-weight: 700;
   color: rgba(194, 58, 43, 1);
   line-height: 1.2;
@@ -931,46 +931,46 @@ body {
 
 /* 页面标题 */
 .page-title {
-  font-size: 64px;
+  font-size: 40px;
   font-weight: 700;
   color: rgba(44, 36, 22, 1);
   line-height: 1.2;
-  letter-spacing: 12px;
-  margin-top: 16px;
+  letter-spacing: 10px;
+  margin-top: 10px;
 }
 
 /* 副标题 */
 .page-subtitle {
-  font-size: 18px;
+  font-size: 13px;
   font-weight: 400;
   color: rgba(139, 115, 85, 1);
   line-height: 1.2;
-  letter-spacing: 8px;
-  margin-top: 12px;
+  letter-spacing: 6px;
+  margin-top: 8px;
 }
 
 /* 装饰分隔线 - 页面用 */
 .divider-page {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 24px;
+  gap: 6px;
+  margin-top: 12px;
 }
 
 .divider-page .divider-line {
-  width: 81px;
+  width: 48px;
   height: 1px;
   background-color: rgba(194, 168, 122, 0.4);
 }
 
 .divider-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(194, 58, 43, 1);
-  font-size: 16px;
+  font-size: 13px;
 }
 
 /* 页面引言 */
@@ -993,70 +993,69 @@ body {
 /* 项目卡片网格 */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
 }
 
 /* 项目卡片 */
 .project-card {
   width: 100%;
   border: 0.7px solid rgba(240, 216, 208, 1);
-  border-radius: 20px;
+  border-radius: 14px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 30px rgba(194, 58, 43, 0.08);
+  box-shadow: 0 4px 16px rgba(194, 58, 43, 0.06);
   transition: all 0.3s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(194, 58, 43, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(194, 58, 43, 0.1);
 }
 
 /* 项目封面 */
 .project-cover {
   width: 100%;
-  height: 208px;
+  height: 100px;
   position: relative;
   overflow: hidden;
 }
 
 /* 项目图标 */
 .project-icon {
-  width: 64px;
-  height: 64px;
+  width: 36px;
+  height: 36px;
   background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
+  border-radius: 10px;
   position: absolute;
-  bottom: 16px;
-  left: 16px;
+  bottom: 8px;
+  left: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .project-icon i {
-  font-size: 30px;
+  font-size: 18px;
   color: white;
 }
 
 /* 项目编号徽章 */
 .project-badge {
-  width: 66px;
-  height: 24px;
+  height: 18px;
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 999px;
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 4px 12px;
+  top: 6px;
+  right: 6px;
+  padding: 2px 8px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .project-badge span {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
   color: white;
 }
@@ -1069,104 +1068,101 @@ body {
 }
 
 .cloud-pattern-1 {
-  width: 65px;
-  height: 32px;
-  bottom: 8px;
-  right: 8px;
+  width: 40px;
+  height: 20px;
+  bottom: 4px;
+  right: 4px;
 }
 
 .cloud-pattern-2 {
-  width: 81px;
-  height: 40px;
-  top: 4px;
-  left: 4px;
+  width: 50px;
+  height: 24px;
+  top: 2px;
+  left: 2px;
   background-color: rgba(255, 255, 255, 0.2);
 }
 
 /* 项目内容 */
 .project-content {
-  padding: 24px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* 项目标签 */
 .project-tags {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-wrap: wrap;
 }
 
 .project-tag {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 400;
-  padding: 2px 8px;
-  border-radius: 4px;
-  line-height: 1.2;
+  padding: 1px 6px;
+  border-radius: 3px;
+  line-height: 1.3;
 }
 
 /* 项目名称 */
 .project-name {
-  font-size: 26px;
+  font-size: 16px;
   font-weight: 700;
   color: rgba(44, 36, 22, 1);
-  line-height: 1.2;
-  letter-spacing: 2px;
+  line-height: 1.3;
+  letter-spacing: 1px;
 }
 
 /* 项目描述 */
 .project-desc {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(107, 90, 62, 1);
-  line-height: 1.6;
-  min-height: 48px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* 项目统计数据 */
 .project-stats {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-top: 16px;
+  gap: 14px;
+  padding-top: 10px;
   border-top: 1px solid rgba(232, 223, 200, 1);
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 13px;
+  gap: 3px;
+  font-size: 11px;
   color: rgba(92, 74, 50, 1);
   font-weight: 500;
 }
 
 .stat-item i {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* 响应式调整 */
-@media (max-width: 1440px) {
+@media (max-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
   .projects-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 1024px) {
-  .page-hero {
-    padding: 48px 32px;
-  }
-  
-  .page-title {
-    font-size: 48px;
-  }
-  
-  .projects-section {
-    padding: 0 32px 48px;
-  }
-  
+@media (max-width: 600px) {
   .projects-grid {
     grid-template-columns: 1fr;
   }
@@ -1211,7 +1207,7 @@ body {
 /* 筛选搜索区 */
 .filter-section {
   width: 100%;
-  padding: 0 64px 32px;
+  padding: 0 64px 20px;
 }
 
 .filter-container {
@@ -1220,7 +1216,7 @@ body {
   border-radius: 16px;
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 2px 12px rgba(139, 115, 85, 0.06);
-  padding: 24px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1236,7 +1232,7 @@ body {
 
 .category-tag {
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: 5px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1266,59 +1262,62 @@ body {
 
 /* 搜索框 */
 .search-box {
-  width: 280px;
+  width: 220px;
   border: 0.7px solid rgba(224, 212, 188, 1);
   border-radius: 999px;
   background-color: rgba(255, 255, 255, 1);
-  padding: 8px 16px;
+  padding: 6px 14px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .search-box i {
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(160, 139, 106, 1);
 }
 
 .search-placeholder {
-  font-size: 13px;
+  font-size: 12px;
   color: rgba(184, 168, 138, 1);
 }
 
 /* 文章列表区 */
 .articles-section {
   width: 100%;
-  padding: 0 64px 64px;
+  padding: 0 64px 32px;
 }
 
 .articles-list {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
 
 /* 大文章卡片 */
 .article-card-large {
   width: 100%;
-  border-radius: 16px;
+  border-radius: 10px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 20px rgba(139, 115, 85, 0.08);
+  box-shadow: 0 2px 10px rgba(139, 115, 85, 0.05);
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: row;
 }
 
 .article-card-large:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(139, 115, 85, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(139, 115, 85, 0.08);
 }
 
 /* 文章封面 */
 .article-cover-large {
-  width: 100%;
-  height: 240px;
+  width: 140px;
+  min-height: 130px;
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .cover-overlay {
@@ -1329,45 +1328,47 @@ body {
 
 /* 文章大内容区 */
 .article-content-large {
-  padding: 32px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
 }
 
 /* 文章大标签 */
 .article-tags-large {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .tag-large {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 6px;
+  padding: 2px 8px;
+  border-radius: 4px;
   background-color: rgba(194, 58, 43, 0.1);
   color: rgba(194, 58, 43, 1);
 }
 
 /* 文章大标题 */
 .article-title-large {
-  font-size: 28px;
+  font-size: 15px;
   font-weight: 700;
   color: rgba(44, 36, 22, 1);
-  line-height: 1.4;
-  letter-spacing: 1px;
+  line-height: 1.3;
+  letter-spacing: 0.5px;
 }
 
 /* 文章摘要 */
 .article-excerpt {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 400;
   color: rgba(107, 90, 62, 1);
-  line-height: 1.8;
+  line-height: 1.5;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -1376,21 +1377,21 @@ body {
 .article-meta-large {
   display: flex;
   align-items: center;
-  gap: 32px;
-  padding-top: 16px;
+  gap: 14px;
+  padding-top: 6px;
   border-top: 1px solid rgba(232, 223, 200, 1);
 }
 
 .meta-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
+  gap: 3px;
+  font-size: 11px;
   color: rgba(139, 115, 85, 1);
 }
 
 .meta-item i {
-  font-size: 16px;
+  font-size: 12px;
 }
 
 /* 响应式调整 */
@@ -1403,38 +1404,50 @@ body {
   
   .filter-container {
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
+    padding: 12px 16px;
   }
   
   .search-box {
     width: 100%;
   }
   
-  .article-title-large {
-    font-size: 24px;
+  .articles-list {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
   .page-title {
-    font-size: 36px;
+    font-size: 28px;
+  }
+
+  .articles-section {
+    padding-left: 16px;
+    padding-right: 16px;
   }
   
+  .article-card-large {
+    flex-direction: column;
+  }
+
   .article-cover-large {
-    height: 180px;
+    width: 100%;
+    height: 120px;
+    min-height: auto;
   }
   
   .article-content-large {
-    padding: 24px;
+    padding: 12px;
   }
   
   .article-title-large {
-    font-size: 20px;
+    font-size: 15px;
   }
   
   .article-meta-large {
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 10px;
   }
 }
 

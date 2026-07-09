@@ -1,6 +1,3 @@
-'use client';
-
-import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
 
 export default function Projects() {
@@ -81,8 +78,6 @@ export default function Projects() {
 
   return (
     <>
-      <main className="min-h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
-        <Nav />
 
         {/* 页面标题区 */}
         <section className="page-hero">
@@ -183,7 +178,6 @@ export default function Projects() {
         </section>
 
         <Footer />
-      </main>
     </>
   );
 }
