@@ -29,7 +29,7 @@ export default async function BlogPostPage({ params }: Props) {
     .slice(0, 3);
 
   return (
-    <article className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <article className="py-12 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
       <header className="mb-12">
         {post.cover && (
           <div className="relative h-64 sm:h-80 rounded-lg overflow-hidden mb-8">
