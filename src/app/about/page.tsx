@@ -80,15 +80,15 @@ export default function About() {
             <div className="about-experience">
               <div className="experience-card">
                 <div className="experience-item">
-                  <span className="experience-icon">📦</span>
+                  <span className="experience-icon"><i className="ri-global-line"></i></span>
                   <span className="experience-text">域名的来源，20491001被注册后只能反其道而行</span>
                 </div>
                 <div className="experience-item">
-                  <span className="experience-icon">🚀</span>
+                  <span className="experience-icon"><i className="ri-rocket-line"></i></span>
                   <span className="experience-text">2008年计科专业毕业，码农水平有限，多亏赶AI编程时代</span>
                 </div>
                 <div className="experience-item">
-                  <span className="experience-icon">✏️</span>
+                  <span className="experience-icon"><i className="ri-tools-line"></i></span>
                   <span className="experience-text">早期从事华为OD，PMS行业，近10年一直从事操作系统行业领域</span>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function About() {
             {/* 签名 */}
             <div className="about-signature">
               <div className="about-signature-text">
-                <span className="about-signature-name">— 墨轩主人</span>
+                <span className="about-signature-name">— 惊言惊语</span>
                 <span className="about-signature-date">AI 编程时代 · 行者</span>
               </div>
             </div>

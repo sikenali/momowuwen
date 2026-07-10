@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getPosts } from '@/lib/content';
@@ -22,20 +22,19 @@ export default function Blog() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const viewSlug = searchParams.get('view');
-  const [viewingSlug, setViewingSlug] = useState(viewSlug || null);
 
-  const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  useEffect(() => {
-    setViewingSlug(viewSlug);
-  }, [viewSlug]);
+  // Memoize sorted posts to prevent re-sorting on every render
+  const posts = useMemo(() =>
+    getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+    []
+  );
 
   const handleBackToList = () => {
     router.replace('/blog', { scroll: false });
   };
 
-  if (viewingSlug) {
-    const post = posts.find(p => p.slug === viewingSlug);
+  if (viewSlug) {
+    const post = posts.find(p => p.slug === viewSlug);
     if (!post) return null;
 
     const dateStr = new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -82,52 +81,6 @@ export default function Blog() {
             <article className="detail-body">
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </article>
-
-            {/* 隐藏 - 标签区域 */}
-            {/*
-            <div className="article-tags-section">
-              <span className="article-tags-label">标签：</span>
-              {post.tags.map(tag => (
-                <span key={tag} className="article-tag-pill">{tag}</span>
-              ))}
-            </div>
-
-            <div className="interaction-bar">
-              <div className="interaction-left">
-                <button className="interaction-btn interaction-btn--like">
-                  <i className="ri-heart-fill interaction-icon"></i>
-                  <span>267</span>
-                </button>
-                <button className="interaction-btn interaction-btn--bookmark">
-                  <i className="ri-bookmark-line interaction-icon"></i>
-                  <span>56</span>
-                </button>
-              </div>
-              <div className="share-social">
-                <span>分享至</span>
-                <button className="social-btn social-btn--wechat"><i className="ri-wechat-fill"></i></button>
-                <button className="social-btn social-btn--weibo"><i className="ri-sina-weibo-fill"></i></button>
-                <button className="social-btn social-btn--copy"><i className="ri-links-line"></i></button>
-              </div>
-            </div>
-
-            <div className="article-nav">
-              <div className="article-nav-card article-nav-prev">
-                <i className="ri-arrow-left-double-line nav-icon"></i>
-                <div className="nav-content">
-                  <span className="nav-label">上一篇</span>
-                  <span className="nav-title">金色年华：传统配色的现代演绎</span>
-                </div>
-              </div>
-              <div className="article-nav-card article-nav-next">
-                <div className="nav-content" style={{ textAlign: 'right' }}>
-                  <span className="nav-label">下一篇</span>
-                  <span className="nav-title">云端漫步：微服务架构设计实践</span>
-                </div>
-                <i className="ri-arrow-right-double-line nav-icon"></i>
-              </div>
-            </div>
-            */}
           </div>
         </div>
       </div>
@@ -162,15 +115,9 @@ export default function Blog() {
                 className="article-card-new"
                 prefetch={false}
               >
-                {post.cover && (
-                  <div className="article-card-cover">
-                    <img src={post.cover} alt={post.title} loading="lazy" />
-                  </div>
-                )}
                 <div className="article-card-body">
                   <div className="article-card-content-top">
                     <div className="article-card-tags">
-                      {/* Category as first tag */}
                       <span
                         className="article-card-tag"
                         style={{
@@ -180,7 +127,6 @@ export default function Blog() {
                       >
                         {post.category}
                       </span>
-                      {/* Actual tags from MD */}
                       {post.tags.map((tag) => {
                         const tc = tagColors[tag] || tagColors['默认'];
                         return (

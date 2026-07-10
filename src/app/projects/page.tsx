@@ -7,6 +7,7 @@ const shelfCards = [
     iconBg: 'rgba(253,242,238,1)',
     iconColor: 'rgba(196,58,49,1)',
     accentColor: 'rgba(196,58,49,1)',
+    url: 'https://github.com/example/project-one',
   },
   {
     title: '项目二',
@@ -16,6 +17,7 @@ const shelfCards = [
     iconBg: 'rgba(253,248,232,1)',
     iconColor: 'rgba(200,164,92,1)',
     accentColor: 'rgba(200,164,92,1)',
+    url: 'https://github.com/example/project-two',
   },
   {
     title: '项目三',
@@ -25,6 +27,7 @@ const shelfCards = [
     iconBg: 'rgba(237,245,237,1)',
     iconColor: 'rgba(91,140,90,1)',
     accentColor: 'rgba(91,140,90,1)',
+    url: 'https://github.com/example/project-three',
   },
   {
     title: '项目四',
@@ -34,6 +37,7 @@ const shelfCards = [
     iconBg: 'rgba(237,242,247,1)',
     iconColor: 'rgba(123,158,179,1)',
     accentColor: 'rgba(123,158,179,1)',
+    url: 'https://github.com/example/project-four',
   },
   {
     title: '项目五',
@@ -43,6 +47,7 @@ const shelfCards = [
     iconBg: 'rgba(250,238,238,1)',
     iconColor: 'rgba(184,84,80,1)',
     accentColor: 'rgba(184,84,80,1)',
+    url: 'https://github.com/example/project-five',
   },
 ];
 
@@ -78,9 +83,16 @@ export default function Projects() {
           {shelfCards.map((card, i) => (
             <div key={i} className="shelf-item">
               <div className={`card-body ${card.theme}`}>
-                <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
-                  <i className={card.icon}></i>
-                </div>
+                <a
+                  href={card.url || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="card-icon-wrapper"
+                >
+                  <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
+                    <i className={card.icon}></i>
+                  </div>
+                </a>
                 <h3 className="card-title">{card.title}</h3>
                 <p className="card-desc">{card.desc}</p>
               </div>

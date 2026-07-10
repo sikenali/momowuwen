@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
@@ -21,37 +21,28 @@ function getActiveFromPath(p: string) {
 
 export function Nav() {
   const pathname = usePathname();
-  const [activeNav, setActiveNav] = useState(getActiveFromPath(pathname));
-  const [indicatorStyle, setIndicatorStyle] = useState<{ left?: string; width?: string }>({});
+  const activeNav = getActiveFromPath(pathname);
   const [menuOpen, setMenuOpen] = useState(false);
   const navMenuRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
 
+  // Measure indicator position once on mount + nav change, use CSS transform (GPU-composited)
   useEffect(() => {
-    setActiveNav(getActiveFromPath(pathname));
-    setMenuOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    const updateIndicator = () => {
-      if (!navMenuRef.current) return;
+    const updatePosition = () => {
+      if (!navMenuRef.current || !indicatorRef.current) return;
       const el = navMenuRef.current.querySelector(`[data-nav="${activeNav}"]`);
-      if (el) {
-        const r = (el as HTMLElement).getBoundingClientRect();
-        const m = navMenuRef.current!.getBoundingClientRect();
-        setIndicatorStyle({ left: r.left - m.left + 'px', width: r.width + 'px' });
-      }
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const m = navMenuRef.current.getBoundingClientRect();
+      indicatorRef.current.style.transform = `translateX(${r.left - m.left}px)`;
+      indicatorRef.current.style.width = r.width + 'px';
     };
 
-    updateIndicator();
-    const ro = new ResizeObserver(updateIndicator);
-    if (navMenuRef.current) ro.observe(navMenuRef.current);
-    window.addEventListener('resize', updateIndicator);
-    return () => { ro.disconnect(); window.removeEventListener('resize', updateIndicator); };
+    // Defer measurement to next frame after render
+    requestAnimationFrame(() => {
+      requestAnimationFrame(updatePosition);
+    });
   }, [activeNav]);
-
-  const handleNavClick = (id: string) => {
-    setActiveNav(id);
-  };
 
   return (
     <nav className="navbar">
@@ -67,8 +58,8 @@ export function Nav() {
 
       <div className={`nav-menu${menuOpen ? ' open' : ''}`} ref={navMenuRef}>
         <div
+          ref={indicatorRef}
           className="nav-indicator active"
-          style={indicatorStyle}
         ></div>
 
         {navItems.map((item) => {
@@ -80,7 +71,6 @@ export function Nav() {
               href={item.href}
               data-nav={item.id}
               className={`nav-item ${isActive ? 'active' : ''}`}
-              onClick={() => handleNavClick(item.id)}
             >
               <i className={`${item.icon} nav-icon`}></i>
               <span className="nav-label">{item.label}</span>
