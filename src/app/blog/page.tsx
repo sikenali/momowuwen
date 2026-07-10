@@ -188,13 +188,14 @@ function BlogContent() {
                       key={i}
                       href={item.url}
                       className={`toc-item ${i === activeTocIndex ? 'toc-item--active' : 'toc-item--default'}`}
+                      style={{ paddingLeft: `${item.level * 16 + 8}px` }}
                       onClick={(e) => e.preventDefault()}
                       onClickCapture={() => {
                         const el = document.getElementById(item.url.replace('#', ''));
                         if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }}
                     >
-                      <span className="toc-number">{i + 1}</span>
+                      <span className="toc-number">{item.level === 0 ? i + 1 : ''}</span>
                       <span className="toc-text">{item.text}</span>
                     </Link>
                   ))}

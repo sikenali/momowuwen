@@ -146,6 +146,8 @@ body {
   color: rgba(255, 255, 255, 1);
   font-weight: 600;
   text-shadow: 0 0 8px rgba(194, 58, 43, 0.4);
+  background: linear-gradient(135deg, var(--accent-red), #d4624a);
+  border-radius: 999px;
 }
 
 .nav-item i {

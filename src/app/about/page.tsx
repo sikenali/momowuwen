@@ -9,7 +9,7 @@ export default function About() {
         <section className="hero-section-compact">
           <div className="seal-container">
             <div className="page-seal" data-hover-title="关 于 我">
-              <i className="ri-user-star-line" style={{ fontSize: '22px', color: 'rgba(194, 58, 43, 1)' }}></i>
+              <span style={{ fontSize: '22px', color: 'rgba(194, 58, 43, 1)', fontWeight: 700 }}>我</span>
             </div>
           </div>
           <div className="title-group-compact">
