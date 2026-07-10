@@ -1,19 +1,36 @@
 export default function About() {
   return (
     <>
-      <section className="page-hero">
-        <div className="page-seal">
-          <span>我</span>
+      <div className="main-container-compact" style={{ flex: 1 }}>
+        <div className="cloud-decoration">
+          <div className="cloud"></div>
         </div>
-        <h2 className="page-title">关 于 我</h2>
-        <div className="divider-page">
-          <div className="divider-line"></div>
-          <div className="divider-icon">
-            <i className="ri-user-heart-line"></i>
+
+        <section className="hero-section-compact">
+          <div className="seal-container">
+            <div className="page-seal" data-hover-title="关 于 我">
+              <i className="ri-user-star-line" style={{ fontSize: '22px', color: 'rgba(194, 58, 43, 1)' }}></i>
+            </div>
           </div>
-          <div className="divider-line"></div>
+          <div className="title-group-compact">
+            <p className="title-sub-compact">默 默 无 闻 惊 言 惊 语</p>
+          </div>
+
+          <div className="divider-compact">
+            <div className="divider-line"></div>
+            <div className="divider-dots">
+              <div className="dot dot-1"></div>
+              <div className="dot dot-2"></div>
+              <div className="dot dot-3"></div>
+            </div>
+            <div className="divider-line"></div>
+          </div>
+        </section>
+
+        <div className="cloud-decoration-2">
+          <div className="cloud-2"></div>
         </div>
-      </section>
+      </div>
 
       <section className="info-section">
         <div className="about-container">

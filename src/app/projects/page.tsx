@@ -1,82 +1,75 @@
-const shelfCards = [
-  {
-    name: '文取猩',
-    desc: '智能提取',
-    icon: 'ri-github-line',
-    brandColor: 'rgba(196,58,49,1)',
-    iconBg: 'rgba(253,242,238,1)',
-  },
-  {
-    name: '文制猩',
-    desc: '智能生成',
-    icon: 'ri-github-line',
-    brandColor: 'rgba(200,164,92,1)',
-    iconBg: 'rgba(253,248,232,1)',
-  },
-  {
-    name: '文检猩',
-    desc: '智能校验',
-    icon: 'ri-github-line',
-    brandColor: 'rgba(91,140,90,1)',
-    iconBg: 'rgba(237,245,237,1)',
-  },
-  {
-    name: '文版猩',
-    desc: '智能排版',
-    icon: 'ri-github-line',
-    brandColor: 'rgba(123,158,179,1)',
-    iconBg: 'rgba(237,242,247,1)',
-  },
-  {
-    name: '文比猩',
-    desc: '智能比对',
-    icon: 'ri-github-line',
-    brandColor: 'rgba(184,84,80,1)',
-    iconBg: 'rgba(250,238,238,1)',
-  },
+import { getProjects } from '@/lib/content';
+import { CardAccent } from '@/app/projects/_components/card-accent';
+
+const shelfCardThemes = [
+  { icon: 'ri-github-line', iconBg: 'rgba(253,242,238,1)', brandColor: 'rgba(196,58,49,1)' },
+  { icon: 'ri-global-line', iconBg: 'rgba(253,248,232,1)', brandColor: 'rgba(200,164,92,1)' },
+  { icon: 'ri-code-s-slash-line', iconBg: 'rgba(237,245,237,1)', brandColor: 'rgba(91,140,90,1)' },
+  { icon: 'ri-database-2-line', iconBg: 'rgba(237,242,247,1)', brandColor: 'rgba(123,158,179,1)' },
+  { icon: 'ri-terminal-box-line', iconBg: 'rgba(250,238,238,1)', brandColor: 'rgba(184,84,80,1)' },
 ];
 
-function CardAccent({ color }: { color: string }) {
-  return (
-    <div className="card-accent-wrapper">
-      <div className="card-accent-left" style={{ backgroundColor: color }}></div>
-      <div className="card-accent-dot" style={{ backgroundColor: color }}></div>
-      <div className="card-accent-right" style={{ backgroundColor: color }}></div>
-    </div>
-  );
-}
+export default function ProjectsPage() {
+  const projects = getProjects();
 
-export default function Projects() {
   return (
     <>
-      <section className="page-hero">
-        <div className="page-seal">
-          <span>焰</span>
+      <div className="main-container-compact" style={{ flex: 1 }}>
+        <div className="cloud-decoration">
+          <div className="cloud"></div>
         </div>
-        <h2 className="page-title">炼 丹 炉</h2>
-        <div className="divider-page">
-          <div className="divider-line"></div>
-          <div className="divider-icon">
-            <i className="ri-fire-line"></i>
+
+        <section className="hero-section-compact">
+          <div className="seal-container">
+            <div className="page-seal" data-hover-title="炼 丹 炉">
+              <span>焰</span>
+            </div>
           </div>
-          <div className="divider-line"></div>
+          <div className="title-group-compact">
+            <p className="title-sub-compact">部 部 经 典 项 项 长 卷</p>
+          </div>
+
+          <div className="divider-compact">
+            <div className="divider-line"></div>
+            <div className="divider-dots">
+              <div className="dot dot-1"></div>
+              <div className="dot dot-2"></div>
+              <div className="dot dot-3"></div>
+            </div>
+            <div className="divider-line"></div>
+          </div>
+        </section>
+
+        <div className="cloud-decoration-2">
+          <div className="cloud-2"></div>
         </div>
-      </section>
+      </div>
 
       <section className="projects-section">
         <div className="cards-shelf">
-          {shelfCards.map((card, i) => (
-            <a key={i} href="https://github.com" target="_blank" rel="noopener noreferrer" className="shelf-item">
-              <div className="card-body">
-                <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.brandColor }}>
-                  <i className={card.icon}></i>
+          {projects.map((project, i) => {
+            const theme = shelfCardThemes[i % shelfCardThemes.length];
+            const href = project.link || `/projects/${project.slug}`;
+            const isExternal = !!project.link;
+            return (
+              <a
+                key={project.slug}
+                href={href}
+                target={isExternal ? '_blank' : '_self'}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                className="shelf-item"
+              >
+                <div className="card-body">
+                  <div className="card-icon" style={{ backgroundColor: theme.iconBg, color: theme.brandColor }}>
+                    <i className={theme.icon}></i>
+                  </div>
+                  <h3 className="card-title">墨墨梧文</h3>
+                  <p className="card-desc">Powered by LightOS</p>
                 </div>
-                <h3 className="card-title">{card.name}</h3>
-                <p className="card-desc">{card.desc}</p>
-              </div>
-              <CardAccent color={card.brandColor} />
-            </a>
-          ))}
+                <CardAccent color={theme.brandColor} />
+              </a>
+            );
+          })}
         </div>
       </section>
     </>

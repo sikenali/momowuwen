@@ -9,7 +9,7 @@ export default function AdminPage() {
   useEffect(() => {
     const originalError = window.onerror;
     window.onerror = (message, source, line, col, error) => {
-      if (source?.includes('decap-cms') || message?.includes('config')) {
+      if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof message === 'string' && message.includes('config'))) {
         setError('Failed to load CMS configuration. Make sure the proxy server is running or backend is configured.');
       }
       return originalError?.(message, source, line, col, error) ?? false;
