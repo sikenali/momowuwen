@@ -1,62 +1,48 @@
 const shelfCards = [
   {
-    title: '项目一',
-    desc: '项目描述文字',
-    icon: 'ri-github-fill',
-    theme: 'theme-red',
+    name: '文取猩',
+    desc: '智能提取',
+    icon: 'ri-github-line',
+    brandColor: 'rgba(196,58,49,1)',
     iconBg: 'rgba(253,242,238,1)',
-    iconColor: 'rgba(196,58,49,1)',
-    accentColor: 'rgba(196,58,49,1)',
-    url: 'https://github.com/example/project-one',
   },
   {
-    title: '项目二',
-    desc: '项目描述文字',
-    icon: 'ri-github-fill',
-    theme: 'theme-gold',
+    name: '文制猩',
+    desc: '智能生成',
+    icon: 'ri-github-line',
+    brandColor: 'rgba(200,164,92,1)',
     iconBg: 'rgba(253,248,232,1)',
-    iconColor: 'rgba(200,164,92,1)',
-    accentColor: 'rgba(200,164,92,1)',
-    url: 'https://github.com/example/project-two',
   },
   {
-    title: '项目三',
-    desc: '项目描述文字',
-    icon: 'ri-github-fill',
-    theme: 'theme-green',
+    name: '文检猩',
+    desc: '智能校验',
+    icon: 'ri-github-line',
+    brandColor: 'rgba(91,140,90,1)',
     iconBg: 'rgba(237,245,237,1)',
-    iconColor: 'rgba(91,140,90,1)',
-    accentColor: 'rgba(91,140,90,1)',
-    url: 'https://github.com/example/project-three',
   },
   {
-    title: '项目四',
-    desc: '项目描述文字',
-    icon: 'ri-github-fill',
-    theme: 'theme-blue',
+    name: '文版猩',
+    desc: '智能排版',
+    icon: 'ri-github-line',
+    brandColor: 'rgba(123,158,179,1)',
     iconBg: 'rgba(237,242,247,1)',
-    iconColor: 'rgba(123,158,179,1)',
-    accentColor: 'rgba(123,158,179,1)',
-    url: 'https://github.com/example/project-four',
   },
   {
-    title: '项目五',
-    desc: '项目描述文字',
-    icon: 'ri-github-fill',
-    theme: 'theme-pink',
+    name: '文比猩',
+    desc: '智能比对',
+    icon: 'ri-github-line',
+    brandColor: 'rgba(184,84,80,1)',
     iconBg: 'rgba(250,238,238,1)',
-    iconColor: 'rgba(184,84,80,1)',
-    accentColor: 'rgba(184,84,80,1)',
-    url: 'https://github.com/example/project-five',
   },
 ];
 
 function CardAccent({ color }: { color: string }) {
   return (
-    <div
-      className="card-accent"
-      style={{ backgroundColor: color }}
-    ></div>
+    <div className="card-accent-wrapper">
+      <div className="card-accent-left" style={{ backgroundColor: color }}></div>
+      <div className="card-accent-dot" style={{ backgroundColor: color }}></div>
+      <div className="card-accent-right" style={{ backgroundColor: color }}></div>
+    </div>
   );
 }
 
@@ -68,11 +54,10 @@ export default function Projects() {
           <span>焰</span>
         </div>
         <h2 className="page-title">炼 丹 炉</h2>
-        <p className="page-subtitle">项 目 长 卷</p>
         <div className="divider-page">
           <div className="divider-line"></div>
           <div className="divider-icon">
-            <i className="ri-folder-open-line"></i>
+            <i className="ri-fire-line"></i>
           </div>
           <div className="divider-line"></div>
         </div>
@@ -81,23 +66,16 @@ export default function Projects() {
       <section className="projects-section">
         <div className="cards-shelf">
           {shelfCards.map((card, i) => (
-            <div key={i} className="shelf-item">
-              <div className={`card-body ${card.theme}`}>
-                <a
-                  href={card.url || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="card-icon-wrapper"
-                >
-                  <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
-                    <i className={card.icon}></i>
-                  </div>
-                </a>
-                <h3 className="card-title">{card.title}</h3>
+            <a key={i} href="https://github.com" target="_blank" rel="noopener noreferrer" className="shelf-item">
+              <div className="card-body">
+                <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.brandColor }}>
+                  <i className={card.icon}></i>
+                </div>
+                <h3 className="card-title">{card.name}</h3>
                 <p className="card-desc">{card.desc}</p>
               </div>
-              <CardAccent color={card.accentColor} />
-            </div>
+              <CardAccent color={card.brandColor} />
+            </a>
           ))}
         </div>
       </section>

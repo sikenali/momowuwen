@@ -1,16 +1,9 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { getPosts } from '@/lib/content';
-
-const tagColors: Record<string, { bg: string; color: string }> = {
-  前端开发: { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
-  设计思考: { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
-  技术笔记: { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
-  默认: { bg: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' },
-};
 
 const btnColors: string[] = [
   'rgba(194,58,43,1)',
@@ -22,19 +15,20 @@ export default function Blog() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const viewSlug = searchParams.get('view');
+  const [viewingSlug, setViewingSlug] = useState(viewSlug || null);
 
-  // Memoize sorted posts to prevent re-sorting on every render
-  const posts = useMemo(() =>
-    getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
-    []
-  );
+  const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  useEffect(() => {
+    setViewingSlug(viewSlug);
+  }, [viewSlug]);
 
   const handleBackToList = () => {
     router.replace('/blog', { scroll: false });
   };
 
-  if (viewSlug) {
-    const post = posts.find(p => p.slug === viewSlug);
+  if (viewingSlug) {
+    const post = posts.find(p => p.slug === viewingSlug);
     if (!post) return null;
 
     const dateStr = new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -50,6 +44,7 @@ export default function Blog() {
         </div>
 
         <div className="detail-main">
+          {/* 左侧内容 880px */}
           <div className="detail-content">
             <header className="detail-header">
               <div className="detail-tags">
@@ -81,7 +76,87 @@ export default function Blog() {
             <article className="detail-body">
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </article>
+
+            {/* 标签 */}
+            <div className="article-tags-section">
+              <span className="article-tags-label">标签：</span>
+              {post.tags.map(tag => (
+                <span key={tag} className="article-tag-pill">{tag}</span>
+              ))}
+            </div>
+
+            {/* 互动区 */}
+            <div className="interaction-bar">
+              <div className="interaction-left">
+                <button className="interaction-btn interaction-btn--like">
+                  <i className="ri-heart-fill interaction-icon"></i>
+                  <span>267</span>
+                </button>
+                <button className="interaction-btn interaction-btn--bookmark">
+                  <i className="ri-bookmark-line interaction-icon"></i>
+                  <span>56</span>
+                </button>
+              </div>
+              <div className="share-social">
+                <span>分享至</span>
+                <button className="social-btn social-btn--wechat"><i className="ri-wechat-fill"></i></button>
+                <button className="social-btn social-btn--weibo"><i className="ri-sina-weibo-fill"></i></button>
+                <button className="social-btn social-btn--copy"><i className="ri-links-line"></i></button>
+              </div>
+            </div>
+
+            {/* 上下篇导航 */}
+            <div className="article-nav">
+              <div className="article-nav-card article-nav-prev">
+                <i className="ri-arrow-left-double-line nav-icon"></i>
+                <div className="nav-content">
+                  <span className="nav-label">上一篇</span>
+                  <span className="nav-title">金色年华：传统配色的现代演绎</span>
+                </div>
+              </div>
+              <div className="article-nav-card article-nav-next">
+                <div className="nav-content" style={{ textAlign: 'right' }}>
+                  <span className="nav-label">下一篇</span>
+                  <span className="nav-title">云端漫步：微服务架构设计实践</span>
+                </div>
+                <i className="ri-arrow-right-double-line nav-icon"></i>
+              </div>
+            </div>
           </div>
+
+          {/* 右侧边栏 320px */}
+          <aside className="article-sidebar">
+            {/* 目录导航 */}
+            <div className="sidebar-toc">
+              <h4 className="sidebar-title">目录</h4>
+              <div className="toc-list">
+                <div className="toc-item toc-item--active">
+                  <span className="toc-number">1</span>
+                  <span className="toc-text">关于工作</span>
+                </div>
+                <div className="toc-item">
+                  <span className="toc-number">2</span>
+                  <span className="toc-text">关于生活</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 相关文章 */}
+            <div className="sidebar-related">
+              <h4 className="sidebar-title">相关推荐</h4>
+              {posts.filter(p => p.slug !== viewingSlug).slice(0, 3).map(rp => (
+                <Link key={rp.slug} href={`/blog?view=${rp.slug}`} className="related-card">
+                  <div className="related-thumb">
+                    <i className="ri-image-line"></i>
+                  </div>
+                  <div className="related-info">
+                    <span className="related-title">{rp.title}</span>
+                    <span className="related-views">2,341 次阅读</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </aside>
         </div>
       </div>
     );
@@ -94,7 +169,6 @@ export default function Blog() {
           <span>卷</span>
         </div>
         <h2 className="page-title">文 卷 轴</h2>
-        <p className="page-subtitle">慢 慢 翻 阅 · 细 细 品 味</p>
         <div className="divider-page">
           <div className="divider-line"></div>
           <div className="divider-icon">
@@ -118,30 +192,31 @@ export default function Blog() {
                 <div className="article-card-body">
                   <div className="article-card-content-top">
                     <div className="article-card-tags">
-                      <span
-                        className="article-card-tag"
-                        style={{
-                          backgroundColor: 'rgba(253,232,228,1)',
-                          color: 'rgba(194,58,43,1)',
-                        }}
-                      >
-                        {post.category}
-                      </span>
-                      {post.tags.map((tag) => {
-                        const tc = tagColors[tag] || tagColors['默认'];
-                        return (
+                      {post.tags.length > 0 && (
+                        <>
                           <span
-                            key={tag}
                             className="article-card-tag"
                             style={{
-                              backgroundColor: tc.bg,
-                              color: tc.color,
+                              backgroundColor: 'rgba(224,240,228,1)',
+                              color: 'rgba(74,140,109,1)',
                             }}
                           >
-                            {tag}
+                            {post.tags[0]}
                           </span>
-                        );
-                      })}
+                          <span style={{ width: 12, height: 24, display: 'inline-block' }}></span>
+                        </>
+                      )}
+                      {post.tags.length > 1 && (
+                        <span
+                          className="article-card-tag"
+                          style={{
+                            backgroundColor: 'rgba(232,240,248,1)',
+                            color: 'rgba(91,127,168,1)',
+                          }}
+                        >
+                          {post.tags[1]}
+                        </span>
+                      )}
                       <span className="article-card-date">
                         <i className="ri-calendar-line article-card-date-icon"></i>
                         {new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
