@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { getPosts, type Post } from '@/lib/content';
+import { getPosts } from '@/lib/content';
 
 const TAG_COLORS = [
   { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
@@ -11,12 +11,6 @@ const TAG_COLORS = [
   { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
   { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
   { bg: 'rgba(245,240,230,1)', color: 'rgba(92,74,50,1)' },
-];
-
-const btnColors: string[] = [
-  'rgba(194,58,43,1)',
-  'rgba(212,168,67,1)',
-  'rgba(74,140,109,1)',
 ];
 
 export default function Blog() {
@@ -35,7 +29,6 @@ function BlogContent() {
   const [baseViews, setBaseViews] = useState(520);
   const [tocItems, setTocItems] = useState<{level: number; text: string; url: string}[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
 
   const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -99,14 +92,10 @@ function BlogContent() {
     if (tocItems.length === 0 || !viewingSlug) return;
 
     const handleScroll = () => {
-      const headings = tocItems.map(item => {
-        const id = item.url.replace('#', '');
-        return document.getElementById(id);
-      }).filter(Boolean);
-
       let currentIndex = 0;
-      for (let i = headings.length - 1; i >= 0; i--) {
-        const el = headings[i];
+      for (let i = tocItems.length - 1; i >= 0; i--) {
+        const id = tocItems[i].url.replace('#', '');
+        const el = document.getElementById(id);
         if (el) {
           const rect = el.getBoundingClientRect();
           if (rect.top <= 120) {
@@ -124,7 +113,7 @@ function BlogContent() {
   }, [tocItems, viewingSlug]);
 
   // Calculate reading time based on word count
-  const getReadingTime = (post: Post) => {
+  const getReadingTime = (post: { content?: string }) => {
     const text = post.content?.replace(/<[^>]*>/g, '') || '';
     const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
     const englishWords = text.split(/\s+/).filter(w => /^[a-zA-Z]/.test(w)).length;
@@ -191,8 +180,11 @@ function BlogContent() {
                       style={{ paddingLeft: `${item.level * 16 + 8}px` }}
                       onClick={(e) => e.preventDefault()}
                       onClickCapture={() => {
-                        const el = document.getElementById(item.url.replace('#', ''));
-                        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        const articleBody = document.querySelector('.detail-body');
+                        if (!articleBody) return;
+                        const headings = Array.from(articleBody.querySelectorAll('h3, h4'));
+                        const target = headings.find(h => h.textContent?.trim() === item.text);
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }}
                     >
                       <span className="toc-number">{item.level === 0 ? i + 1 : ''}</span>
@@ -262,74 +254,89 @@ function BlogContent() {
         </div>
       </div>
 
-      <section className="articles-section">
-        <div className="articles-list">
-          {posts.map((post, i) => {
-            const btnBg = btnColors[i % btnColors.length];
-            return (
-              <Link
-                key={post.slug}
-                href={`/blog?view=${post.slug}`}
-                className="article-card-new"
-                prefetch={false}
-                target="_blank"
-                onMouseEnter={() => setHoveredCardIndex(i)}
-                onMouseLeave={() => setHoveredCardIndex(null)}
-              >
-                <div className="article-card-body">
-                  <div className="article-card-content-top">
-                    <div className="article-card-tags">
-                      {post.tags.length > 0 && (
-                        <>
-                          <span
-                            className="article-card-tag"
-                            style={{
-                              backgroundColor: 'rgba(224,240,228,1)',
-                              color: 'rgba(74,140,109,1)',
-                            }}
-                          >
-                            {post.tags[0]}
-                          </span>
-                          <span style={{ width: 12, height: 24, display: 'inline-block' }}></span>
-                        </>
-                      )}
-                      {post.tags.length > 1 && (
-                        <span
-                          className="article-card-tag"
-                          style={{
-                            backgroundColor: 'rgba(232,240,248,1)',
-                            color: 'rgba(91,127,168,1)',
-                          }}
-                        >
-                          {post.tags[1]}
-                        </span>
-                      )}
-                      <span className="article-card-date">
-                        <i className="ri-calendar-line article-card-date-icon"></i>
-                        {new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
-                      </span>
-                    </div>
-                    <h3 className="article-card-title">{post.title}</h3>
-                  </div>
-                  <div className="article-card-footer">
-                    <div className="article-card-read-btn" style={{ backgroundColor: btnBg }}>
-                      <span>阅读全文</span>
-                      <i className={`ri-arrow-right-line arrow-${i}`}></i>
-                      {hoveredCardIndex === i && (
-                        <>
-                          <i className="dart dart-1 ri-arrow-right-up-line"></i>
-                          <i className="dart dart-2 ri-arrow-right-line"></i>
-                          <i className="dart dart-3 ri-arrow-right-down-line"></i>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+      <section className="latest-posts-section">
+        <div className="latest-posts-header">
+          <div className="latest-posts-title-group">
+            <div className="latest-posts-seal">
+              <i className="ri-book-open-line"></i>
+            </div>
+            <div className="latest-posts-title-text">
+              <span className="latest-posts-title">最新文章</span>
+              <span className="latest-posts-subtitle">LATEST POSTS</span>
+            </div>
+          </div>
+          <Link href="/blog" className="latest-posts-link">
+            <span>查看全部</span>
+            <i className="ri-arrow-right-line"></i>
+          </Link>
+        </div>
+
+        <div className="latest-posts-grid">
+          {posts.slice(0, 3).map((post, i) => (
+            <LatestCard key={post.slug} post={post} index={i} />
+          ))}
+          {Array.from({ length: Math.max(0, 3 - posts.length) }).map((_, i) => (
+            <LatestCard
+              key={`fake-${i}`}
+              post={{
+                title: i === 0 ? '山水之间：CSS 绘制东方意境的艺术' : i === 1 ? '金色年华：传统配色的现代演绎' : '竹林深处：React 性能优化之道',
+                description: i === 0 ? '如何用纯 CSS 创作出具有中国传统水墨画韵味的网页设计，从色彩到布局的全面探索...' : i === 1 ? '从敦煌壁画到故宫建筑，探索中国传统色彩体系在当代UI设计中的应用与创新...' : '深入探讨 React 应用的性能瓶颈与优化策略，如竹林般层层递进，直指核心问题...',
+                tags: i === 0 ? ['前端开发'] : i === 1 ? ['设计思考'] : ['技术笔记'],
+                date: i === 0 ? '2024-01-15' : i === 1 ? '2024-01-10' : '2024-01-05',
+                slug: `fake-${i}`,
+              }}
+              index={i + posts.length}
+            />
+          ))}
         </div>
       </section>
     </>
+  );
+}
+
+const blogTagColors: Record<string, { bg: string; color: string }> = {
+  前端开发: { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
+  设计思考: { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
+  技术笔记: { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
+  默认: { bg: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' },
+};
+
+function LatestCard({ post, index }: { post: { title: string; description: string; tags: string[]; date: string; slug: string }; index: number }) {
+  const tc = blogTagColors[post.tags[0]] || blogTagColors['默认'];
+  const views = [2341, 1892, 3156][index] || 0;
+  const likes = [186, 143, 267][index] || 0;
+
+  return (
+    <Link href={`/blog?view=${post.slug}`} className="latest-article-card">
+      <div className="latest-card-cover">
+        <img src="/images/cover-default.svg" alt={post.title} />
+      </div>
+      <div className="latest-card-body">
+        <div className="latest-card-header">
+          <span
+            className="latest-card-tag"
+            style={{ backgroundColor: tc.bg, color: tc.color }}
+          >
+            {post.tags[0]}
+          </span>
+          <span className="latest-card-date">
+            <i className="ri-calendar-line"></i>
+            {new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
+          </span>
+        </div>
+        <h3 className="latest-card-title">{post.title}</h3>
+        <p className="latest-card-excerpt">{post.description}</p>
+        <div className="latest-card-footer">
+          <span className="latest-card-stat">
+            <i className="ri-eye-line"></i>
+            {views.toLocaleString()}
+          </span>
+          <span className="latest-card-stat">
+            <i className="ri-heart-line"></i>
+            {likes}
+          </span>
+        </div>
+      </div>
+    </Link>
   );
 }
