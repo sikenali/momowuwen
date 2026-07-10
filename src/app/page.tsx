@@ -1,6 +1,5 @@
 'use client';
 import { getPosts } from '@/lib/content';
-import Link from 'next/link';
 
 const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3);
 
