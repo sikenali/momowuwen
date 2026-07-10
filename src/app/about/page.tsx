@@ -36,7 +36,7 @@ export default function About() {
                 </div>
                 <div className="about-info-content">
                   <span className="about-info-label">姓名</span>
-                  <span className="about-info-value">墨轩主人</span>
+                  <span className="about-info-value">Jingle</span>
                 </div>
               </div>
 
@@ -46,7 +46,7 @@ export default function About() {
                 </div>
                 <div className="about-info-content">
                   <span className="about-info-label">职业</span>
-                  <span className="about-info-value">全栈工程师 / 独立开发者</span>
+                  <span className="about-info-value">项目经理</span>
                 </div>
               </div>
 
@@ -56,7 +56,7 @@ export default function About() {
                 </div>
                 <div className="about-info-content">
                   <span className="about-info-label">坐标</span>
-                  <span className="about-info-value">中国 · 杭州</span>
+                  <span className="about-info-value">中国 · 武汉</span>
                 </div>
               </div>
 
@@ -66,23 +66,39 @@ export default function About() {
                 </div>
                 <div className="about-info-content">
                   <span className="about-info-label">邮箱</span>
-                  <span className="about-info-value">hello@moyunxuan.dev</span>
+                  <span className="about-info-value">jingle@111.com</span>
                 </div>
               </div>
             </div>
 
             {/* 个人简介 */}
             <div className="about-bio">
-              <p>大家好，我是墨轩主人。一名热爱技术与设计的全栈工程师，也是一个在代码世界里不断取经的行者。</p>
-              <p>从前端到后端，从设计到产品，我始终保持着对新技术的好奇心与探索欲。我相信，优秀的产品源于对细节的极致追求，正如传统水墨画作，每一笔都蕴含着匠心。</p>
-              <p>这个博客是我的"藏经阁"，记录着技术路上的所思所得。愿我们都能在各自的取经路上，不忘初心，终得真经。</p>
+              <p className="bio-headline">一个不会编（AI）程（Coding）的商务、产品、运营、测试的开发，不是一个好的项目经理</p>
+            </div>
+
+            {/* 经历卡片 */}
+            <div className="about-experience">
+              <div className="experience-card">
+                <div className="experience-item">
+                  <span className="experience-icon">📦</span>
+                  <span className="experience-text">域名的来源，20491001被注册后只能反其道而行</span>
+                </div>
+                <div className="experience-item">
+                  <span className="experience-icon">🚀</span>
+                  <span className="experience-text">2008年计科专业毕业，码农水平有限，多亏赶AI编程时代</span>
+                </div>
+                <div className="experience-item">
+                  <span className="experience-icon">✏️</span>
+                  <span className="experience-text">早期从事华为OD，PMS行业，近10年一直从事操作系统行业领域</span>
+                </div>
+              </div>
             </div>
 
             {/* 签名 */}
             <div className="about-signature">
               <div className="about-signature-text">
                 <span className="about-signature-name">— 墨轩主人</span>
-                <span className="about-signature-date">甲辰年冬 于西湖畔</span>
+                <span className="about-signature-date">AI 编程时代 · 行者</span>
               </div>
             </div>
           </div>

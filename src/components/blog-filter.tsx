@@ -7,7 +7,6 @@ interface BlogFilterProps {
   categories: string[];
 }
 
-const allTagNames = ['全部文章', '前端开发', '后端架构', '设计思考', '技术笔记', '生活随笔', '读书笔记'];
 
 export function BlogFilter({ categories }: BlogFilterProps) {
   const searchParams = useSearchParams();

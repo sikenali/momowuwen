@@ -2,7 +2,7 @@ import { defineCollection, defineConfig, s } from 'velite';
 
 const posts = defineCollection({
   name: 'Post',
-  pattern: 'posts/*.md',
+  pattern: 'posts/**/*.md',
   schema: s.object({
     title: s.string().max(200),
     date: s.isodate(),
@@ -20,7 +20,7 @@ const posts = defineCollection({
 
 const projects = defineCollection({
   name: 'Project',
-  pattern: 'projects/*.md',
+  pattern: 'projects/**/*.md',
   schema: s.object({
     title: s.string().max(200),
     date: s.isodate(),

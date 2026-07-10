@@ -29,7 +29,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.jsdelivr.net" />
         <link href="https://cdn.jsdelivr.net/npm/remixicon@4.9.0/fonts/remixicon.css" rel="stylesheet" />
       </head>
-      <body className="overflow-hidden flex flex-col h-screen" style={{ backgroundColor: 'rgba(250, 246, 237, 1)' }}>
+      <body className="overflow-hidden flex flex-col h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
         <LayoutContent>{children}</LayoutContent>
       </body>
     </html>

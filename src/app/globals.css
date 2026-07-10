@@ -143,8 +143,9 @@ body {
 }
 
 .nav-item.active {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+  font-weight: 600;
+  text-shadow: 0 0 8px rgba(194, 58, 43, 0.4);
 }
 
 .nav-item i {

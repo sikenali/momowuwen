@@ -1,16 +1,61 @@
-import Link from 'next/link';
-import { getProjects } from '@/lib/content';
-import { RiGithubFill } from '@remixicon/react';
-
-const cardThemes = [
-  { tagClass: 'project-card-tag--red', btnBg: 'rgba(194,58,43,1)' },
-  { tagClass: 'project-card-tag--gold', btnBg: 'rgba(212,168,67,1)' },
-  { tagClass: 'project-card-tag--green', btnBg: 'rgba(74,140,109,1)' },
+const shelfCards = [
+  {
+    title: '项目一',
+    desc: '项目描述文字',
+    icon: 'ri-github-fill',
+    theme: 'theme-red',
+    iconBg: 'rgba(253,242,238,1)',
+    iconColor: 'rgba(196,58,49,1)',
+    accentColor: 'rgba(196,58,49,1)',
+  },
+  {
+    title: '项目二',
+    desc: '项目描述文字',
+    icon: 'ri-github-fill',
+    theme: 'theme-gold',
+    iconBg: 'rgba(253,248,232,1)',
+    iconColor: 'rgba(200,164,92,1)',
+    accentColor: 'rgba(200,164,92,1)',
+  },
+  {
+    title: '项目三',
+    desc: '项目描述文字',
+    icon: 'ri-github-fill',
+    theme: 'theme-green',
+    iconBg: 'rgba(237,245,237,1)',
+    iconColor: 'rgba(91,140,90,1)',
+    accentColor: 'rgba(91,140,90,1)',
+  },
+  {
+    title: '项目四',
+    desc: '项目描述文字',
+    icon: 'ri-github-fill',
+    theme: 'theme-blue',
+    iconBg: 'rgba(237,242,247,1)',
+    iconColor: 'rgba(123,158,179,1)',
+    accentColor: 'rgba(123,158,179,1)',
+  },
+  {
+    title: '项目五',
+    desc: '项目描述文字',
+    icon: 'ri-github-fill',
+    theme: 'theme-pink',
+    iconBg: 'rgba(250,238,238,1)',
+    iconColor: 'rgba(184,84,80,1)',
+    accentColor: 'rgba(184,84,80,1)',
+  },
 ];
 
-export default function Projects() {
-  const projects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+function CardAccent({ color }: { color: string }) {
+  return (
+    <div
+      className="card-accent"
+      style={{ backgroundColor: color }}
+    ></div>
+  );
+}
 
+export default function Projects() {
   return (
     <>
       <section className="page-hero">
@@ -29,34 +74,19 @@ export default function Projects() {
       </section>
 
       <section className="projects-section">
-        <div className="projects-grid-centered">
-          {projects.map((project, i) => {
-            const theme = cardThemes[i % 3];
-            return (
-              <Link key={project.slug} href={`/projects/${project.slug}`} className="project-card-new">
-                <div className="project-card-icon">
-                  <RiGithubFill />
+        <div className="cards-shelf">
+          {shelfCards.map((card, i) => (
+            <div key={i} className="shelf-item">
+              <div className={`card-body ${card.theme}`}>
+                <div className="card-icon" style={{ backgroundColor: card.iconBg, color: card.iconColor }}>
+                  <i className={card.icon}></i>
                 </div>
-                <div className="project-card-body">
-                  <h3 className="project-card-title">{project.title}</h3>
-                  <p className="project-card-desc">{project.description}</p>
-                  <div className="project-card-bottom">
-                    <div className="project-card-tags">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className={`project-card-tag ${theme.tagClass}`}>{tag}</span>
-                      ))}
-                    </div>
-                    <div className="project-card-actions">
-                      <span className="project-card-btn" style={{ backgroundColor: theme.btnBg }}>
-                        <i className="ri-eye-line"></i>
-                        <span>访问</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+                <h3 className="card-title">{card.title}</h3>
+                <p className="card-desc">{card.desc}</p>
+              </div>
+              <CardAccent color={card.accentColor} />
+            </div>
+          ))}
         </div>
       </section>
     </>

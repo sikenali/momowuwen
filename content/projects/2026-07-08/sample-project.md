@@ -1,7 +1,7 @@
 ---
 title: 示例项目
 date: 2026-07-08
-slug: sample-project
+slug: 2026-07-08-sample-project
 tags: [Next.js, TypeScript]
 category: Web 应用
 cover: /images/project-default.svg
