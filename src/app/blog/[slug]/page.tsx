@@ -21,62 +21,59 @@ export default function ArticleDetailPage() {
   const post = allPosts.find(p => p.slug === slug);
 
   const [activeTocIndex, setActiveTocIndex] = useState(0);
-  const [baseViews, setBaseViews] = useState(520);
   const [tocItems, setTocItems] = useState<{level: number; text: string; url: string}[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
+  const viewsRef = useRef<number>(0);
+  const viewsLoaded = useRef(false);
 
   useEffect(() => {
     if (!post) return;
     const key = `article-views-${post.slug}`;
-    const current = parseInt(localStorage.getItem(key) || '520', 10);
-    localStorage.setItem(key, String(current + 1));
-    setBaseViews(current + 1);
+    const stored = parseInt(localStorage.getItem(key) || '0', 10);
+    viewsRef.current = stored;
+    viewsLoaded.current = true;
+    localStorage.setItem(key, String(stored + 1));
+    viewsRef.current = stored + 1;
   }, [post]);
 
   useEffect(() => {
-    if (!post || !post.toc || post.toc.length === 0) {
-      setTocItems([]);
-      return;
-    }
+    if (!post || !contentRef.current) return;
 
-    const flat: {level: number; text: string; url: string}[] = [];
-    type TocItem = {title: string; url: string; items?: TocItem[]};
-    const flatten = (items: TocItem[], depth: number) => {
-      for (const item of items) {
-        flat.push({ level: depth, text: item.title, url: item.url });
-        if (item.items && item.items.length > 0) {
-          flatten(item.items, depth + 1);
-        }
-      }
-    };
-    flatten(post.toc as TocItem[], 1);
-    setTocItems(flat);
-    setActiveTocIndex(0);
+    const timer = setTimeout(() => {
+      const headings = contentRef.current!.querySelectorAll('h3, h4');
+      const mapping: {level: number; text: string; url: string}[] = [];
+      headings.forEach((h, idx) => {
+        const id = `heading-${idx}`;
+        h.setAttribute('id', id);
+        const level = h.tagName === 'H3' ? 1 : 2;
+        mapping.push({ level, text: h.textContent || '', url: `#${id}` });
+      });
+      setTocItems(mapping);
+      setActiveTocIndex(0);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [post]);
 
   useEffect(() => {
-    if (tocItems.length === 0 || !post) return;
+    if (tocItems.length === 0 || !contentRef.current) return;
 
-    const handleScroll = () => {
-      let currentIndex = 0;
-      for (let i = tocItems.length - 1; i >= 0; i--) {
-        const id = tocItems[i].url.replace('#', '');
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 120) {
-            currentIndex = i;
-            break;
+    const headings = contentRef.current.querySelectorAll('h3, h4');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const idx = Array.from(headings).indexOf(entry.target as Element);
+            if (idx >= 0) setActiveTocIndex(idx);
           }
         }
-      }
-      setActiveTocIndex(currentIndex);
-    };
+      },
+      { rootMargin: '-120px 0px -60% 0px', threshold: 0 }
+    );
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [tocItems, post]);
+    headings.forEach((h) => observer.observe(h));
+    return () => observer.disconnect();
+  }, [tocItems]);
 
   if (!post) return null;
 
@@ -86,7 +83,7 @@ export default function ArticleDetailPage() {
   const totalMinutes = Math.ceil((chineseChars / 300 + englishWords / 200) * 10) / 10;
   const readingTime = Math.max(1, Math.round(totalMinutes));
 
-  const displayViews = baseViews;
+  const displayViews = viewsLoaded.current ? viewsRef.current : 0;
   const d = new Date(post.date);
   const dateStr = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
 
@@ -132,7 +129,6 @@ export default function ArticleDetailPage() {
                     key={i}
                     href={item.url}
                     className={`toc-item ${i === activeTocIndex ? 'toc-item--active' : 'toc-item--default'}`}
-                    style={{ paddingLeft: `${item.level * 16 + 8}px` }}
                     onClick={(e) => {
                       e.preventDefault();
                       const el = document.getElementById(item.url.replace('#', ''));

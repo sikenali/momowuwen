@@ -2531,6 +2531,21 @@ main::-webkit-scrollbar {
 .toc-item--active {
   color: rgba(194, 58, 43, 1);
   font-weight: 500;
+  background: rgba(194, 58, 43, 0.06);
+  border-radius: 8px;
+  position: relative;
+}
+
+.toc-item--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: rgba(194, 58, 43, 1);
+  border-radius: 2px;
 }
 
 .toc-number {

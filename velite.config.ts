@@ -16,7 +16,7 @@ const posts = defineCollection({
     metadata: s.metadata(),
     excerpt: s.excerpt(),
     toc: s.toc(),
-  }).reject((item) => item.draft),
+  }),
 });
 
 const projects = defineCollection({
@@ -36,7 +36,7 @@ const projects = defineCollection({
     metadata: s.metadata(),
     excerpt: s.excerpt(),
     toc: s.toc(),
-  }).reject((item) => item.draft),
+  }),
 });
 
 export default defineConfig({
