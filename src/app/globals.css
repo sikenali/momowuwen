@@ -489,6 +489,35 @@ body {
   z-index: 110;
 }
 
+/* Mobile menu checkbox - visually hidden but accessible */
+.nav-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Full-screen overlay for closing menu */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 99;
+  pointer-events: none;
+  transition: background 0.2s ease;
+}
+
+/* Show overlay when checkbox is checked */
+.nav-toggle-input:checked ~ .nav-overlay {
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+}
+
 @media (max-width: 768px) {
   .nav-hamburger {
     display: flex;
