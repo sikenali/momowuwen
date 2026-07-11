@@ -7,10 +7,15 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    // 配置 Decap CMS 加载相对路径的 config.yml
+    if ((window as any).CMS) {
+      (window as any).CMS.registerPreviewStyle('/admin/preview.css');
+    }
+
     const originalError = window.onerror;
     window.onerror = (message, source, line, col, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof message === 'string' && message.includes('config'))) {
-        setError('Failed to load CMS configuration. Make sure the proxy server is running or backend is configured.');
+        setError('Failed to load CMS configuration. Check browser console for details.');
       }
       return originalError?.(message, source, line, col, error) ?? false;
     };
@@ -40,6 +45,12 @@ export default function AdminPage() {
             src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
             strategy="afterInteractive"
             crossOrigin="anonymous"
+            onReady={() => {
+              console.log('Decap CMS loaded');
+            }}
+            onError={() => {
+              setError('Failed to load Decap CMS library');
+            }}
           />
         </div>
       </div>

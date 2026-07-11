@@ -6,8 +6,9 @@ export async function GET() {
   try {
     const configPath = join(process.cwd(), 'public', 'admin', 'config.yml');
     const config = readFileSync(configPath, 'utf-8');
-    
+
     return new NextResponse(config, {
+      status: 200,
       headers: {
         'Content-Type': 'text/yaml',
         'Cache-Control': 'no-cache, must-revalidate',
@@ -15,7 +16,7 @@ export async function GET() {
     });
   } catch {
     return NextResponse.json(
-      { error: 'Failed to load config' },
+      { error: 'Failed to load config.yml' },
       { status: 500 }
     );
   }

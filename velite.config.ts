@@ -10,12 +10,13 @@ const posts = defineCollection({
     tags: s.array(s.string()).default([]),
     category: s.string().default('随笔'),
     cover: s.string().optional(),
+    draft: s.boolean().default(false),
     slug: s.slug(),
     content: s.markdown(),
     metadata: s.metadata(),
     excerpt: s.excerpt(),
     toc: s.toc(),
-  }),
+  }).reject((item) => item.draft),
 });
 
 const projects = defineCollection({
@@ -29,12 +30,13 @@ const projects = defineCollection({
     category: s.string().default('项目'),
     cover: s.string().optional(),
     link: s.string().url().optional(),
+    draft: s.boolean().default(false),
     slug: s.slug(),
     content: s.markdown(),
     metadata: s.metadata(),
     excerpt: s.excerpt(),
     toc: s.toc(),
-  }),
+  }).reject((item) => item.draft),
 });
 
 export default defineConfig({
