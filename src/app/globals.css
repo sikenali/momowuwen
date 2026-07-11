@@ -480,13 +480,6 @@ body {
 /* 汉堡菜单按钮 */
 .nav-hamburger {
   display: none;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: var(--text-medium);
-  cursor: pointer;
-  padding: 4px;
-  z-index: 110;
 }
 
 /* Mobile menu checkbox - visually hidden but accessible */
@@ -523,6 +516,23 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    z-index: 110;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-hamburger:hover {
+    transform: scale(1.05);
+  }
+
+  .nav-hamburger i {
+    font-size: 20px;
+    color: var(--text-medium);
   }
 
   .nav-menu {

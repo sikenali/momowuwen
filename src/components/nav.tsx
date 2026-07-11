@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
@@ -22,7 +22,6 @@ function getActiveFromPath(p: string) {
 export function Nav() {
   const pathname = usePathname();
   const activeNav = getActiveFromPath(pathname);
-  const [menuOpen, setMenuOpen] = useState(false);
   const navMenuRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
 
@@ -64,7 +63,7 @@ export function Nav() {
         </div>
       </Link>
 
-      <div className={`nav-menu${menuOpen ? ' open' : ''}`} ref={navMenuRef}>
+      <div className="nav-menu" ref={navMenuRef}>
         <div
           ref={indicatorRef}
           className="nav-indicator active"
@@ -87,9 +86,9 @@ export function Nav() {
         })}
       </div>
 
-      <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="菜单">
-        <i className={`ri-${menuOpen ? 'close' : 'menu'}-line`}></i>
-      </button>
+      <label htmlFor="nav-toggle" className="nav-hamburger" aria-label="菜单">
+        <i className="ri-menu-line"></i>
+      </label>
     </nav>
     </>
   );
