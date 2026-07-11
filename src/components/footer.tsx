@@ -39,7 +39,7 @@ export function Footer() {
         </div>
 
         <div className="copyright">
-          <span>&copy; {SOCIAL_YEAR} 墨墨梧文 · Powered by LightOS</span>
+          <span>&copy; {SOCIAL_YEAR} 墨墨梧文 · <a href="https://lazycat.cloud/" target="_blank" rel="noopener noreferrer">Powered by LightOS</a></span>
         </div>
       </div>
     </footer>

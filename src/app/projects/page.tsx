@@ -1,5 +1,6 @@
 import { getProjects } from '@/lib/content';
 import { CardAccent } from '@/app/projects/_components/card-accent';
+import { PageHero } from '@/components/page-hero';
 
 const shelfCardThemes = [
   { icon: 'ri-github-line', iconBg: 'rgba(253,242,238,1)', brandColor: 'rgba(196,58,49,1)' },
@@ -19,26 +20,7 @@ export default function ProjectsPage() {
           <div className="cloud"></div>
         </div>
 
-        <section className="hero-section-compact">
-          <div className="seal-container">
-            <div className="page-seal" data-hover-title="炼 丹 炉">
-              <span>焰</span>
-            </div>
-          </div>
-          <div className="title-group-compact">
-            <p className="title-sub-compact">部 部 经 典 项 项 长 卷</p>
-          </div>
-
-          <div className="divider-compact">
-            <div className="divider-line"></div>
-            <div className="divider-dots">
-              <div className="dot dot-1"></div>
-              <div className="dot dot-2"></div>
-              <div className="dot dot-3"></div>
-            </div>
-            <div className="divider-line"></div>
-          </div>
-        </section>
+        <PageHero seal="焰" title="部 部 经 典 项 项 长 卷" hoverTitle="炼 丹 炉" />
 
         <div className="cloud-decoration-2">
           <div className="cloud-2"></div>

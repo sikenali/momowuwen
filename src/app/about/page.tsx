@@ -1,3 +1,5 @@
+import { PageHero } from '@/components/page-hero';
+
 export default function About() {
   return (
     <>
@@ -6,26 +8,7 @@ export default function About() {
           <div className="cloud"></div>
         </div>
 
-        <section className="hero-section-compact">
-          <div className="seal-container">
-            <div className="page-seal" data-hover-title="关 于 我">
-              <span style={{ fontSize: '22px', color: 'rgba(194, 58, 43, 1)', fontWeight: 700 }}>我</span>
-            </div>
-          </div>
-          <div className="title-group-compact">
-            <p className="title-sub-compact">默 默 无 闻 惊 言 惊 语</p>
-          </div>
-
-          <div className="divider-compact">
-            <div className="divider-line"></div>
-            <div className="divider-dots">
-              <div className="dot dot-1"></div>
-              <div className="dot dot-2"></div>
-              <div className="dot dot-3"></div>
-            </div>
-            <div className="divider-line"></div>
-          </div>
-        </section>
+        <PageHero seal="我" title="默 默 无 闻 惊 言 惊 语" hoverTitle="关 于 我" />
 
         <div className="cloud-decoration-2">
           <div className="cloud-2"></div>
