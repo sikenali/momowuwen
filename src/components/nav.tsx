@@ -45,7 +45,15 @@ export function Nav() {
   }, [activeNav]);
 
   return (
-    <nav className="navbar">
+    <>
+      <input
+        type="checkbox"
+        id="nav-toggle"
+        className="nav-toggle-input"
+        aria-hidden="true"
+      />
+      <label htmlFor="nav-toggle" className="nav-overlay" aria-hidden="true"></label>
+      <nav className="navbar">
       <Link href="/" className="logo-area">
         <div className="logo-seal">
           <i className="ri-quill-pen-line"></i>
@@ -83,5 +91,6 @@ export function Nav() {
         <i className={`ri-${menuOpen ? 'close' : 'menu'}-line`}></i>
       </button>
     </nav>
+    </>
   );
 }
