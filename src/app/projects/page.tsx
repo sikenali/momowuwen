@@ -1,18 +1,14 @@
-import { getProjects } from '@/lib/content';
-import { CardAccent } from '@/app/projects/_components/card-accent';
 import { PageHero } from '@/components/page-hero';
 
-const shelfCardThemes = [
-  { icon: 'ri-github-line', iconBg: 'rgba(253,242,238,1)', brandColor: 'rgba(196,58,49,1)' },
-  { icon: 'ri-global-line', iconBg: 'rgba(253,248,232,1)', brandColor: 'rgba(200,164,92,1)' },
-  { icon: 'ri-code-s-slash-line', iconBg: 'rgba(237,245,237,1)', brandColor: 'rgba(91,140,90,1)' },
-  { icon: 'ri-database-2-line', iconBg: 'rgba(237,242,247,1)', brandColor: 'rgba(123,158,179,1)' },
-  { icon: 'ri-terminal-box-line', iconBg: 'rgba(250,238,238,1)', brandColor: 'rgba(184,84,80,1)' },
+const shelfCards = [
+  { name: '金', desc: '金', icon: 'ri-github-line', color: 'rgba(196,58,49,1)', bg: 'rgba(253,242,238,1)', url: 'https://github.com/sikenali/momowuwen' },
+  { name: '木', desc: '木', icon: 'ri-github-line', color: 'rgba(200,164,92,1)', bg: 'rgba(253,248,232,1)', url: 'https://assistant.10012049.xyz' },
+  { name: '水', desc: '水', icon: 'ri-github-line', color: 'rgba(91,140,90,1)', bg: 'rgba(237,245,237,1)', url: '#' },
+  { name: '火', desc: '火', icon: 'ri-github-line', color: 'rgba(123,158,179,1)', bg: 'rgba(237,242,247,1)', url: '#' },
+  { name: '土', desc: '土', icon: 'ri-github-line', color: 'rgba(184,84,80,1)', bg: 'rgba(250,238,238,1)', url: '#' },
 ];
 
 export default function ProjectsPage() {
-  const projects = getProjects();
-
   return (
     <>
       <div className="main-container-compact" style={{ flex: 1 }}>
@@ -29,29 +25,30 @@ export default function ProjectsPage() {
 
       <section className="projects-section">
         <div className="cards-shelf">
-          {projects.map((project, i) => {
-            const theme = shelfCardThemes[i % shelfCardThemes.length];
-            const href = project.link || `/projects/${project.slug}`;
-            const isExternal = !!project.link;
-            return (
-              <a
-                key={project.slug}
-                href={href}
-                target={isExternal ? '_blank' : '_self'}
-                rel={isExternal ? 'noopener noreferrer' : undefined}
-                className="shelf-item"
-              >
-                <div className="card-body">
-                  <div className="card-icon" style={{ backgroundColor: theme.iconBg, color: theme.brandColor }}>
-                    <i className={theme.icon}></i>
-                  </div>
-                  <h3 className="card-title">墨墨梧文</h3>
-                  <p className="card-desc">Powered by LightOS</p>
+          {shelfCards.map((card, i) => (
+            <a
+              key={i}
+              href={card.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shelf-item"
+            >
+              <div className="card-body">
+                <div className="card-icon" style={{ backgroundColor: card.bg, color: card.color }}>
+                  <i className={card.icon}></i>
                 </div>
-                <CardAccent color={theme.brandColor} />
-              </a>
-            );
-          })}
+                <h3 className="card-title">{card.name}</h3>
+                <p className="card-desc">{card.desc}</p>
+                <div className="card-accent-bar" style={{ backgroundColor: card.color }}></div>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="explore-more-section">
+          <span className="explore-more-text">探索更多</span>
+          <a href="/blog" target="_blank" rel="noopener noreferrer" className="explore-arrow">
+            <i className="ri-arrow-down-line"></i>
+          </a>
         </div>
       </section>
     </>

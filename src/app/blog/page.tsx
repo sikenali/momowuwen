@@ -33,10 +33,16 @@ export default function Blog() {
 function BlogList() {
   const [displayCount, setDisplayCount] = useState(3);
   const visiblePosts = allPosts.slice(0, displayCount);
-  const fillerCount = Math.max(0, Math.min(3, displayCount) - allPosts.length);
+  const realCount = Math.min(displayCount, allPosts.length);
+  const fillerCount = Math.max(0, displayCount - realCount);
+  const showLoadMore = realCount >= 3;
 
   const handleLoadMore = () => {
-    setDisplayCount((c) => Math.min(c + 3, allPosts.length));
+    if (displayCount < allPosts.length) {
+      setDisplayCount((c) => Math.min(c + 3, allPosts.length));
+    } else {
+      window.location.href = '/blog';
+    }
   };
 
   return (
@@ -59,7 +65,7 @@ function BlogList() {
           {visiblePosts.map((post, i) => (
             <LatestCard key={post.slug} post={post} index={i} />
           ))}
-          {displayCount <= 3 && Array.from({ length: fillerCount }).map((_, i) => (
+          {realCount < 3 && Array.from({ length: fillerCount }).map((_, i) => (
             <LatestCard
               key={`fake-${i}`}
               post={{
@@ -82,20 +88,23 @@ function BlogList() {
         </div>
       )}
 
-      {displayCount < allPosts.length && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '8px', height: '35px' }}>
-          <a
-            href="/blog"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="explore-arrow"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLoadMore();
-            }}
-          >
-            <i className="ri-arrow-down-line"></i>
-          </a>
+      {showLoadMore && (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '8px' }}>
+          <span className="explore-more-text">探索更多</span>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '8px', height: '35px' }}>
+            <a
+              href="/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="explore-arrow"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLoadMore();
+              }}
+            >
+              <i className="ri-arrow-down-line"></i>
+            </a>
+          </div>
         </div>
       )}
     </>

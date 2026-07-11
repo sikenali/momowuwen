@@ -196,7 +196,7 @@ body {
 /* 主视觉区域 - 紧凑版 */
 .hero-section-compact {
   width: 100%;
-  padding: 12px 32px 8px;
+  padding: 12px 32px 36px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -369,33 +369,22 @@ body {
 /* 第二层云层装饰 */
 .cloud-decoration {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: none;
 }
 
 .cloud {
-  width: 257px;
-  height: 64px;
-  background-color: var(--cloud);
-  border-radius: 999px;
-  margin-top: 16px;
+  display: none;
 }
 
 /* 数据统计组 - 紧凑版 */
 .cloud-decoration-2 {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  display: none;
   margin-top: 8px;
 }
 
 .cloud-2 {
-  width: 209px;
-  height: 56px;
-  background-color: var(--cloud);
-  border-radius: 999px;
+  display: none;
 }
 
 /* 探索提示与滚动箭头 */
@@ -764,6 +753,9 @@ main::-webkit-scrollbar {
 .projects-section {
   width: 100%;
   padding: 0 64px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 项目卡片网格 - 居中对齐，固定3列 */
@@ -928,15 +920,17 @@ main::-webkit-scrollbar {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
   padding: 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: auto;
 }
 
 .shelf-item {
-  width: 300px;
+  width: 200px;
+  min-width: 200px;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
@@ -1023,62 +1017,33 @@ main::-webkit-scrollbar {
   z-index: 2;
 }
 
-.card-accent-wrapper {
-  width: 100%;
+.card-accent-bar {
+  width: 9px;
   height: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  overflow: hidden;
-  border-radius: 0 0 20px 20px;
-  position: relative;
+  border-radius: 2px;
+  margin-top: auto;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.card-accent-left,
-.card-accent-right {
-  flex: 1;
-  height: 4px;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  transform-origin: center;
+.shelf-item:hover .card-accent-bar {
+  width: 40px;
 }
 
-.card-accent-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: inherit;
-  z-index: 2;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.shelf-item:hover .card-accent-left {
-  transform: translateX(-100%);
-}
-
-.shelf-item:hover .card-accent-right {
-  transform: translateX(100%);
-}
-
-.shelf-item:hover .card-accent-dot {
-  transform: scale(1.5);
-}
-
-/* 呼吸闪烁 */
+/* 呼吸光效 */
 @keyframes cardShimmer {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  0%, 100% { box-shadow: 0 4px 16px rgba(139,115,85,0.08); }
+  50% { box-shadow: 0 8px 30px rgba(196,58,49,0.1), 0 4px 16px rgba(139,115,85,0.08); }
 }
 
 .card-body {
   animation: cardShimmer 4s ease-in-out infinite;
 }
 
-.shelf-item:nth-child(2) .card-body { animation-delay: 0.8s; }
-.shelf-item:nth-child(3) .card-body { animation-delay: 1.6s; }
-.shelf-item:nth-child(4) .card-body { animation-delay: 2.4s; }
-.shelf-item:nth-child(5) .card-body { animation-delay: 3.2s; }
+.shelf-item:nth-child(1) .card-body { animation-delay: 0s; }
+.shelf-item:nth-child(2) .card-body { animation-delay: 0.5s; }
+.shelf-item:nth-child(3) .card-body { animation-delay: 1s; }
+.shelf-item:nth-child(4) .card-body { animation-delay: 1.5s; }
+.shelf-item:nth-child(5) .card-body { animation-delay: 2s; }
 
 /* 图标浮动 */
 @keyframes iconFloat {
