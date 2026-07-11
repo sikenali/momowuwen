@@ -1,7 +1,8 @@
 'use client';
-import { getPosts } from '@/lib/content';
+import { getPosts, getProjects } from '@/lib/content';
 
 const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3);
+const projects = getProjects();
 
 export default function Home() {
   return (
@@ -40,7 +41,7 @@ export default function Home() {
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item-compact">
-              <span className="stat-number green">0</span>
+              <span className="stat-number green">{projects.length}</span>
               <span className="stat-label">个项目</span>
             </div>
             <div className="stat-divider"></div>
@@ -58,7 +59,7 @@ export default function Home() {
 
       <div className="explore-more-section">
         <span className="explore-more-text">探索更多</span>
-        <a href="https://assistant.10012049.xyz/" target="_blank" rel="noopener noreferrer" className="explore-arrow">
+        <a href="/projects" className="explore-arrow">
           <i className="ri-target-line"></i>
         </a>
       </div>

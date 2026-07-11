@@ -405,7 +405,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 16px 0 0 0;
+  padding: 32px 0 0 0;
   width: 100%;
   flex-direction: column;
 }
@@ -498,17 +498,17 @@ body {
 
   .nav-menu {
     display: none;
-    position: absolute;
-    top: calc(100% - 8px);
+    position: fixed;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     flex-direction: column;
     width: 95vw;
     max-width: 380px;
-    border-radius: 16px;
+    border-radius: 16px 16px 0 0;
     padding: 12px;
     gap: 4px;
-    box-shadow: 0 8px 32px rgba(139, 115, 85, 0.15);
+    box-shadow: 0 -8px 32px rgba(139, 115, 85, 0.15);
     overflow: visible;
   }
 
@@ -686,7 +686,7 @@ body {
 }
 
 .copyright a {
-  color: rgba(194, 58, 43, 0.75);
+  color: rgba(245, 239, 224, 1);
   text-decoration: none;
 }
 
