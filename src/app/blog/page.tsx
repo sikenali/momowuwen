@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { getPosts } from '@/lib/content';
 import { PageHero } from '@/components/page-hero';
+import { tagColor } from '@/lib/tag-color';
 
 
 function getArticleViews(slug: string): number {
@@ -60,7 +61,7 @@ function BlogList() {
         )}
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '16px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '40px' }}>
         <span className="explore-more-text">{feedback ? '已全部加载' : '探索更多'}</span>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '8px', height: '35px' }}>
           <a href="#" className="explore-arrow" onClick={handleLoadMore}>
@@ -72,15 +73,7 @@ function BlogList() {
   );
 }
 
-const blogTagColors: Record<string, { bg: string; color: string }> = {
-  前端开发: { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
-  设计思考: { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
-  技术笔记: { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
-  默认: { bg: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' },
-};
-
 function LatestCard({ post }: { post: { title: string; description: string; tags: string[]; date: string; slug: string; cover?: string; category?: string } }) {
-  const tc = blogTagColors[post.tags[0]] || blogTagColors['默认'];
   const [views, setViews] = useState(0);
 
   useEffect(() => {
@@ -94,12 +87,16 @@ function LatestCard({ post }: { post: { title: string; description: string; tags
       </div>
       <div className="latest-card-body">
         <div className="latest-card-header">
-          <span
-            className="latest-card-tag"
-            style={{ backgroundColor: tc.bg, color: tc.color }}
-          >
-            {post.tags[0]}
-          </span>
+          <div className="latest-card-tags" style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            {post.tags.map((tag) => {
+              const c = tagColor(tag);
+              return (
+                <span key={tag} className="latest-card-tag" style={{ backgroundColor: c.bg, color: c.color }}>
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
           <span className="latest-card-date">
             <i className="ri-calendar-line"></i>
             {new Date(post.date).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short', day: 'numeric' })}
