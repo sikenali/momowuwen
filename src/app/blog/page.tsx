@@ -5,21 +5,14 @@ import Link from 'next/link';
 import { getPosts } from '@/lib/content';
 import { PageHero } from '@/components/page-hero';
 import { tagColor } from '@/lib/tag-color';
-
-
-function getArticleViews(slug: string): number {
-  if (typeof window === 'undefined') return 0;
-  const key = `article-views-${slug}`;
-  return parseInt(localStorage.getItem(key) || '0', 10);
-}
-
-const allPosts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+import { getArticleViews } from '@/lib/article-views';
 
 export default function Blog() {
-  return <BlogList />;
+  const allPosts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return <BlogList allPosts={allPosts} />;
 }
 
-function BlogList() {
+function BlogList({ allPosts }: { allPosts: ReturnType<typeof getPosts> }) {
   const [showAll, setShowAll] = useState(false);
   const [feedback, setFeedback] = useState(false);
   const timerRef = useRef<number>(0);
@@ -53,7 +46,6 @@ function BlogList() {
         {visiblePosts.map((post) => (
           <LatestCard key={post.slug} post={post} />
         ))}
-        {/* P0-02: Removed fake article filler */}
         {visiblePosts.length === 0 && (
           <div style={{ width: '100%', textAlign: 'center', padding: '48px 0', color: 'rgba(139, 115, 85, 1)' }}>
             暂无文章

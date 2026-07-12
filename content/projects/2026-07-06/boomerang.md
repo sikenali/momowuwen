@@ -5,7 +5,7 @@ slug: 2026-07-06-boomerang
 tags: [前端, CSS]
 category: 前端框架
 cover: /images/project-default.svg
-description: 基于 AI 驱动的创意文案生成工具，一键产出高质量营销内容
+description: 文档智能处理平台
 link: https://assistant.10012049.xyz/
 ---
 

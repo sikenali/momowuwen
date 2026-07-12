@@ -1,26 +1,40 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { getPosts, getProjects } from '@/lib/content';
 
-const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3);
-const projects = getProjects();
-
-// P2-13: Auto-calculate days from first post/project date
-function calculateDaysActive(): number {
-  const allDates = [
-    ...posts.map(p => new Date(p.date).getTime()),
-    ...projects.map(p => new Date(p.date).getTime()),
-  ];
-  if (allDates.length === 0) return 0;
-  const oldestDate = new Date(Math.min(...allDates));
-  const today = new Date();
-  const diffTime = today.getTime() - oldestDate.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  return Math.max(1, diffDays);
-}
-
-const daysActive = calculateDaysActive();
-
 export default function Home() {
+  const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3);
+  const projects = getProjects();
+
+  const STORAGE_KEY = 'momowuwen-active-days';
+
+  function getOrInitDays(): { count: number; lastDate: string } {
+    if (typeof window === 'undefined') return { count: 1, lastDate: '' };
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try { return JSON.parse(stored); } catch { /* fall through */ }
+    }
+    return { count: 1, lastDate: '' };
+  }
+
+  const [daysActive, setDaysActive] = useState(0);
+
+  useEffect(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    const data = getOrInitDays();
+
+    if (!data.lastDate) {
+      data.lastDate = today;
+      data.count = 1;
+    } else if (data.lastDate !== today) {
+      data.count += 1;
+      data.lastDate = today;
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    setDaysActive(data.count);
+  }, []);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <div className="main-container-compact" style={{ flex: 1 }}>
