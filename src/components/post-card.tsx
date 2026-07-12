@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Post } from '@/lib/content';
-import { RiCalendarLine, RiEyeLine, RiHeart3Line } from '@remixicon/react';
+import { RiCalendarLine } from '@remixicon/react';
 
 interface PostCardProps {
   post: Post;
@@ -36,14 +36,6 @@ export function PostCard({ post, index = 0 }: PostCardProps) {
           <p className="post-card-desc">{post.description}</p>
           <div className="post-card-footer">
             <div className="post-card-actions">
-              <span className="post-card-stat">
-                <RiEyeLine className="post-card-stat-icon" />
-                267
-              </span>
-              <span className="post-card-stat">
-                <RiHeart3Line className="post-card-stat-icon post-card-stat-icon--gold" />
-                56
-              </span>
               <span className="post-card-read-btn">
                 阅读全文
               </span>

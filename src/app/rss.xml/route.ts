@@ -1,6 +1,16 @@
 import { getPosts } from '@/lib/content';
 import { siteConfig } from '@/lib/site-config';
 
+// P1-11: Escape XML special characters
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 export async function GET() {
   const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -8,12 +18,12 @@ export async function GET() {
     .map(
       (post) => `
     <item>
-      <title><![CDATA[${post.title}]]></title>
-      <description><![CDATA[${post.description}]]></description>
-      <link>${siteConfig.url}/blog/${post.slug}</link>
-      <guid>${siteConfig.url}/blog/${post.slug}</guid>
+      <title><![CDATA[${escapeXml(post.title)}]]></title>
+      <description><![CDATA[${escapeXml(post.description)}]]></description>
+      <link>${siteConfig.url}/blog/${escapeXml(post.slug)}</link>
+      <guid>${siteConfig.url}/blog/${escapeXml(post.slug)}</guid>
       <pubDate>${new Date(post.date).toUTCString()}</pubDate>
-      ${post.tags.map((tag) => `<category>${tag}</category>`).join('')}
+      ${post.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('')}
     </item>`,
     )
     .join('');
@@ -21,8 +31,8 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${siteConfig.title}</title>
-    <description>${siteConfig.description}</description>
+    <title><![CDATA[${escapeXml(siteConfig.title)}]]></title>
+    <description><![CDATA[${escapeXml(siteConfig.description)}]]></description>
     <link>${siteConfig.url}</link>
     <atom:link href="${siteConfig.url}/rss.xml" rel="self" type="application/rss+xml"/>
     <language>zh-CN</language>

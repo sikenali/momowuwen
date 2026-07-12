@@ -8,16 +8,17 @@ export default function AdminPage() {
 
   useEffect(() => {
     // 配置 Decap CMS 加载相对路径的 config.yml
-    if ((window as any).CMS) {
-      (window as any).CMS.registerPreviewStyle('/admin/preview.css');
+    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
+    if (win.CMS) {
+      win.CMS.registerPreviewStyle('/admin/preview.css');
     }
 
     const originalError = window.onerror;
-    window.onerror = (message, source, line, col, error) => {
-      if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof message === 'string' && message.includes('config'))) {
+    window.onerror = (event, source, lineno, colno, error) => {
+      if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
         setError('Failed to load CMS configuration. Check browser console for details.');
       }
-      return originalError?.(message, source, line, col, error) ?? false;
+      return originalError?.(event, source, lineno, colno, error) ?? false;
     };
   }, []);
 

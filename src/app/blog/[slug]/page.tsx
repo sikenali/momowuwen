@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getPosts } from '@/lib/content';
+import { notFound } from 'next/navigation';
 
 const tagPalette = [
   { bg: 'rgba(194,58,43,0.1)', color: 'rgba(194,58,43,1)' },
@@ -20,6 +21,43 @@ function tagColor(tag: string) {
   return tagPalette[Math.abs(hash) % tagPalette.length];
 }
 
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/<svg[^>]*on\w+\s*=/gi, '')
+    .replace(/<img[^>]*on\w+\s*=/gi, '')
+    .replace(/on\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/on\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/href\s*=\s*"javascript:/gi, 'href="#"')
+    .replace(/action\s*=\s*"javascript:/gi, 'action="#"');
+}
+
+function getArticleViews(slug: string): number {
+  if (typeof window === 'undefined') return 0;
+  const key = `article-views-${slug}`;
+  return parseInt(localStorage.getItem(key) || '0', 10);
+}
+
+function setArticleViews(slug: string, count: number): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(`article-views-${slug}`, String(count));
+}
+
+// Debounce helper to prevent rapid view increments
+const viewTimestamps = new Map<string, number>();
+
+function shouldIncrementView(slug: string): boolean {
+  const now = Date.now();
+  const lastTime = viewTimestamps.get(slug) || 0;
+  // Only increment once per 30 seconds per page visit
+  if (now - lastTime < 30000) return false;
+  viewTimestamps.set(slug, now);
+  return true;
+}
+
 const allPosts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
 export default function ArticleDetailPage() {
@@ -27,62 +65,27 @@ export default function ArticleDetailPage() {
   const slug = params?.slug as string;
   const post = allPosts.find(p => p.slug === slug);
 
-  const [activeTocIndex, setActiveTocIndex] = useState(0);
-  const [tocItems, setTocItems] = useState<{level: number; text: string; url: string}[]>([]);
+  // P0-01: Call notFound() when post doesn't exist
+  if (!post) notFound();
+
   const contentRef = useRef<HTMLDivElement>(null);
-  const viewsRef = useRef<number>(0);
-  const viewsLoaded = useRef(false);
+  const [displayViews, setDisplayViews] = useState(0);
 
+  // P1-08: View counting with debounce
   useEffect(() => {
-    if (!post) return;
-    const key = `article-views-${post.slug}`;
-    const stored = parseInt(localStorage.getItem(key) || '0', 10);
-    viewsRef.current = stored;
-    viewsLoaded.current = true;
-    localStorage.setItem(key, String(stored + 1));
-    viewsRef.current = stored + 1;
-  }, [post]);
+    const stored = getArticleViews(post.slug);
+    setDisplayViews(stored);
 
-  useEffect(() => {
-    if (!post || !contentRef.current) return;
+    if (shouldIncrementView(post.slug)) {
+      setArticleViews(post.slug, stored + 1);
+      setDisplayViews(stored + 1);
+    }
+  }, [post.slug]);
 
-    const timer = setTimeout(() => {
-      const headings = contentRef.current!.querySelectorAll('h3, h4');
-      const mapping: {level: number; text: string; url: string}[] = [];
-      headings.forEach((h, idx) => {
-        const id = `heading-${idx}`;
-        h.setAttribute('id', id);
-        const level = h.tagName === 'H3' ? 1 : 2;
-        mapping.push({ level, text: h.textContent || '', url: `#${id}` });
-      });
-      setTocItems(mapping);
-      setActiveTocIndex(0);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, [post]);
-
-  useEffect(() => {
-    if (tocItems.length === 0 || !contentRef.current) return;
-
-    const headings = contentRef.current.querySelectorAll('h3, h4');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const idx = Array.from(headings).indexOf(entry.target as Element);
-            if (idx >= 0) setActiveTocIndex(idx);
-          }
-        }
-      },
-      { root: null, rootMargin: '-100px 0px -50% 0px', threshold: 0.1 }
-    );
-
-    headings.forEach((h) => observer.observe(h));
-    return () => observer.disconnect();
-  }, [tocItems]);
-
-  if (!post) return null;
+  // P1-06: Previous/Next article navigation
+  const currentIndex = allPosts.findIndex(p => p.slug === post.slug);
+  const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 
   const text = post.content?.replace(/<[^>]*>/g, '') || '';
   const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
@@ -90,80 +93,67 @@ export default function ArticleDetailPage() {
   const totalMinutes = Math.ceil((chineseChars / 300 + englishWords / 200) * 10) / 10;
   const readingTime = Math.max(1, Math.round(totalMinutes));
 
-  const displayViews = viewsLoaded.current ? viewsRef.current : 0;
   const d = new Date(post.date);
   const dateStr = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
 
   return (
     <div className="detail-page-layout">
-      <div className="detail-main">
-        <div className="detail-content" ref={contentRef}>
-          <header className="detail-header">
-            <div className="detail-tags">
-              {post.tags.map((tag: string, i: number) => {
-                const c = tagColor(tag);
-                return (
-                  <span key={tag} className="detail-tag" style={{ backgroundColor: c.bg, color: c.color }}>
-                    {tag}
-                  </span>
-                );
-              })}
+      <div className="detail-main"></div>
+      <div className="detail-content" ref={contentRef}>
+        <header className="detail-header">
+          <div className="detail-tags">
+            {post.tags.map((tag) => {
+              const c = tagColor(tag);
+              return (
+                <span key={tag} className="detail-tag" style={{ backgroundColor: c.bg, color: c.color }}>
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+          <h1 className="detail-title">{post.title}</h1>
+          <div className="detail-meta">
+            <div className="detail-meta-row">
+              <span><i className="ri-calendar-line meta-icon"></i> {dateStr}</span>
+              <span><i className="ri-book-read-line meta-icon"></i> {readingTime} 分钟阅读</span>
+              <span><i className="ri-eye-line meta-icon"></i> {displayViews} 次阅读</span>
             </div>
-            <h1 className="detail-title">{post.title}</h1>
-            <div className="detail-meta">
-              <div className="detail-meta-row">
-                <span><i className="ri-calendar-line meta-icon"></i> {dateStr}</span>
-                <span><i className="ri-book-read-line meta-icon"></i> {readingTime} 分钟阅读</span>
-                <span><i className="ri-eye-line meta-icon"></i> {displayViews} 次阅读</span>
-              </div>
-            </div>
-          </header>
+          </div>
+        </header>
 
-          <div className="detail-divider"></div>
+        <div className="detail-divider"></div>
 
-          <article className="detail-body">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
-          </article>
-        </div>
+        <article className="detail-body">
+          <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }} />
+        </article>
 
-        <aside className="article-sidebar">
-          {tocItems.length > 0 && (
-            <div className="sidebar-toc">
-              <h4 className="sidebar-title">目录</h4>
-              <div className="toc-list">
-                  {tocItems.map((item, i) => (
-                  <a
-                    key={i}
-                    href={item.url}
-                    className={`toc-item ${i === activeTocIndex ? 'toc-item--active' : 'toc-item--default'} toc-item--level-${item.level}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      const el = document.getElementById(item.url.replace('#', ''));
-                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }}
-                  >
-                    <span className="toc-text">{item.text}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="sidebar-related">
-            <h4 className="sidebar-title">相关推荐</h4>
-            {allPosts.filter(p => p.slug !== slug).slice(0, 3).map((rp, i) => (
-              <Link key={rp.slug} href={`/blog/${rp.slug}`} className="related-card" style={{ textDecoration: 'none', color: 'inherit' }}>
-                <div className="related-thumb">
-                  <img src={rp.cover || '/images/cover-default.svg'} alt={rp.title} />
-                </div>
-                <div className="related-info">
-                  <span className="related-title">{rp.title}</span>
-                  <span className="related-views">520 次阅读</span>
+        {/* P1-06: Previous/Next navigation */}
+        {(prevPost || nextPost) && (
+          <div className="article-navigation">
+            {prevPost ? (
+              <Link href={`/blog/${prevPost.slug}`} className="nav-card">
+                <i className="ri-arrow-left-s-line nav-arrow"></i>
+                <div className="nav-card-content">
+                  <span className="nav-card-label">← 上一篇</span>
+                  <span className="nav-card-title">{prevPost.title}</span>
                 </div>
               </Link>
-            ))}
+            ) : (
+              <div />
+            )}
+            {nextPost ? (
+              <Link href={`/blog/${nextPost.slug}`} className="nav-card nav-card-content--end">
+                <div className="nav-card-content">
+                  <span className="nav-card-label">下一篇 →</span>
+                  <span className="nav-card-title">{nextPost.title}</span>
+                </div>
+                <i className="ri-arrow-right-s-line nav-arrow"></i>
+              </Link>
+            ) : (
+              <div />
+            )}
           </div>
-        </aside>
+        )}
       </div>
     </div>
   );

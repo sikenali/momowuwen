@@ -1,6 +1,8 @@
+'use client';
+
+import { useState, useRef, useCallback } from 'react';
 import { PageHero } from '@/components/page-hero';
 import { getProjects } from '@/lib/content';
-import Link from 'next/link';
 
 const cardColors = [
   { accent: 'rgba(196,58,49,1)', bg: 'rgba(253,242,238,1)' },
@@ -13,6 +15,19 @@ const cardColors = [
 
 export default function ProjectsPage() {
   const projects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const [showAll, setShowAll] = useState(false);
+  const [feedback, setFeedback] = useState(false);
+  const timerRef = useRef<number>(0);
+  const limit = 5;
+  const visibleProjects = showAll ? projects : projects.slice(0, limit);
+
+  const handleExplore = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!showAll) setShowAll(true);
+    setFeedback(true);
+    clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => setFeedback(false), 2000);
+  }, [showAll]);
 
   return (
     <>
@@ -30,13 +45,15 @@ export default function ProjectsPage() {
 
       <section className="projects-section">
         <div className="cards-shelf cards-shelf-expanded">
-          {projects.slice(0, 5).map((project, i) => {
+          {visibleProjects.map((project, i) => {
             const colors = cardColors[i % cardColors.length];
             return (
-              <Link
+              <a
                 key={project.slug}
-                href={`/projects/${project.slug}`}
+                href={project.link || `/projects/${project.slug}`}
                 className="shelf-item"
+                target={project.link ? '_blank' : undefined}
+                rel={project.link ? 'noopener noreferrer' : undefined}
               >
                 <div className="card-body">
                   <div className="card-icon" style={{ backgroundColor: colors.bg, color: colors.accent }}>
@@ -46,19 +63,17 @@ export default function ProjectsPage() {
                   <p className="card-desc">{project.description}</p>
                   <div className="card-accent-bar" style={{ backgroundColor: colors.accent }}></div>
                 </div>
-              </Link>
+              </a>
             );
           })}
         </div>
 
-        {projects.length > 5 && (
-          <div className="explore-more-section">
-            <span className="explore-more-text">探索更多</span>
-            <Link href="/projects" className="explore-arrow">
-              <i className="ri-arrow-down-line"></i>
-            </Link>
-          </div>
-        )}
+        <div className="explore-more-section">
+          <span className="explore-more-text">{feedback ? '已全部加载' : '探索更多'}</span>
+          <a href="#" className="explore-arrow" onClick={handleExplore}>
+            <i className="ri-arrow-down-line"></i>
+          </a>
+        </div>
       </section>
     </>
   );

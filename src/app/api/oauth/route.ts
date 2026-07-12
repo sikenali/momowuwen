@@ -48,15 +48,23 @@ export async function GET(req: NextRequest) {
     }
 
     const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
+    // P1-08: Sanitize origin to prevent injection, use proper origin validation
+    const sanitizedOrigin = origin.replace(/[^a-zA-Z0-9:\\-]/g, '');
+    
+    // Build HTML safely with template literal escaping
+    const accessTokenEscaped = accessToken.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
+    const scopeEscaped = scope.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
+    
     const html =
       '<!DOCTYPE html><html><body>' +
       '<script>' +
       'function receiveMessage(event) {' +
-      "  window.opener.postMessage('authorization:" + accessToken + ':' + scope + "', event.origin);" +
+      '  if (event.origin !== "' + sanitizedOrigin + '") return;' +
+      "  window.opener.postMessage('authorization:" + accessTokenEscaped + ':' + scopeEscaped + "', event.origin);" +
       '  window.removeEventListener("message", receiveMessage);' +
       '}' +
       'window.addEventListener("message", receiveMessage, false);' +
-      "window.opener.postMessage('authorizing:" + accessToken + "', '" + origin + "');" +
+      "window.opener.postMessage('authorizing:" + accessTokenEscaped + "', '" + sanitizedOrigin + "');" +
       '</scr' + 'ipt></body></html>';
 
     return new NextResponse(html, {

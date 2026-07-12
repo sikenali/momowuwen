@@ -38,10 +38,8 @@ export function Nav() {
       indicatorRef.current.style.width = r.width + 'px';
     };
 
-    // Defer measurement to next frame after render
-    requestAnimationFrame(() => {
-      requestAnimationFrame(updatePosition);
-    });
+    // Single rAF to ensure layout is ready
+    requestAnimationFrame(updatePosition);
   }, [activeNav]);
 
   return (
