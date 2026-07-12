@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { siteConfig } from '@/lib/site-config';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: 'ri-home-5-line', href: '/' },
@@ -52,6 +53,46 @@ export function Nav() {
         aria-hidden="true"
       />
       <label htmlFor="nav-toggle" className="nav-overlay" aria-hidden="true"></label>
+      <div className="nav-panel" aria-hidden="true">
+        <button className="nav-panel-close" aria-label="关闭" onClick={() => { document.getElementById('nav-toggle')?.click(); }}>
+          <i className="ri-close-line"></i>
+        </button>
+        
+        <div className="nav-panel-section nav-panel-nav">
+          {navItems.map((item) => {
+            const isActive = activeNav === item.id;
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                data-nav={item.id}
+                className={`nav-panel-item ${isActive ? 'active' : ''}`}
+                onClick={() => { document.getElementById('nav-toggle')?.click(); }}
+              >
+                <i className={`${item.icon} nav-panel-icon`}></i>
+                <span className="nav-panel-label">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+        
+        <div className="nav-panel-divider"></div>
+        
+        <div className="nav-panel-section nav-panel-social">
+          <a href={siteConfig.social.github} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <i className="ri-github-fill nav-panel-icon"></i>
+          </a>
+          <a href={siteConfig.social.twitter} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <i className="ri-twitter-x-fill nav-panel-icon"></i>
+          </a>
+          <a href={`mailto:${siteConfig.email}`} className="nav-panel-social-link" aria-label="Email">
+            <i className="ri-mail-fill nav-panel-icon"></i>
+          </a>
+          <a href={siteConfig.social.rss} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="RSS">
+            <i className="ri-rss-fill nav-panel-icon"></i>
+          </a>
+        </div>
+      </div>
       <nav className="navbar">
       <Link href="/" className="logo-area">
         <div className="logo-seal">
