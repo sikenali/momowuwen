@@ -5,13 +5,20 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { getPosts } from '@/lib/content';
 
-const TAG_COLORS = [
-  { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
-  { bg: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' },
-  { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
-  { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
-  { bg: 'rgba(245,240,230,1)', color: 'rgba(92,74,50,1)' },
+const tagPalette = [
+  { bg: 'rgba(194,58,43,0.1)', color: 'rgba(194,58,43,1)' },
+  { bg: 'rgba(212,168,67,0.1)', color: 'rgba(184,134,11,1)' },
+  { bg: 'rgba(74,140,109,0.1)', color: 'rgba(74,140,109,1)' },
+  { bg: 'rgba(91,127,168,0.1)', color: 'rgba(91,127,168,1)' },
+  { bg: 'rgba(160,139,106,0.1)', color: 'rgba(160,139,106,1)' },
+  { bg: 'rgba(123,158,179,0.1)', color: 'rgba(123,158,179,1)' },
 ];
+
+function tagColor(tag: string) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) hash = ((hash << 5) - hash) + tag.charCodeAt(i);
+  return tagPalette[Math.abs(hash) % tagPalette.length];
+}
 
 const allPosts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -94,7 +101,7 @@ export default function ArticleDetailPage() {
           <header className="detail-header">
             <div className="detail-tags">
               {post.tags.map((tag: string, i: number) => {
-                const c = TAG_COLORS[i % TAG_COLORS.length];
+                const c = tagColor(tag);
                 return (
                   <span key={tag} className="detail-tag" style={{ backgroundColor: c.bg, color: c.color }}>
                     {tag}
@@ -124,11 +131,11 @@ export default function ArticleDetailPage() {
             <div className="sidebar-toc">
               <h4 className="sidebar-title">目录</h4>
               <div className="toc-list">
-                {tocItems.map((item, i) => (
+                  {tocItems.map((item, i) => (
                   <a
                     key={i}
                     href={item.url}
-                    className={`toc-item ${i === activeTocIndex ? 'toc-item--active' : 'toc-item--default'}`}
+                    className={`toc-item ${i === activeTocIndex ? 'toc-item--active' : 'toc-item--default'} toc-item--level-${item.level}`}
                     onClick={(e) => {
                       e.preventDefault();
                       const el = document.getElementById(item.url.replace('#', ''));

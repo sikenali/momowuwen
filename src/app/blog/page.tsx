@@ -111,15 +111,23 @@ function BlogList() {
   );
 }
 
-const blogTagColors: Record<string, { bg: string; color: string }> = {
-  前端开发: { bg: 'rgba(253,232,228,1)', color: 'rgba(194,58,43,1)' },
-  设计思考: { bg: 'rgba(250,240,208,1)', color: 'rgba(184,134,11,1)' },
-  技术笔记: { bg: 'rgba(224,240,228,1)', color: 'rgba(74,140,109,1)' },
-  默认: { bg: 'rgba(232,240,248,1)', color: 'rgba(91,127,168,1)' },
-};
+const tagPalette = [
+  { bg: 'rgba(194,58,43,0.1)', color: 'rgba(194,58,43,1)' },
+  { bg: 'rgba(212,168,67,0.1)', color: 'rgba(184,134,11,1)' },
+  { bg: 'rgba(74,140,109,0.1)', color: 'rgba(74,140,109,1)' },
+  { bg: 'rgba(91,127,168,0.1)', color: 'rgba(91,127,168,1)' },
+  { bg: 'rgba(160,139,106,0.1)', color: 'rgba(160,139,106,1)' },
+  { bg: 'rgba(123,158,179,0.1)', color: 'rgba(123,158,179,1)' },
+];
+
+function tagColor(tag: string) {
+  let hash = 0;
+  for (let i = 0; i < tag.length; i++) hash = ((hash << 5) - hash) + tag.charCodeAt(i);
+  return tagPalette[Math.abs(hash) % tagPalette.length];
+}
 
 function LatestCard({ post, index }: { post: { title: string; description: string; tags: string[]; date: string; slug: string; cover?: string }; index: number }) {
-  const tc = blogTagColors[post.tags[0]] || blogTagColors['默认'];
+  const tc = tagColor(post.tags[0]);
   const [views, setViews] = useState(0);
 
   useEffect(() => {

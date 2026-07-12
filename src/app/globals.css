@@ -1929,7 +1929,7 @@ main::-webkit-scrollbar {
 }
 
 .about-info-value {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: rgba(44, 36, 22, 1);
   white-space: nowrap;
@@ -1945,9 +1945,9 @@ main::-webkit-scrollbar {
 }
 
 .about-bio p {
-  font-size: 14px;
+  font-size: 16px;
   color: rgba(92, 74, 50, 1);
-  line-height: 1.5;
+  line-height: 1.6;
   text-align: center;
   max-width: 100%;
 }
@@ -1975,9 +1975,9 @@ main::-webkit-scrollbar {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 15px;
   color: rgba(92, 74, 50, 1);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .experience-icon {
@@ -2032,7 +2032,7 @@ main::-webkit-scrollbar {
 }
 
 .about-signature-name {
-  font-size: 18px;
+  font-size: 20px;
   color: rgba(194, 58, 43, 1);
   line-height: 1.2;
 }
@@ -2708,6 +2708,15 @@ main::-webkit-scrollbar {
   align-items: center;
   gap: 11px;
   padding: 6px 0;
+}
+
+.toc-item--level-1 {
+  padding-left: 0;
+}
+
+.toc-item--level-2 {
+  padding-left: 20px;
+  font-size: 13px;
 }
 
 .toc-item--default {

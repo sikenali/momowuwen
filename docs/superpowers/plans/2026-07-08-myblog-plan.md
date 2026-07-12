@@ -39,7 +39,7 @@
 
 ```json
 {
-  "name": "myblog",
+  "name": "momowuwen",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -236,9 +236,9 @@ export const notoSerifSC = Noto_Serif_SC({
 
 ```typescript
 export const siteConfig = {
-  title: '墨韵',
+  title: '墨墨梧文',
   description: '中国古典水墨风格个人博客',
-  url: 'https://myblog.vercel.app',
+  url: 'https://momowuwen.vercel.app',
   author: '作者名',
   email: 'your@email.com',
   social: {
