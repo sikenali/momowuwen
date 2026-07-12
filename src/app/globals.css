@@ -495,6 +495,141 @@ body {
   border: 0;
 }
 
+/* Mobile dropdown panel - hidden by default */
+.nav-panel {
+  position: fixed;
+  top: 64px;
+  right: 16px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Show panel when checkbox is checked */
+.nav-toggle-input:checked ~ .nav-panel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Close button */
+.nav-panel-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s ease;
+}
+
+.nav-panel-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Section and divider */
+.nav-panel-section {
+  margin-bottom: 12px;
+}
+
+.nav-panel-nav {
+  margin-bottom: 16px;
+}
+
+.nav-panel-divider {
+  height: 1px;
+  background: rgba(232, 213, 192, 0.5);
+  margin: 12px 0;
+}
+
+/* Nav items */
+.nav-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-panel-item:hover {
+  background: rgba(196, 58, 49, 0.06);
+}
+
+.nav-panel-item.active {
+  color: var(--accent-red);
+  font-weight: 600;
+  background: rgba(196, 58, 49, 0.08);
+}
+
+.nav-panel-icon {
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-panel-label {
+  flex: 1;
+}
+
+/* Social links */
+.nav-panel-social {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.nav-panel-social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.nav-panel-social-link:hover {
+  color: var(--accent-red);
+  background: rgba(196, 58, 49, 0.08);
+  transform: scale(1.1);
+}
+
+.nav-panel-social-link .nav-panel-icon {
+  font-size: 20px;
+  width: auto;
+  text-align: center;
+}
+
+/* Hide panel on desktop */
+@media (min-width: 769px) {
+  .nav-panel {
+    display: none;
+  }
+}
+
+/* Hide panel on desktop - end */
+
 /* Full-screen overlay for closing menu */
 .nav-overlay {
   position: fixed;
@@ -978,6 +1113,14 @@ main::-webkit-scrollbar {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: rgba(160,139,106,0.3) transparent;
+  transition: max-height 0.4s ease;
+  max-height: 260px;
+}
+
+.cards-shelf-expanded {
+  flex-wrap: wrap;
+  max-height: none;
+  overflow-x: visible;
 }
 
 .cards-shelf::-webkit-scrollbar {
