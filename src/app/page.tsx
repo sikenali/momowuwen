@@ -1,5 +1,6 @@
 'use client';
 import { getPosts, getProjects } from '@/lib/content';
+import Link from 'next/link';
 
 const posts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 3);
 const projects = getProjects();
@@ -59,9 +60,9 @@ export default function Home() {
 
       <div className="explore-more-section">
         <span className="explore-more-text">探索更多</span>
-        <a href="/projects" className="explore-arrow">
+        <Link href="/projects" className="explore-arrow">
           <i className="ri-target-line"></i>
-        </a>
+        </Link>
       </div>
     </div>
   );

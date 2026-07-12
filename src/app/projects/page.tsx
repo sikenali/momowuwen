@@ -1,14 +1,19 @@
 import { PageHero } from '@/components/page-hero';
+import { getProjects } from '@/lib/content';
+import Link from 'next/link';
 
-const shelfCards = [
-  { name: '金', desc: '金', icon: 'ri-github-line', color: 'rgba(196,58,49,1)', bg: 'rgba(253,242,238,1)', url: 'https://github.com/sikenali/momowuwen' },
-  { name: '木', desc: '木', icon: 'ri-github-line', color: 'rgba(200,164,92,1)', bg: 'rgba(253,248,232,1)', url: 'https://assistant.10012049.xyz' },
-  { name: '水', desc: '水', icon: 'ri-github-line', color: 'rgba(91,140,90,1)', bg: 'rgba(237,245,237,1)', url: '#' },
-  { name: '火', desc: '火', icon: 'ri-github-line', color: 'rgba(123,158,179,1)', bg: 'rgba(237,242,247,1)', url: '#' },
-  { name: '土', desc: '土', icon: 'ri-github-line', color: 'rgba(184,84,80,1)', bg: 'rgba(250,238,238,1)', url: '#' },
+const cardColors = [
+  { accent: 'rgba(196,58,49,1)', bg: 'rgba(253,242,238,1)' },
+  { accent: 'rgba(200,164,92,1)', bg: 'rgba(253,248,232,1)' },
+  { accent: 'rgba(91,140,90,1)', bg: 'rgba(237,245,237,1)' },
+  { accent: 'rgba(123,158,179,1)', bg: 'rgba(237,242,247,1)' },
+  { accent: 'rgba(184,84,80,1)', bg: 'rgba(250,238,238,1)' },
+  { accent: 'rgba(160,139,106,1)', bg: 'rgba(245,240,230,1)' },
 ];
 
 export default function ProjectsPage() {
+  const projects = getProjects().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return (
     <>
       <div className="main-container-compact" style={{ flex: 1 }}>
@@ -24,32 +29,36 @@ export default function ProjectsPage() {
       </div>
 
       <section className="projects-section">
-        <div className="cards-shelf">
-          {shelfCards.map((card, i) => (
-            <a
-              key={i}
-              href={card.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="shelf-item"
-            >
-              <div className="card-body">
-                <div className="card-icon" style={{ backgroundColor: card.bg, color: card.color }}>
-                  <i className={card.icon}></i>
+        <div className="cards-shelf cards-shelf-expanded">
+          {projects.slice(0, 5).map((project, i) => {
+            const colors = cardColors[i % cardColors.length];
+            return (
+              <Link
+                key={project.slug}
+                href={`/projects/${project.slug}`}
+                className="shelf-item"
+              >
+                <div className="card-body">
+                  <div className="card-icon" style={{ backgroundColor: colors.bg, color: colors.accent }}>
+                    <i className="ri-github-line"></i>
+                  </div>
+                  <h3 className="card-title">{project.title}</h3>
+                  <p className="card-desc">{project.description}</p>
+                  <div className="card-accent-bar" style={{ backgroundColor: colors.accent }}></div>
                 </div>
-                <h3 className="card-title">{card.name}</h3>
-                <p className="card-desc">{card.desc}</p>
-                <div className="card-accent-bar" style={{ backgroundColor: card.color }}></div>
-              </div>
-            </a>
-          ))}
+              </Link>
+            );
+          })}
         </div>
-        <div className="explore-more-section">
-          <span className="explore-more-text">探索更多</span>
-          <a href="/blog" target="_blank" rel="noopener noreferrer" className="explore-arrow">
-            <i className="ri-arrow-down-line"></i>
-          </a>
-        </div>
+
+        {projects.length > 5 && (
+          <div className="explore-more-section">
+            <span className="explore-more-text">探索更多</span>
+            <Link href="/projects" className="explore-arrow">
+              <i className="ri-arrow-down-line"></i>
+            </Link>
+          </div>
+        )}
       </section>
     </>
   );

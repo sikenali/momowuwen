@@ -60,7 +60,7 @@ function BlogList() {
       </div>
 
       {displayCount <= 15 ? (
-        <div style={{ display: 'flex', gap: '24px', maxWidth: '1294px', margin: '2px auto 0' }}>
+          <div style={{ display: 'flex', gap: '24px', maxWidth: '1294px', margin: '2px auto 0', flexWrap: 'wrap' }}>
           <style>{`.latest-article-card { flex: 1; min-width: 0; }`}</style>
           {visiblePosts.map((post, i) => (
             <LatestCard key={post.slug} post={post} index={i} />

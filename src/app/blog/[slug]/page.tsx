@@ -68,7 +68,7 @@ export default function ArticleDetailPage() {
           }
         }
       },
-      { rootMargin: '-120px 0px -60% 0px', threshold: 0 }
+      { root: null, rootMargin: '-100px 0px -50% 0px', threshold: 0.1 }
     );
 
     headings.forEach((h) => observer.observe(h));

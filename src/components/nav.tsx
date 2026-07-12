@@ -54,10 +54,6 @@ export function Nav() {
       />
       <label htmlFor="nav-toggle" className="nav-overlay" aria-hidden="true"></label>
       <div className="nav-panel" aria-hidden="true">
-        <button className="nav-panel-close" aria-label="关闭" onClick={() => { document.getElementById('nav-toggle')?.click(); }}>
-          <i className="ri-close-line"></i>
-        </button>
-        
         <div className="nav-panel-section nav-panel-nav">
           {navItems.map((item) => {
             const isActive = activeNav === item.id;
@@ -79,18 +75,24 @@ export function Nav() {
         <div className="nav-panel-divider"></div>
         
         <div className="nav-panel-section nav-panel-social">
-          <a href={siteConfig.social.github} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-            <i className="ri-github-fill nav-panel-icon"></i>
-          </a>
-          <a href={siteConfig.social.twitter} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <i className="ri-twitter-x-fill nav-panel-icon"></i>
-          </a>
-          <a href={`mailto:${siteConfig.email}`} className="nav-panel-social-link" aria-label="Email">
-            <i className="ri-mail-fill nav-panel-icon"></i>
-          </a>
-          <a href={siteConfig.social.rss} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="RSS">
-            <i className="ri-rss-fill nav-panel-icon"></i>
-          </a>
+          <div className="nav-panel-social-icons">
+            <a href={siteConfig.social.github} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i className="ri-github-fill nav-panel-icon"></i>
+            </a>
+            <a href={siteConfig.social.twitter} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+              <i className="ri-twitter-x-fill nav-panel-icon"></i>
+            </a>
+            <a href={`mailto:${siteConfig.email}`} className="nav-panel-social-link" aria-label="Email">
+              <i className="ri-mail-fill nav-panel-icon"></i>
+            </a>
+            <a href={siteConfig.social.rss} className="nav-panel-social-link" target="_blank" rel="noopener noreferrer" aria-label="RSS">
+              <i className="ri-rss-fill nav-panel-icon"></i>
+            </a>
+          </div>
+          <div className="nav-panel-copyright">
+            <span>&copy; {new Date().getFullYear()} 墨墨梧文</span>
+            <a href="https://lazycat.cloud/" target="_blank" rel="noopener noreferrer">Powered by LightOS</a>
+          </div>
         </div>
       </div>
       <nav className="navbar">
