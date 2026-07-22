@@ -4,7 +4,7 @@ function redirectToGitHub(req: NextRequest) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
     return new NextResponse(
-      '<html><body><h3>GitHub OAuth 未配置</h3><p>请设置 GITHUB_CLIENT_ID 和 GITHUB_CLIENT_SECRET 环境变量。</p></body></html>',
+      '<!DOCTYPE html><html><body><h3>GitHub OAuth 未配置</h3><p>请设置 GITHUB_CLIENT_ID 环境变量。</p></body></html>',
       { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
     );
   }
@@ -29,6 +29,9 @@ export async function GET(req: NextRequest) {
     return redirectToGitHub(req);
   }
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
   try {
     const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
@@ -41,6 +44,7 @@ export async function GET(req: NextRequest) {
         client_secret: clientSecret,
         code,
       }),
+      signal: controller.signal,
     });
 
     const data = await tokenRes.json();
@@ -54,10 +58,10 @@ export async function GET(req: NextRequest) {
     const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
     const safeOrigin = new URL(origin).origin;
     const escapedOrigin = safeOrigin.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
-    
+
     const accessTokenEscaped = accessToken.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
     const scopeEscaped = scope.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
-    
+
     const html =
       '<!DOCTYPE html><html><body>' +
       '<script>' +
@@ -76,6 +80,15 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return new NextResponse(
+      '<!DOCTYPE html><html><body>' +
+      '<h3>认证失败</h3>' +
+      '<p>' + message.replace(/</g, '&lt;') + '</p>' +
+      '<p><a href="javascript:void(0)" onclick="window.opener.postMessage(\'auth_failed\', \'*\'); window.close()">关闭并重试</a></p>' +
+      '</body></html>',
+      { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+    );
+  } finally {
+    clearTimeout(timeout);
   }
 }
