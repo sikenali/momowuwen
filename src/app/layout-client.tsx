@@ -18,7 +18,7 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Nav />
+      {!isAdmin && <Nav />}
       <main ref={mainRef} className="flex-1 overflow-y-scroll">{children}</main>
       {!isAdmin && <Footer />}
     </>
