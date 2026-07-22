@@ -2,7 +2,8 @@
 title: 回旋标
 date: 2026-07-06
 slug: 2026-07-06-boomerang
-tags: [前端, CSS]
+draft: false
+tags: [前端，CSS]
 category: 前端框架
 cover: /images/project-default.svg
 description: 文档智能处理平台

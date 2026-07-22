@@ -2,6 +2,7 @@
 title: 懒猫微服
 date: 2026-07-08
 slug: 2026-07-08-lazycat-assistant
+draft: false
 tags: [AI, Vue]
 category: AI 应用
 cover: /images/project-default.svg
