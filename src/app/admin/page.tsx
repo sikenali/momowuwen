@@ -13,6 +13,13 @@ export default function AdminPage() {
       win.CMS.registerPreviewStyle('/admin/preview.css');
     }
 
+    window.addEventListener('message', (event) => {
+      console.log('[Admin] postMessage received:', event.data, 'from:', event.origin);
+      if (typeof event.data === 'string' && event.data.startsWith('authorization:')) {
+        console.log('[Admin] Auth token detected in postMessage');
+      }
+    });
+
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
