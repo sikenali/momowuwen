@@ -7,11 +7,6 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
-    if (win.CMS) {
-      win.CMS.registerPreviewStyle('/admin/preview.css');
-    }
-
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
@@ -46,7 +41,10 @@ export default function AdminPage() {
             strategy="afterInteractive"
             crossOrigin="anonymous"
             onReady={() => {
-              console.log('Decap CMS loaded');
+              const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
+              if (win.CMS) {
+                win.CMS.registerPreviewStyle('/admin/preview.css');
+              }
             }}
             onError={() => {
               setError('Failed to load Decap CMS library');

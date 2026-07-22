@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const PROVIDER = 'github';
+
 function redirectToGitHub(req: NextRequest) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
@@ -9,7 +11,7 @@ function redirectToGitHub(req: NextRequest) {
     );
   }
 
-  const redirectUri = process.env.OAUTH_REDIRECT_URI || `${req.nextUrl.origin}/api/oauth`;
+  const redirectUri = `${req.nextUrl.origin}/api/oauth`;
   const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo,user`;
   return NextResponse.redirect(url);
 }
@@ -49,20 +51,67 @@ export async function GET(req: NextRequest) {
 
     const data = await tokenRes.json();
     const accessToken = data.access_token;
-    const scope = data.scope || '';
 
     if (!accessToken) {
       return redirectToGitHub(req);
     }
 
-    const tokenEnc = encodeURIComponent(accessToken);
-    const scopeEnc = encodeURIComponent(scope);
-    const adminUrl = `${req.nextUrl.origin}/admin?token=${tokenEnc}&scope=${scopeEnc}`;
+    const token = encodeURIComponent(JSON.stringify({
+      token: accessToken,
+      access_token: accessToken,
+      scope: data.scope || '',
+      token_type: data.token_type || 'bearer',
+    }));
 
-    const html =
-      '<!DOCTYPE html><html><body>' +
-      '<script>window.opener.location.replace("' + adminUrl.replace(/"/g, '\\"') + '"); window.close();</script>' +
-      '</body></html>';
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"></head>
+<body>
+<script>
+(function() {
+  var TOKEN = decodeURIComponent("${token}");
+  var PROVIDER = "${PROVIDER}";
+  var RETRIES = 0;
+
+  if (!window.opener) {
+    document.body.innerHTML = "Auth succeeded but popup lost connection. Please close this and try again.";
+    return;
+  }
+
+  function sendToken(origin) {
+    window.opener.postMessage(
+      "authorization:" + PROVIDER + ":success:" + TOKEN,
+      origin
+    );
+    window.close();
+  }
+
+  function handleMessage(e) {
+    if (e.data === "authorizing:" + PROVIDER) {
+      window.removeEventListener("message", handleMessage);
+      clearInterval(retryTimer);
+      sendToken(e.origin);
+    }
+  }
+
+  window.addEventListener("message", handleMessage);
+
+  function tryAuthorizing() {
+    window.opener.postMessage("authorizing:" + PROVIDER, "*");
+    RETRIES++;
+    if (RETRIES > 5) {
+      window.removeEventListener("message", handleMessage);
+      clearInterval(retryTimer);
+      sendToken("*");
+    }
+  }
+
+  tryAuthorizing();
+  var retryTimer = setInterval(tryAuthorizing, 3000);
+})();
+</script>
+</body>
+</html>`;
 
     return new NextResponse(html, {
       status: 200,

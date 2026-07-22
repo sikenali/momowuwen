@@ -2,14 +2,8 @@ backend:
   name: github
   repo: sikenali/momowuwen
   branch: main
-  auth_type: pkce
-  app_id: Ov23livVTYubR2HUognb
-
-# 本地开发（无需 OAuth）请换为：
-# backend:
-#   name: proxy
-#   proxy_url: http://localhost:8081/api/v1
-#  然后运行: npx decap-cms-proxy-server
+  base_url: https://www.10012049.xyz
+  auth_endpoint: api/oauth
 
 locale: zh_Hans
 
