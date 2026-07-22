@@ -8,12 +8,12 @@ function redirectToGitHub(req: NextRequest): NextResponse {
     return new NextResponse(
       '<!DOCTYPE html><html><body><h3>GitHub OAuth 未配置</h3></body></html>',
       { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-    );
+    ) as NextResponse<string>;
   }
 
   const redirectUri = `${req.nextUrl.origin}/api/oauth`;
   const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo,user`;
-  return NextResponse.redirect(url);
+  return NextResponse.redirect(url) as NextResponse<string>;
 }
 
 async function handleToken(code: string, req: NextRequest): Promise<NextResponse<string>> {
