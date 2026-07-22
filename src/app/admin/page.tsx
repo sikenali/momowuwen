@@ -29,10 +29,27 @@ export default function AdminPage() {
       return;
     }
 
-    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
+    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void; getBackend?: () => { authenticate: (state: { token: string; scope: string }) => Promise<unknown> } } };
     if (win.CMS) {
       win.CMS.registerPreviewStyle('/admin/preview.css');
     }
+
+    const tryInjectAuth = () => {
+      const stored = localStorage.getItem('decap-cms-user');
+      if (!stored) return;
+      try {
+        const user = JSON.parse(stored);
+        if (user?.token && win.CMS?.getBackend) {
+          const backend = win.CMS.getBackend() as { authenticate?: (state: { token: string; scope: string }) => Promise<unknown> };
+          if (backend?.authenticate) {
+            backend.authenticate({ token: user.token, scope: user.scope || '' });
+          }
+        }
+      } catch { /* ignore */ }
+    };
+
+    const interval = setInterval(tryInjectAuth, 500);
+    setTimeout(() => clearInterval(interval), 10000);
 
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
