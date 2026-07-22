@@ -1,28 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+function redirectToGitHub(req: NextRequest) {
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  if (!clientId) {
+    return new NextResponse(
+      '<html><body><h3>GitHub OAuth 未配置</h3><p>请设置 GITHUB_CLIENT_ID 和 GITHUB_CLIENT_SECRET 环境变量。</p></body></html>',
+      { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+    );
+  }
+
+  const redirectUri = process.env.OAUTH_REDIRECT_URI || `${req.nextUrl.origin}/api/oauth`;
+  const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo,user`;
+  return NextResponse.redirect(url);
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get('code');
 
   if (!code) {
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    if (!clientId) {
-      return new NextResponse(
-        '<html><body><h3>GitHub OAuth 未配置</h3><p>请设置 GITHUB_CLIENT_ID 和 GITHUB_CLIENT_SECRET 环境变量。</p></body></html>',
-        { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-      );
-    }
-
-    const redirectUri = process.env.OAUTH_REDIRECT_URI || `${req.nextUrl.origin}/api/oauth`;
-    const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=repo,user`;
-    return NextResponse.redirect(url);
+    return redirectToGitHub(req);
   }
 
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
   if (!clientId || !clientSecret) {
-    return NextResponse.json({ error: 'OAuth not configured' }, { status: 500 });
+    return redirectToGitHub(req);
   }
 
   try {
@@ -44,7 +48,7 @@ export async function GET(req: NextRequest) {
     const scope = data.scope || '';
 
     if (!accessToken) {
-      return NextResponse.json({ error: 'Failed to get access token', details: data }, { status: 500 });
+      return redirectToGitHub(req);
     }
 
     const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
