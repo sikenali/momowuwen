@@ -21,15 +21,14 @@ export default function AdminPage() {
       return originalError?.(event, source, lineno, colno, error) ?? false;
     };
 
-    const mainEl = document.querySelector('main');
-    if (mainEl) {
-      (mainEl as HTMLElement).style.overflow = 'visible';
-    }
   }, [handleError]);
-
+  
   return (
     <>
-      <style>{`main{overflow:visible!important}`}</style>
+      <style>{`
+        main { overflow: visible !important; padding: 0 !important; margin: 0 !important; }
+        #cms { min-height: 100vh; }
+      `}</style>
       <div id="cms" />
       {!ready && !error && (
         <div style={{
