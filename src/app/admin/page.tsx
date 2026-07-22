@@ -29,22 +29,28 @@ export default function AdminPage() {
     cms.style.cssText = 'min-height:100vh;margin:0;padding:0';
     document.body.insertBefore(cms, document.body.firstChild);
 
+    const observer = new MutationObserver(() => {
+      if (document.getElementById('nc-root')) {
+        setReady(true);
+        observer.disconnect();
+      }
+    });
+    observer.observe(cms, { childList: true, subtree: true });
+
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
     script.async = true;
-    script.onload = () => {
-      setReady(true);
-      const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
-      if (win.CMS) {
-        win.CMS.registerPreviewStyle('/admin/preview.css');
-      }
+    script.onerror = () => {
+      setError('Failed to load Decap CMS library');
     };
-    script.onerror = () => setError('Failed to load Decap CMS library');
     document.body.appendChild(script);
+
+    setTimeout(() => setReady(true), 10000);
 
     return () => {
       cms.remove();
       script.remove();
+      observer.disconnect();
     };
   }, []);
 
