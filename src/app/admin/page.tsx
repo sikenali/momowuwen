@@ -7,49 +7,10 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    if (token) {
-      const scope = params.get('scope') || '';
-
-      fetch('https://api.github.com/user', {
-        headers: { Authorization: 'Bearer ' + token },
-      })
-        .then((r) => r.json())
-        .then((userData) => {
-          localStorage.setItem('decap-cms-user', JSON.stringify({ ...userData, token, scope }));
-        })
-        .catch(() => {
-          localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
-        })
-        .finally(() => {
-          history.replaceState(null, '', '/admin');
-          location.reload();
-        });
-      return;
-    }
-
-    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void; getBackend?: () => { authenticate: (state: { token: string; scope: string }) => Promise<unknown> } } };
+    const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
     if (win.CMS) {
       win.CMS.registerPreviewStyle('/admin/preview.css');
     }
-
-    const tryInjectAuth = () => {
-      const stored = localStorage.getItem('decap-cms-user');
-      if (!stored) return;
-      try {
-        const user = JSON.parse(stored);
-        if (user?.token && win.CMS?.getBackend) {
-          const backend = win.CMS.getBackend() as { authenticate?: (state: { token: string; scope: string }) => Promise<unknown> };
-          if (backend?.authenticate) {
-            backend.authenticate({ token: user.token, scope: user.scope || '' });
-          }
-        }
-      } catch { /* ignore */ }
-    };
-
-    const interval = setInterval(tryInjectAuth, 500);
-    setTimeout(() => clearInterval(interval), 10000);
 
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {

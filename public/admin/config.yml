@@ -2,8 +2,8 @@ backend:
   name: github
   repo: sikenali/momowuwen
   branch: main
-  base_url: https://www.10012049.xyz
-  auth_endpoint: api/oauth
+  auth_type: pkce
+  app_id: Ov23livVTYubR2HUognb
 
 # 本地开发（无需 OAuth）请换为：
 # backend:
