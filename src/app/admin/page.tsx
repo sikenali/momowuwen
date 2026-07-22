@@ -1,5 +1,7 @@
 'use client';
 
+import Script from 'next/script';
+
 export default function AdminPage() {
   return (
     <>
@@ -8,7 +10,10 @@ export default function AdminPage() {
         #cms { min-height: 100vh; }
       `}</style>
       <div id="cms" />
-      <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" />
+      <Script
+        src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
+        strategy="afterInteractive"
+      />
     </>
   );
 }
