@@ -11,6 +11,6 @@ export function GET() {
   content = content.replace(/base_url:\s*.+/, `base_url: ${siteUrl}`);
 
   return new NextResponse(content, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: { 'Content-Type': 'application/x-yaml; charset=utf-8' },
   });
 }

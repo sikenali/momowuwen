@@ -6,7 +6,7 @@ const cspHeader = `
   style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
   img-src 'self' data: https:;
   font-src 'self' https://cdn.jsdelivr.net;
-  connect-src 'self' https://github.com https://api.github.com;
+  connect-src 'self' https://github.com https://api.github.com https://unpkg.com;
   frame-src 'none';
   object-src 'none';
   base-uri 'self';
@@ -19,7 +19,7 @@ const cspAdminHeader = `
   style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
   img-src 'self' data: https:;
   font-src 'self' https://cdn.jsdelivr.net;
-  connect-src 'self' https://github.com https://api.github.com;
+  connect-src 'self' https://github.com https://api.github.com https://unpkg.com;
   frame-src 'none';
   object-src 'none';
   base-uri 'self';
