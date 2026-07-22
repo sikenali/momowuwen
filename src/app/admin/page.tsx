@@ -8,6 +8,12 @@ export default function AdminPage() {
 
   useEffect(() => {
     document.body.style.margin = '0';
+    document.body.style.padding = '0';
+    const main = document.querySelector('main.flex-1');
+    if (main) {
+      main.removeAttribute('class');
+      main.setAttribute('style', 'min-height:100vh;padding:0;margin:0;overflow:visible');
+    }
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
@@ -19,10 +25,6 @@ export default function AdminPage() {
 
   return (
     <>
-      <style>{`
-        html, body { margin: 0 !important; padding: 0 !important; height: 100%; }
-        main.flex-1 { height: 100vh !important; min-height: auto !important; overflow: visible !important; flex: none !important; }
-      `}</style>
       <div id="cms" />
       {error && (
         <div style={{
@@ -51,7 +53,7 @@ export default function AdminPage() {
           }
         }}
         onError={() => {
-          setError('Failed to load Decap CMS library');
+          setError('Failed to load Decap library');
         }}
       />
     </>
