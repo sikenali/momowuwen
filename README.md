@@ -38,6 +38,16 @@ cover: /images/my-cover.jpg
 ### 发布流程
 CMS 保存内容后推送至 `main` 分支，Vercel 自动重新构建，新内容随即上线。
 
+### Decap CMS 配置
+配置文件位于 `public/admin/config.yml`，主要设置：
+
+- **backend**: GitHub OAuth 认证，直连仓库 `sikenali/momowuwen`
+- **media_folder**: `public/images`，上传的图片存放在此目录
+- **collections**: 定义 `posts`（博客文章）和 `projects`（项目作品）两个集合
+- **fields**: 每篇文章可编辑标题、日期、标签、分类、封面图、草稿状态和正文内容
+
+CMS 编辑的 markdown 文件自动符合 Velite 编译要求。
+
 ## 项目结构
 
 ```
