@@ -18,6 +18,10 @@ export default function AdminPage() {
 
   return (
     <>
+      <style>{`
+        body { margin: 0; }
+        main.flex-1 { min-height: 100vh; padding: 0; margin: 0; overflow: visible !important; }
+      `}</style>
       <div id="cms" style={{ minHeight: '100vh' }}>
         {!error && (
           <div style={{
