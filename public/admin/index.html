@@ -6,17 +6,25 @@
   <title>CMS Admin</title>
   <style>
     html, body { margin: 0; padding: 0; height: 100%; }
-    #cms { height: 100vh; width: 100vw; }
+    #cms { height: 100vh; width: 100vw; position: relative; }
+    .cms-placeholder {
+      display: block;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
   </style>
 </head>
 <body>
-  <div id="cms"><span id="cms-placeholder"></span></div>
+  <div id="cms"><span class="cms-placeholder"></span></div>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
-    // Init CMS when loaded
+    // Poll for CMS to be available, then init with saved token
     var token = localStorage.getItem('decap_cms_token');
     
-    function initCMS() {
+    function tryInit() {
       if (window.CMS) {
         window.CMS.init({
           backend: {
@@ -25,13 +33,19 @@
             branch: 'main',
             auth_type: token ? 'token' : 'pkce',
             token: token
+          },
+          locale: {
+            root: { languageName: '简体中文' },
+            locales: {
+              'zh_Hans': '简体中文'
+            }
           }
         });
       } else {
-        setTimeout(initCMS, 50);
+        setTimeout(tryInit, 50);
       }
     }
-    initCMS();
+    tryInit();
   </script>
 </body>
 </html>
