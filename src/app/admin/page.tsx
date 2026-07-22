@@ -20,19 +20,6 @@ export default function AdminPage() {
   return (
     <>
       <div id="cms" style={{ minHeight: '100vh' }}>
-        {!error && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            color: 'rgba(139, 115, 85, 1)',
-            fontSize: '16px',
-          }}>
-            加载中...
-          </div>
-        )}
-      </div>
       {error && (
         <div style={{
           position: 'fixed',
