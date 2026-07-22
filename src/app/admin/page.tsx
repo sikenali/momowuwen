@@ -8,6 +8,8 @@ export default function AdminPage() {
 
   useEffect(() => {
     document.body.style.margin = '0';
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {

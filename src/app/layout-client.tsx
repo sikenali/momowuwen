@@ -11,15 +11,25 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
   const mainRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (mainRef.current) {
+    if (mainRef.current && !isAdmin) {
       mainRef.current.scrollTop = 0;
     }
-  }, [pathname]);
+    // Override body constraints for CMS full-screen layout
+    if (isAdmin) {
+      document.body.style.overflow = 'auto';
+      document.body.style.height = 'auto';
+      document.body.style.margin = '0';
+    }
+  }, [isAdmin]);
 
   return (
     <>
       {!isAdmin && <Nav />}
-      <main ref={mainRef} className="flex-1 overflow-y-scroll">{children}</main>
+      {isAdmin ? (
+        children
+      ) : (
+        <main ref={mainRef} className="flex-1 overflow-y-scroll">{children}</main>
+      )}
       {!isAdmin && <Footer />}
     </>
   );
