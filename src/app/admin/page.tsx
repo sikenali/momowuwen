@@ -8,20 +8,21 @@ export default function AdminPage() {
 
   useEffect(() => {
     const startTime = Date.now();
+    const LS_PREFIX = '__ls__';
 
     const originalGetItem = Storage.prototype.getItem;
     Storage.prototype.getItem = function (key: string) {
       const value = originalGetItem.call(this, key);
-      if (key.toLowerCase().includes('token') || key.toLowerCase().includes('oauth') || key.toLowerCase().includes('auth')) {
-        console.log(`[localStorage] getItem("${key}") =`, value ? value.slice(0, 10) + '...' : null);
+      if (Date.now() - startTime < 5000) {
+        console.log(LS_PREFIX + ' getItem("' + key + '") =>', value ? value.slice(0, 20) + '...' : null);
       }
       return value;
     };
 
     const originalSetItem = Storage.prototype.setItem;
     Storage.prototype.setItem = function (key: string, value: string) {
-      if (key.toLowerCase().includes('token') || key.toLowerCase().includes('oauth') || key.toLowerCase().includes('auth')) {
-        console.log(`[localStorage] setItem("${key}") =`, value.slice(0, 10) + '...');
+      if (Date.now() - startTime < 5000) {
+        console.log(LS_PREFIX + ' setItem("' + key + '") =', value.slice(0, 30));
       }
       return originalSetItem.call(this, key, value);
     };
