@@ -39,14 +39,13 @@ cover: /images/my-cover.jpg
 CMS 保存内容后推送至 `main` 分支，Vercel 自动重新构建，新内容随即上线。
 
 ### Decap CMS 配置
-配置文件位于 `public/admin/config.yml`，主要设置：
+CMS、GitHub、Vercel 三者的配置关系：
 
-- **backend**: GitHub OAuth 认证，直连仓库 `sikenali/momowuwen`
-- **media_folder**: `public/images`，上传的图片存放在此目录
-- **collections**: 定义 `posts`（博客文章）和 `projects`（项目作品）两个集合
-- **fields**: 每篇文章可编辑标题、日期、标签、分类、封面图、草稿状态和正文内容
+- **Decap CMS**（`public/admin/config.yml`）：配置 `backend.name: github`、`repo: sikenali/momowuwen`、`branch: main`，以及 `base_url` 和 `auth_endpoint` 指向站点 OAuth 代理
+- **GitHub**：CMS 读写 `content/` 目录下 markdown 文件的存储仓库，push 到 `main` 分支即触发 Vercel 构建
+- **Vercel**：连接 GitHub 仓库，检测到 `main` 分支有新 commit 时自动拉取代码并执行 `npm run build`，部署后新内容即时生效
 
-CMS 编辑的 markdown 文件自动符合 Velite 编译要求。
+三者链路：`CMS 编辑 → GitHub 推送 → Vercel 构建 → 线上展示`
 
 ## 项目结构
 
