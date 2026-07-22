@@ -10,10 +10,10 @@
   </style>
 </head>
 <body>
-  <div id="cms"></div>
+  <div id="cms"><span id="cms-placeholder"></span></div>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
-    // Init CMS immediately when loaded
+    // Init CMS when loaded
     var token = localStorage.getItem('decap_cms_token');
     
     function initCMS() {
