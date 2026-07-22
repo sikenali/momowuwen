@@ -37,10 +37,10 @@ export default function AdminPage() {
       if (event.data.startsWith('authorization:')) {
         const parts = event.data.split(':');
         const token = parts[1];
+        const scope = parts.slice(2).join(':');
         if (token) {
-          const keys = ['github-oauth-token', 'decap-cms-github-oauth-token', 'gh-token'];
-          keys.forEach(k => localStorage.setItem(k, token));
-          console.log(`[Admin] Token stored in ${keys.length} keys, reloading...`);
+          localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
+          console.log('[Admin] User stored in decap-cms-user, reloading...');
           setTimeout(() => location.reload(), 300);
         }
       }
