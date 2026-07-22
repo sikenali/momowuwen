@@ -19,7 +19,11 @@ export default function AdminPage() {
 
   return (
     <>
-      <div id="cms" style={{ minHeight: '100vh' }}>
+      <style>{`
+        html, body { margin: 0 !important; padding: 0 !important; height: 100%; }
+        main.flex-1 { height: 100vh !important; min-height: auto !important; overflow: visible !important; flex: none !important; }
+      `}</style>
+      <div id="cms" />
       {error && (
         <div style={{
           position: 'fixed',
