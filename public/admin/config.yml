@@ -2,6 +2,7 @@ backend:
   name: github
   repo: sikenali/momowuwen
   branch: main
+  auth_type: code
   base_url: https://www.10012049.xyz
   auth_endpoint: api/oauth
 
