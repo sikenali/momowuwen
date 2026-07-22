@@ -1,54 +1,47 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
 
 export default function AdminPage() {
-  const [error, setError] = useState('');
+  const cmsReadyRef = useRef(false);
 
   useEffect(() => {
+    // Inject a clean #cms div directly into body, outside of React
+    if (cmsReadyRef.current) return;
+    cmsReadyRef.current = true;
+
     document.body.style.margin = '0';
+    document.body.style.padding = '0';
     document.body.style.overflow = 'auto';
     document.body.style.height = 'auto';
-    const originalError = window.onerror;
-    window.onerror = (event, source, lineno, colno, error) => {
-      if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
-        setError('Failed to load CMS configuration. Check browser console for details.');
+
+    // Remove any existing #cms (from React SSR) and recreate fresh
+    const existing = document.getElementById('cms');
+    if (existing) existing.remove();
+
+    const cms = document.createElement('div');
+    cms.id = 'cms';
+    document.body.appendChild(cms);
+
+    // When CMS fully initializes (after script loads and renders), remove this loading marker
+    const checkCmsReady = setInterval(() => {
+      if (cms.querySelector('[id="nc-root"]')) {
+        clearInterval(checkCmsReady);
+        // CMS has replaced innerHTML - we're good
       }
-      return originalError?.(event, source, lineno, colno, error) ?? false;
+    }, 200);
+
+    // Cleanup on unmount
+    return () => {
+      clearInterval(checkCmsReady);
+      const el = document.getElementById('cms');
+      if (el) el.remove();
     };
   }, []);
 
   return (
     <>
-      <div id="cms" style={{ minHeight: '100vh' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-          color: 'rgba(139, 115, 85, 1)',
-          fontSize: '16px',
-        }}>
-          加载中...
-        </div>
-      </div>
-      {error && (
-        <div style={{
-          position: 'fixed',
-          bottom: 24,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          padding: '12px 24px',
-          background: 'rgba(194, 58, 43, 0.9)',
-          borderRadius: '8px',
-          color: '#fff',
-          fontSize: '14px',
-          zIndex: 9999,
-        }}>
-          {error}
-        </div>
-      )}
       <Script
         src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
         strategy="afterInteractive"
@@ -58,9 +51,6 @@ export default function AdminPage() {
           if (win.CMS) {
             win.CMS.registerPreviewStyle('/admin/preview.css');
           }
-        }}
-        onError={() => {
-          setError('Failed to load Decap library');
         }}
       />
     </>
