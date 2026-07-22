@@ -2,202 +2,67 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CMS Admin</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; width: 100%; overflow: hidden; font-family: sans-serif; }
-    
-    #login-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    
-    .login-card {
-      background: #f5f5f5;
-      padding: 30px;
-      border-radius: 8px;
-      min-width: 400px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .login-card h2 {
-      margin-bottom: 15px;
-      color: #C23B22;
-    }
-    
-    .login-card p {
-      color: #666;
-      margin-bottom: 15px;
-      line-height: 1.5;
-    }
-    
-    .input-group {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    
-    .input-group input {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 14px;
-    }
-    
-    .input-group button {
-      padding: 10px 20px;
-      background: #C23B22;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    .input-group button:hover {
-      background: #a03019;
-    }
-    
-    .or-divider {
-      text-align: center;
-      color: #999;
-      margin: 10px 0;
-      position: relative;
-    }
-    
-    .or-divider::before, .or-divider::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 45%;
-      height: 1px;
-      background: #ddd;
-    }
-    
+    body { font-family: sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; background: #fff; }
+    .card { background: #f5f5f5; padding: 30px; border-radius: 8px; width: 400px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h2 { color: #C23B22; margin-bottom: 15px; }
+    p { color: #666; margin-bottom: 15px; line-height: 1.5; }
+    .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+    .input-group input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+    .input-group button { padding: 10px 20px; background: #C23B22; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .or-divider { text-align: center; color: #999; margin: 10px 0; position: relative; }
+    .or-divider::before, .or-divider::after { content: ''; position: absolute; top: 50%; width: 45%; height: 1px; background: #ddd; }
     .or-divider::before { left: 0; }
     .or-divider::after { right: 0; }
-    
-    .oauth-button {
-      width: 100%;
-      padding: 10px;
-      background: #24292e;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    
-    .oauth-button:hover {
-      background: #1a1f24;
-    }
+    .oauth-btn { width: 100%; padding: 10px; background: #24292e; color: white; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
   </style>
 </head>
 <body>
-  <div id="login-screen">
-    <div class="login-card">
-      <h2>Decap CMS 登录</h2>
-      <p>请输入您的 GitHub Personal Access Token（PAT）以访问管理后台。</p>
-      
-      <div class="input-group">
-        <input type="text" id="tokenInput" placeholder="粘贴你的 PAT token..." />
-        <button onclick="handleLogin()">登录</button>
-      </div>
-      
-      <div class="or-divider">或</div>
-      
-      <button class="oauth-button" onclick="startOAuthLogin()">使用 GitHub 账号登录</button>
+  <div class="card" id="login">
+    <h2>Decap CMS</h2>
+    <p>请输入 GitHub PAT token</p>
+    <div class="input-group">
+      <input id="tok" type="text" placeholder="粘贴你的 PAT..." />
+      <button onclick="doLogin()">登录</button>
     </div>
+    <div class="or-divider">或</div>
+    <button class="oauth-btn" onclick="doOAuth()">GitHub 账号登录</button>
   </div>
-  
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
     (function() {
-      var loginScreen = document.getElementById('login-screen');
-      var tokenInput = document.getElementById('tokenInput');
+      var login = document.getElementById('login');
+      var tokInput = document.getElementById('tok');
       
-      // Auto-login with saved token
-      function getSavedToken() {
-        try {
-          return localStorage.getItem('decap_cms_token') || '';
-        } catch(e) {
-          return '';
-        }
+      function getToken() {
+        try { return localStorage.getItem('cms_token') || ''; } catch(e) { return ''; }
       }
       
-      function initCMS(token) {
-        if (!window.CMS) {
-          setTimeout(initCMS, 50);
-          return;
+      function init(token) {
+        function ready() {
+          if (window.CMS) {
+            try { window.CMS.init({ backend: { name: 'github', repo: 'sikenali/momowuwen', branch: 'main', auth_type: 'token', token: token }, locale: { root: { languageName: '简体中文' }, locales: { 'zh_Hans': '简体中文' } } }); } catch(e) { alert('认证失败: ' + e.message); }
+          } else { setTimeout(ready, 50); }
         }
-        
-        try {
-          window.CMS.init({
-            backend: {
-              name: 'github',
-              repo: 'sikenali/momowuwen',
-              branch: 'main',
-              auth_type: 'token',
-              token: token
-            },
-            locale: {
-              root: { languageName: '简体中文' },
-              locales: { 'zh_Hans': '简体中文' }
-            }
-          });
-          
-          // Hide login screen after successful init
-          loginScreen.style.display = 'none';
-          
-        } catch(err) {
-          alert('认证失败: ' + err.message);
-        }
+        ready();
       }
       
-      function handleLogin() {
-        var token = tokenInput.value.trim() || getSavedToken();
-        
-        if (!token) {
-          alert('请输入 Token');
-          return;
-        }
-        
-        // Save token for next time
-        try {
-          localStorage.setItem('decap_cms_token', token);
-        } catch(e) {}
-        
-        initCMS(token);
-      }
+      window.doLogin = function() {
+        var t = tokInput.value.trim() || getToken();
+        if (!t) { alert('请输入 Token'); return; }
+        try { localStorage.setItem('cms_token', t); } catch(e) {}
+        init(t);
+      };
       
-      function startOAuthLogin() {
+      window.doOAuth = function() {
         window.open('/api/oauth', '_blank', 'width=600,height=700');
-        
-        // Wait a bit then check if auth succeeded
-        setTimeout(function() {
-          var saved = getSavedToken();
-          if (saved && !tokenInput.value.trim()) {
-            initCMS(saved);
-          }
-        }, 2000);
-      }
+        setTimeout(function() { var s = getToken(); if (s && !tokInput.value.trim()) init(s); }, 3000);
+      };
       
-      // Auto-login
-      var saved = getSavedToken();
-      if (saved) {
-        tokenInput.value = saved;
-        initCMS(saved);
-      }
-      
+      var s = getToken();
+      if (s) { tokInput.value = s; init(s); }
     })();
   </script>
 </body>
