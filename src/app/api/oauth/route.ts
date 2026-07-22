@@ -56,21 +56,11 @@ export async function GET(req: NextRequest) {
     }
 
     const html =
-      '<!DOCTYPE html><html><head>' +
-      '<meta http-equiv="Content-Security-Policy" content="default-src *; script-src * \'unsafe-inline\';">' +
-      '</head><body>' +
-      '<h3>认证成功</h3>' +
-      '<p>Token 已发送，请关闭此窗口。</p>' +
+      '<!DOCTYPE html><html><body>' +
+      '<p>认证成功，正在关闭...</p>' +
       '<script>' +
-      'function send() {' +
-      '  if (!window.opener || window.opener.closed) {' +
-      '    document.body.innerHTML = "<h3>父窗口已关闭</h3><p>请刷新后台页面重新登录。</p>";' +
-      '    return;' +
-      '  }' +
-      '  window.opener.postMessage("authorization:' + accessToken + ':' + scope + '", "*");' +
-      '  setTimeout(send, 500);' +
-      '}' +
-      'send();' +
+      'window.opener.postMessage("authorization:' + accessToken + ':' + scope + '", "*");' +
+      'setTimeout(function() { window.close(); }, 500);' +
       '</script>' +
       '</body></html>';
 

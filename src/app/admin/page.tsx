@@ -14,9 +14,14 @@ export default function AdminPage() {
     }
 
     window.addEventListener('message', (event) => {
-      console.log('[Admin] postMessage received:', event.data, 'from:', event.origin);
-      if (typeof event.data === 'string' && event.data.startsWith('authorization:')) {
-        console.log('[Admin] Auth token detected in postMessage');
+      if (typeof event.data !== 'string') return;
+      if (event.data.startsWith('authorization:')) {
+        const parts = event.data.split(':');
+        const token = parts[1];
+        if (token) {
+          localStorage.setItem('github-oauth-token', token);
+          setTimeout(() => location.reload(), 300);
+        }
       }
     });
 
