@@ -59,4 +59,4 @@ content/
 
 ## 许可
 
-私有项目。
+[MIT License](LICENSE)
