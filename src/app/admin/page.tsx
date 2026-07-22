@@ -1,42 +1,23 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Script from 'next/script';
 
 export default function AdminPage() {
-  const cmsReadyRef = useRef(false);
-
   useEffect(() => {
-    // Inject a clean #cms div directly into body, outside of React
-    if (cmsReadyRef.current) return;
-    cmsReadyRef.current = true;
-
+    // Mount CMS directly to body - completely outside React tree
     document.body.style.margin = '0';
     document.body.style.padding = '0';
-    document.body.style.overflow = 'auto';
-    document.body.style.height = 'auto';
-
-    // Remove any existing #cms (from React SSR) and recreate fresh
-    const existing = document.getElementById('cms');
-    if (existing) existing.remove();
-
     const cms = document.createElement('div');
     cms.id = 'cms';
-    document.body.appendChild(cms);
+    cms.style.minHeight = '100vh';
+    document.body.insertBefore(cms, document.body.firstChild);
 
-    // When CMS fully initializes (after script loads and renders), remove this loading marker
-    const checkCmsReady = setInterval(() => {
-      if (cms.querySelector('[id="nc-root"]')) {
-        clearInterval(checkCmsReady);
-        // CMS has replaced innerHTML - we're good
-      }
-    }, 200);
-
-    // Cleanup on unmount
     return () => {
-      clearInterval(checkCmsReady);
       const el = document.getElementById('cms');
       if (el) el.remove();
+      document.body.style.margin = '';
+      document.body.style.padding = '';
     };
   }, []);
 
