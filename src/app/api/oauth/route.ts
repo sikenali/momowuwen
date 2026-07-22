@@ -48,10 +48,9 @@ export async function GET(req: NextRequest) {
     }
 
     const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
-    // P1-08: Sanitize origin to prevent injection, use proper origin validation
-    const sanitizedOrigin = origin.replace(/[^a-zA-Z0-9:\\-]/g, '');
+    const safeOrigin = new URL(origin).origin;
+    const escapedOrigin = safeOrigin.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
     
-    // Build HTML safely with template literal escaping
     const accessTokenEscaped = accessToken.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
     const scopeEscaped = scope.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
     
@@ -59,12 +58,12 @@ export async function GET(req: NextRequest) {
       '<!DOCTYPE html><html><body>' +
       '<script>' +
       'function receiveMessage(event) {' +
-      '  if (event.origin !== "' + sanitizedOrigin + '") return;' +
+      '  if (event.origin !== "' + escapedOrigin + '") return;' +
       "  window.opener.postMessage('authorization:" + accessTokenEscaped + ':' + scopeEscaped + "', event.origin);" +
       '  window.removeEventListener("message", receiveMessage);' +
       '}' +
       'window.addEventListener("message", receiveMessage, false);' +
-      "window.opener.postMessage('authorizing:" + accessTokenEscaped + "', '" + sanitizedOrigin + "');" +
+      "window.opener.postMessage('authorizing:" + accessTokenEscaped + "', '" + escapedOrigin + "');" +
       '</scr' + 'ipt></body></html>';
 
     return new NextResponse(html, {
