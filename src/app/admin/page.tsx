@@ -18,40 +18,50 @@ export default function AdminPage() {
 
   return (
     <>
-      <div style={{ minHeight: '100vh', background: 'rgba(250, 246, 237, 1)', padding: '40px 64px' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', paddingTop: '80px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'rgba(44, 36, 22, 1)', marginBottom: '16px' }}>CMS 管理后台</h2>
-          <p style={{ color: 'rgba(139, 115, 85, 1)', marginBottom: '32px' }}>Decap CMS 正在加载...</p>
-          <div id="cms"></div>
-          {error && (
-            <div style={{
-              marginTop: '24px',
-              padding: '16px 24px',
-              background: 'rgba(194, 58, 43, 0.08)',
-              border: '1px solid rgba(194, 58, 43, 0.2)',
-              borderRadius: '12px',
-              color: 'rgba(194, 58, 43, 1)',
-              fontSize: '14px',
-            }}>
-              {error}
-            </div>
-          )}
-          <Script
-            src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
-            strategy="afterInteractive"
-            crossOrigin="anonymous"
-            onReady={() => {
-              const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
-              if (win.CMS) {
-                win.CMS.registerPreviewStyle('/admin/preview.css');
-              }
-            }}
-            onError={() => {
-              setError('Failed to load Decap CMS library');
-            }}
-          />
-        </div>
+      <div id="cms" style={{ minHeight: '100vh' }}>
+        {!error && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            color: 'rgba(139, 115, 85, 1)',
+            fontSize: '16px',
+          }}>
+            加载中...
+          </div>
+        )}
       </div>
+      {error && (
+        <div style={{
+          position: 'fixed',
+          bottom: 24,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          padding: '12px 24px',
+          background: 'rgba(194, 58, 43, 0.9)',
+          borderRadius: '8px',
+          color: '#fff',
+          fontSize: '14px',
+          zIndex: 9999,
+        }}>
+          {error}
+        </div>
+      )}
+      <Script
+        src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+        onReady={() => {
+          const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
+          if (win.CMS) {
+            win.CMS.registerPreviewStyle('/admin/preview.css');
+          }
+        }}
+        onError={() => {
+          setError('Failed to load Decap CMS library');
+        }}
+      />
     </>
   );
 }
