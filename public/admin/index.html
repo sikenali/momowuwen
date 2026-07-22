@@ -40,10 +40,24 @@
         try { return localStorage.getItem('cms_token') || ''; } catch(e) { return ''; }
       }
       
+      function hideLogin() {
+        if (login) {
+          login.style.display = 'none';
+          document.body.style.height = '100vh';
+          document.body.style.overflow = 'hidden';
+        }
+      }
+      
       function init(token) {
         function ready() {
           if (window.CMS) {
-            try { window.CMS.init({ backend: { name: 'github', repo: 'sikenali/momowuwen', branch: 'main', auth_type: 'token', token: token }, locale: { root: { languageName: '简体中文' }, locales: { 'zh_Hans': '简体中文' } } }); } catch(e) { alert('认证失败: ' + e.message); }
+            try {
+              window.CMS.init({
+                backend: { name: 'github', repo: 'sikenali/momowuwen', branch: 'main', auth_type: 'token', token: token },
+                locale: { root: { languageName: '简体中文' }, locales: { 'zh_Hans': '简体中文' } }
+              });
+              hideLogin();
+            } catch(e) { alert('认证失败: ' + e.message); }
           } else { setTimeout(ready, 50); }
         }
         ready();
