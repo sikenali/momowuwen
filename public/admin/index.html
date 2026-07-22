@@ -13,20 +13,25 @@
   <div id="cms"></div>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
-    window.addEventListener('load', function() {
-      var token = localStorage.getItem('decap_cms_token');
-      if (token && window.CMS) {
+    // Init CMS immediately when loaded
+    var token = localStorage.getItem('decap_cms_token');
+    
+    function initCMS() {
+      if (window.CMS) {
         window.CMS.init({
           backend: {
             name: 'github',
             repo: 'sikenali/momowuwen',
             branch: 'main',
-            auth_type: 'token',
+            auth_type: token ? 'token' : 'pkce',
             token: token
           }
         });
+      } else {
+        setTimeout(initCMS, 50);
       }
-    });
+    }
+    initCMS();
   </script>
 </body>
 </html>
