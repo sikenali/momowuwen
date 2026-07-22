@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const PROVIDER = 'github';
 
-function redirectToGitHub(req: NextRequest) {
+function redirectToGitHub(req: NextRequest): NextResponse {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
     return new NextResponse(
@@ -16,14 +16,7 @@ function redirectToGitHub(req: NextRequest) {
   return NextResponse.redirect(url);
 }
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const code = searchParams.get('code');
-
-  if (!code) {
-    return redirectToGitHub(req);
-  }
-
+async function handleToken(code: string, req: NextRequest): Promise<NextResponse<string>> {
   const clientId = process.env.GITHUB_CLIENT_ID;
   const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
@@ -121,5 +114,32 @@ export async function GET(req: NextRequest) {
     return redirectToGitHub(req);
   } finally {
     clearTimeout(timeout);
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url);
+  const code = url.searchParams.get('code');
+
+  if (!code) {
+    return redirectToGitHub(req);
+  }
+
+  return handleToken(code, req);
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const code = body.code;
+    
+    if (!code) {
+      return NextResponse.json({ error: 'Missing code' }, { status: 400 });
+    }
+    
+    return await handleToken(code, req);
+  } catch (err) {
+    console.error('POST /api/oauth error:', err);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
