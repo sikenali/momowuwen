@@ -7,59 +7,32 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const startTime = Date.now();
-    const LS_PREFIX = '__ls__';
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    if (token) {
+      const scope = params.get('scope') || '';
 
-    const originalGetItem = Storage.prototype.getItem;
-    Storage.prototype.getItem = function (key: string) {
-      const value = originalGetItem.call(this, key);
-      if (Date.now() - startTime < 5000) {
-        console.log(LS_PREFIX + ' getItem("' + key + '") =>', value ? value.slice(0, 20) + '...' : null);
-      }
-      return value;
-    };
-
-    const originalSetItem = Storage.prototype.setItem;
-    Storage.prototype.setItem = function (key: string, value: string) {
-      if (Date.now() - startTime < 5000) {
-        console.log(LS_PREFIX + ' setItem("' + key + '") =', value.slice(0, 30));
-      }
-      return originalSetItem.call(this, key, value);
-    };
+      fetch('https://api.github.com/user', {
+        headers: { Authorization: 'Bearer ' + token },
+      })
+        .then((r) => r.json())
+        .then((userData) => {
+          localStorage.setItem('decap-cms-user', JSON.stringify({ ...userData, token, scope }));
+        })
+        .catch(() => {
+          localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
+        })
+        .finally(() => {
+          history.replaceState(null, '', '/admin');
+          location.reload();
+        });
+      return;
+    }
 
     const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
     if (win.CMS) {
       win.CMS.registerPreviewStyle('/admin/preview.css');
     }
-
-    window.addEventListener('message', async (event) => {
-      if (typeof event.data !== 'string') return;
-      if (event.data.startsWith('authorization:')) {
-        const parts = event.data.split(':');
-        const token = parts[1];
-        const scope = parts.slice(2).join(':');
-        if (!token) return;
-
-        try {
-          const res = await fetch('https://api.github.com/user', {
-            headers: { Authorization: 'Bearer ' + token },
-          });
-          if (res.ok) {
-            const userData = await res.json();
-            localStorage.setItem('decap-cms-user', JSON.stringify({ ...userData, token, scope }));
-            console.log('[Admin] GitHub user stored, reloading...');
-            setTimeout(() => location.reload(), 300);
-            return;
-          }
-          console.warn('[Admin] Failed to fetch GitHub user:', res.status);
-        } catch (e) {
-          console.warn('[Admin] GitHub user fetch error:', e);
-        }
-
-        localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
-        setTimeout(() => location.reload(), 300);
-      }
-    });
 
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {

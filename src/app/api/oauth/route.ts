@@ -4,7 +4,7 @@ function redirectToGitHub(req: NextRequest) {
   const clientId = process.env.GITHUB_CLIENT_ID;
   if (!clientId) {
     return new NextResponse(
-      '<!DOCTYPE html><html><body><h3>GitHub OAuth 未配置</h3><p>请设置 GITHUB_CLIENT_ID 环境变量。</p></body></html>',
+      '<!DOCTYPE html><html><body><h3>GitHub OAuth 未配置</h3></body></html>',
       { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
     );
   }
@@ -55,29 +55,21 @@ export async function GET(req: NextRequest) {
       return redirectToGitHub(req);
     }
 
+    const tokenEnc = encodeURIComponent(accessToken);
+    const scopeEnc = encodeURIComponent(scope);
+    const adminUrl = `${req.nextUrl.origin}/admin?token=${tokenEnc}&scope=${scopeEnc}`;
+
     const html =
       '<!DOCTYPE html><html><body>' +
-      '<p>认证成功，正在关闭...</p>' +
-      '<script>' +
-      'window.opener.postMessage("authorization:' + accessToken + ':' + scope + '", "*");' +
-      'setTimeout(function() { window.close(); }, 500);' +
-      '</script>' +
+      '<script>window.opener.location.replace("' + adminUrl.replace(/"/g, '\\"') + '"); window.close();</script>' +
       '</body></html>';
 
     return new NextResponse(html, {
       status: 200,
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
     });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    return new NextResponse(
-      '<!DOCTYPE html><html><body>' +
-      '<h3>认证失败</h3>' +
-      '<p>' + message.replace(/</g, '&lt;') + '</p>' +
-      '<p><a href="javascript:void(0)" onclick="window.opener.postMessage(\'auth_failed\', \'*\'); window.close()">关闭</a></p>' +
-      '</body></html>',
-      { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-    );
+  } catch {
+    return redirectToGitHub(req);
   } finally {
     clearTimeout(timeout);
   }
