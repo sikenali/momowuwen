@@ -57,10 +57,10 @@ export async function GET(req: NextRequest) {
 
     const html =
       '<!DOCTYPE html><html><body>' +
-      '<p>认证成功，正在关闭...</p>' +
+      '<h3>认证成功</h3>' +
+      '<p>Token 已发送，请关闭此窗口。</p>' +
       '<script>' +
       'window.opener.postMessage("authorization:' + accessToken + ':' + scope + '", "*");' +
-      'window.close();' +
       '</script>' +
       '</body></html>';
 
