@@ -19,7 +19,9 @@ export default function AdminPage() {
         const parts = event.data.split(':');
         const token = parts[1];
         if (token) {
-          localStorage.setItem('github-oauth-token', token);
+          const keys = ['github-oauth-token', 'decap-cms-github-oauth-token', 'gh-token'];
+          keys.forEach(k => localStorage.setItem(k, token));
+          console.log('[Admin] Token stored in localStorage, reloading...');
           setTimeout(() => location.reload(), 300);
         }
       }
