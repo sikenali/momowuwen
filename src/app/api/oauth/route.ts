@@ -55,24 +55,14 @@ export async function GET(req: NextRequest) {
       return redirectToGitHub(req);
     }
 
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.10012049.xyz';
-    const safeOrigin = new URL(origin).origin;
-    const escapedOrigin = safeOrigin.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
-
-    const accessTokenEscaped = accessToken.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
-    const scopeEscaped = scope.replace(/'/g, '\\\'').replace(/\\/g, '\\\\');
-
     const html =
       '<!DOCTYPE html><html><body>' +
+      '<p>认证成功，正在关闭...</p>' +
       '<script>' +
-      'function receiveMessage(event) {' +
-      '  if (event.origin !== "' + escapedOrigin + '") return;' +
-      "  window.opener.postMessage('authorization:" + accessTokenEscaped + ':' + scopeEscaped + "', event.origin);" +
-      '  window.removeEventListener("message", receiveMessage);' +
-      '}' +
-      'window.addEventListener("message", receiveMessage, false);' +
-      "window.opener.postMessage('authorizing:" + accessTokenEscaped + "', '" + escapedOrigin + "');" +
-      '</scr' + 'ipt></body></html>';
+      'window.opener.postMessage("authorization:' + accessToken + ':' + scope + '", "*");' +
+      'window.close();' +
+      '</script>' +
+      '</body></html>';
 
     return new NextResponse(html, {
       status: 200,
@@ -84,7 +74,7 @@ export async function GET(req: NextRequest) {
       '<!DOCTYPE html><html><body>' +
       '<h3>认证失败</h3>' +
       '<p>' + message.replace(/</g, '&lt;') + '</p>' +
-      '<p><a href="javascript:void(0)" onclick="window.opener.postMessage(\'auth_failed\', \'*\'); window.close()">关闭并重试</a></p>' +
+      '<p><a href="javascript:void(0)" onclick="window.opener.postMessage(\'auth_failed\', \'*\'); window.close()">关闭</a></p>' +
       '</body></html>',
       { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
     );
