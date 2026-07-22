@@ -1,7 +1,5 @@
 'use client';
 
-import Script from 'next/script';
-
 export default function AdminPage() {
   return (
     <>
@@ -10,17 +8,7 @@ export default function AdminPage() {
         #cms { min-height: 100vh; }
       `}</style>
       <div id="cms" />
-      <Script
-        src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
-        strategy="afterInteractive"
-        crossOrigin="anonymous"
-        onReady={() => {
-          const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
-          if (win.CMS) {
-            win.CMS.registerPreviewStyle('/admin/preview.css');
-          }
-        }}
-      />
+      <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" />
     </>
   );
 }
