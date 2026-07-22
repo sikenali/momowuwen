@@ -7,7 +7,25 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // 配置 Decap CMS 加载相对路径的 config.yml
+    const startTime = Date.now();
+
+    const originalGetItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (key: string) {
+      const value = originalGetItem.call(this, key);
+      if (key.toLowerCase().includes('token') || key.toLowerCase().includes('oauth') || key.toLowerCase().includes('auth')) {
+        console.log(`[localStorage] getItem("${key}") =`, value ? value.slice(0, 10) + '...' : null);
+      }
+      return value;
+    };
+
+    const originalSetItem = Storage.prototype.setItem;
+    Storage.prototype.setItem = function (key: string, value: string) {
+      if (key.toLowerCase().includes('token') || key.toLowerCase().includes('oauth') || key.toLowerCase().includes('auth')) {
+        console.log(`[localStorage] setItem("${key}") =`, value.slice(0, 10) + '...');
+      }
+      return originalSetItem.call(this, key, value);
+    };
+
     const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
     if (win.CMS) {
       win.CMS.registerPreviewStyle('/admin/preview.css');
@@ -21,7 +39,7 @@ export default function AdminPage() {
         if (token) {
           const keys = ['github-oauth-token', 'decap-cms-github-oauth-token', 'gh-token'];
           keys.forEach(k => localStorage.setItem(k, token));
-          console.log('[Admin] Token stored in localStorage, reloading...');
+          console.log(`[Admin] Token stored in ${keys.length} keys, reloading...`);
           setTimeout(() => location.reload(), 300);
         }
       }
