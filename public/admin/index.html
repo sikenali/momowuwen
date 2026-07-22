@@ -5,47 +5,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CMS Admin</title>
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
-    #cms { height: 100vh; width: 100vw; position: relative; }
-    .cms-placeholder {
-      display: block;
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; width: 100%; overflow: hidden; }
+    #app { height: 100vh; display: flex; flex-direction: column; }
+    
+    .header {
+      background: #f0f0f0;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .header input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .header button {
+      padding: 8px 20px;
+      background: #C23B22;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .header button:hover {
+      background: #a03019;
+    }
+    
+    .error {
+      color: red;
+      padding: 10px;
+      background: #ffe0e0;
+      border-radius: 4px;
+      margin: 10px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
     }
   </style>
 </head>
 <body>
-  <div id="cms"><span class="cms-placeholder"></span></div>
+  <div id="app">
+    <div class="header">
+      <input type="text" id="tokenInput" placeholder="输入 GitHub Token 或留空使用 OAuth" />
+      <button onclick="handleLogin()">登录</button>
+    </div>
+    <div id="message"></div>
+    <div id="cms-container"></div>
+  </div>
+  
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
-    // Poll for CMS to be available, then init with saved token
-    var token = localStorage.getItem('decap_cms_token');
-    
-    function tryInit() {
-      if (window.CMS) {
-        window.CMS.init({
-          backend: {
-            name: 'github',
-            repo: 'sikenali/momowuwen',
-            branch: 'main',
-            auth_type: token ? 'token' : 'pkce',
-            token: token
-          },
-          locale: {
-            root: { languageName: '简体中文' },
-            locales: {
-              'zh_Hans': '简体中文'
-            }
-          }
-        });
-      } else {
-        setTimeout(tryInit, 50);
+    (function() {
+      var app = document.getElementById('app');
+      var message = document.getElementById('message');
+      var container = document.getElementById('cms-container');
+      var tokenInput = document.getElementById('tokenInput');
+      
+      // Check if we have a saved token
+      function getSavedToken() {
+        try {
+          return localStorage.getItem('decap_cms_token') || '';
+        } catch(e) {
+          return '';
+        }
       }
-    }
-    tryInit();
+      
+      function showMessage(text, isError) {
+        message.innerHTML = '<div class="' + (isError ? 'error' : 'loading') + '">' + text + '</div>';
+      }
+      
+      function handleLogin() {
+        var token = tokenInput.value.trim() || getSavedToken();
+        
+        if (!token) {
+          showMessage('请输入你的 GitHub Personal Access Token');
+          return;
+        }
+        
+        showMessage('正在连接 GitHub...');
+        
+        // Save token for next time
+        try {
+          localStorage.setItem('decap_cms_token', token);
+        } catch(e) {
+          // Storage may not be available
+        }
+        
+        initCMS(token);
+      }
+      
+      function initCMS(token) {
+        if (!window.CMS) {
+          setTimeout(initCMS, 50);
+          return;
+        }
+        
+        try {
+          window.CMS.init({
+            backend: {
+              name: 'github',
+              repo: 'sikenali/momowuwen',
+              branch: 'main',
+              auth_type: 'token',
+              token: token
+            },
+            locale: {
+              root: { languageName: '简体中文' },
+              locales: { 'zh_Hans': '简体中文' }
+            }
+          });
+          
+          // Hide login form after successful initialization
+          document.querySelector('.header').style.display = 'none';
+          
+        } catch(err) {
+          showMessage('认证失败: ' + err.message, true);
+        }
+      }
+      
+      // Auto-login with saved token
+      var savedToken = getSavedToken();
+      if (savedToken) {
+        tokenInput.value = savedToken;
+        handleLogin();
+      } else {
+        showMessage('欢迎使用 Decap CMS 管理后台。请输入您的 GitHub Token 继续。');
+      }
+      
+    })();
   </script>
 </body>
 </html>
