@@ -7,6 +7,7 @@ export default function AdminPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    document.body.style.margin = '0';
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
@@ -18,10 +19,6 @@ export default function AdminPage() {
 
   return (
     <>
-      <style>{`
-        body { margin: 0; }
-        main.flex-1 { min-height: 100vh; padding: 0; margin: 0; overflow: visible !important; }
-      `}</style>
       <div id="cms" style={{ minHeight: '100vh' }}>
         {!error && (
           <div style={{
