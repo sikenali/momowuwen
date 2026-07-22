@@ -2,6 +2,19 @@ import type { NextConfig } from 'next';
 
 const cspHeader = `
   default-src 'self';
+  script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+  img-src 'self' data: https:;
+  font-src 'self' https://cdn.jsdelivr.net;
+  connect-src 'self' https://github.com https://api.github.com;
+  frame-src 'none';
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self' https://github.com;
+`;
+
+const cspAdminHeader = `
+  default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://cdn.jsdelivr.net;
   style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
   img-src 'self' data: https:;
@@ -47,6 +60,15 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/admin/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspAdminHeader.replace(/\s{2,}/g, ' ').trim(),
           },
         ],
       },
