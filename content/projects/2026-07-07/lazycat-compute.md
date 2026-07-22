@@ -1,7 +1,7 @@
 ---
 title: 懒猫 AI 算力舱
 date: 2026-07-07
-slug: 2026-07-07-lazycat-compute
+slug: lazycat-compute
 draft: false
 tags: [AI, 基础设施]
 category: 基础设施

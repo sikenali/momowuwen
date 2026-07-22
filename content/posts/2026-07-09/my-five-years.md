@@ -1,7 +1,7 @@
 ---
 title: 我的「钠」五年
 date: 2026-07-09
-slug: 2026-07-09-my-five-years
+slug: my-five-years
 draft: false
 tags: [工作，生活]
 category: 随笔

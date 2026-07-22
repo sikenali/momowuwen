@@ -1,7 +1,7 @@
 ---
 title: 回旋标
 date: 2026-07-06
-slug: 2026-07-06-boomerang
+slug: boomerang
 draft: false
 tags: [前端，CSS]
 category: 前端框架

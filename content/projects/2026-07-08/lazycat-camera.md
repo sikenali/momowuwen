@@ -1,7 +1,7 @@
 ---
 title: 懒猫 AI 摄像头
 date: 2026-07-08
-slug: 2026-07-08-lazycat-camera
+slug: lazycat-camera
 draft: false
 tags: [AI, IoT]
 category: 智能硬件

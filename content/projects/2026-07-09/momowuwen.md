@@ -1,7 +1,7 @@
 ---
 title: 墨墨梧文
 date: 2026-07-09
-slug: 2026-07-09-momowuwen
+slug: momowuwen
 draft: false
 tags: [Next.js, TypeScript]
 category: 开源项目
