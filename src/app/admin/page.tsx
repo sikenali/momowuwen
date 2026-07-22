@@ -26,7 +26,7 @@ export default function AdminPage() {
   return (
     <>
       <style>{`
-        main { overflow: visible !important; padding: 0 !important; margin: 0 !important; }
+        main.flex-1 { overflow: visible !important; padding: 0 !important; margin: 0 !important; }
         #cms { min-height: 100vh; }
       `}</style>
       <div id="cms" />
