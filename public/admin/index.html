@@ -13,17 +13,17 @@
   <div id="cms"></div>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
   <script>
-    // Wait for CMS to load, then set token if available
     window.addEventListener('load', function() {
       var token = localStorage.getItem('decap_cms_token');
       if (token && window.CMS) {
-        window.CMS.registerPreviewTemplate('posts', {
-          displayTemplate: 'note',
-          template: { name: 'note', fields: [], body: '{{body}}' },
-        });
-        window.CMS.registerPreviewTemplate('projects', {
-          displayTemplate: 'note',
-          template: { name: 'note', fields: [], body: '{{body}}' },
+        window.CMS.init({
+          backend: {
+            name: 'github',
+            repo: 'sikenali/momowuwen',
+            branch: 'main',
+            auth_type: 'token',
+            token: token
+          }
         });
       }
     });
