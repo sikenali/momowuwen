@@ -23,7 +23,7 @@ collections:
       - { label: 封面图, name: cover, widget: image, required: false }
       - { label: 草稿, name: draft, widget: boolean, default: false, hint: 勾选后不会在网站上显示 }
       - { label: Slug, name: slug, widget: string }
-      - { label: 正文, name: body, widget: markdown }
+      - { label: 正文, name: content, widget: markdown }
 
   - name: projects
     label: 项目
@@ -40,4 +40,4 @@ collections:
       - { label: 外部链接, name: link, widget: string, required: false }
       - { label: 草稿, name: draft, widget: boolean, default: false, hint: 勾选后不会在网站上显示 }
       - { label: Slug, name: slug, widget: string }
-      - { label: 项目详情, name: body, widget: markdown }
+      - { label: 项目详情, name: content, widget: markdown }
