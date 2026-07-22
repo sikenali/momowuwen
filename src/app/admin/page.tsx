@@ -32,17 +32,32 @@ export default function AdminPage() {
       win.CMS.registerPreviewStyle('/admin/preview.css');
     }
 
-    window.addEventListener('message', (event) => {
+    window.addEventListener('message', async (event) => {
       if (typeof event.data !== 'string') return;
       if (event.data.startsWith('authorization:')) {
         const parts = event.data.split(':');
         const token = parts[1];
         const scope = parts.slice(2).join(':');
-        if (token) {
-          localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
-          console.log('[Admin] User stored in decap-cms-user, reloading...');
-          setTimeout(() => location.reload(), 300);
+        if (!token) return;
+
+        try {
+          const res = await fetch('https://api.github.com/user', {
+            headers: { Authorization: 'Bearer ' + token },
+          });
+          if (res.ok) {
+            const userData = await res.json();
+            localStorage.setItem('decap-cms-user', JSON.stringify({ ...userData, token, scope }));
+            console.log('[Admin] GitHub user stored, reloading...');
+            setTimeout(() => location.reload(), 300);
+            return;
+          }
+          console.warn('[Admin] Failed to fetch GitHub user:', res.status);
+        } catch (e) {
+          console.warn('[Admin] GitHub user fetch error:', e);
         }
+
+        localStorage.setItem('decap-cms-user', JSON.stringify({ token, scope }));
+        setTimeout(() => location.reload(), 300);
       }
     });
 
