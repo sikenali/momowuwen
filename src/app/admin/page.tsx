@@ -1,37 +1,51 @@
 'use client';
 
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function AdminPage() {
   const [error, setError] = useState('');
+  const [ready, setReady] = useState(false);
+
+  const handleError = useCallback((msg: string) => {
+    setError(msg);
+    setReady(true);
+  }, []);
 
   useEffect(() => {
     const originalError = window.onerror;
     window.onerror = (event, source, lineno, colno, error) => {
       if ((typeof source === 'string' && source.includes('decap-cms')) || (typeof event === 'string' && event.includes('config'))) {
-        setError('Failed to load CMS configuration. Check browser console for details.');
+        handleError('Failed to load CMS configuration. Check browser console for details.');
       }
       return originalError?.(event, source, lineno, colno, error) ?? false;
     };
-  }, []);
+
+    const mainEl = document.querySelector('main');
+    if (mainEl) {
+      (mainEl as HTMLElement).style.overflow = 'visible';
+    }
+  }, [handleError]);
 
   return (
     <>
-      <div id="cms" style={{ minHeight: '100vh' }}>
-        {!error && (
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-            color: 'rgba(139, 115, 85, 1)',
-            fontSize: '16px',
-          }}>
-            加载中...
-          </div>
-        )}
-      </div>
+      <style>{`main{overflow:visible!important}`}</style>
+      <div id="cms" />
+      {!ready && !error && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          background: 'rgba(250, 246, 237, 1)',
+          color: 'rgba(139, 115, 85, 1)',
+          fontSize: '16px',
+        }}>
+          加载中...
+        </div>
+      )}
       {error && (
         <div style={{
           position: 'fixed',
@@ -53,13 +67,14 @@ export default function AdminPage() {
         strategy="afterInteractive"
         crossOrigin="anonymous"
         onReady={() => {
+          setReady(true);
           const win = window as Window & typeof globalThis & { CMS?: { registerPreviewStyle: (url: string) => void } };
           if (win.CMS) {
             win.CMS.registerPreviewStyle('/admin/preview.css');
           }
         }}
         onError={() => {
-          setError('Failed to load Decap CMS library');
+          handleError('Failed to load Decap CMS library');
         }}
       />
     </>
