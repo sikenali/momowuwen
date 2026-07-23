@@ -8,28 +8,31 @@ export default function Home() {
 
   const STORAGE_KEY = 'momowuwen-active-days';
 
-  function getOrInitDays(): { count: number; lastDate: string } {
-    if (typeof window === 'undefined') return { count: 1, lastDate: '' };
+  function getOrInitDays(): { count: number; startDate: string } {
+    if (typeof window === 'undefined') return { count: 1, startDate: '' };
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try { return JSON.parse(stored); } catch { /* fall through */ }
     }
-    return { count: 1, lastDate: '' };
+    return { count: 1, startDate: '' };
   }
 
   const [daysActive, setDaysActive] = useState(0);
 
   useEffect(() => {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = new Date();
+    const todayStr = today.toISOString().slice(0, 10);
     const data = getOrInitDays();
 
-    if (!data.lastDate) {
-      data.lastDate = today;
-      data.count = 1;
-    } else if (data.lastDate !== today) {
-      data.count += 1;
-      data.lastDate = today;
+    if (!data.startDate) {
+      data.startDate = todayStr;
     }
+
+    // 计算从开始日期到今天的天数（第1天=1，不依赖逐日递增）
+    const start = new Date(data.startDate);
+    const diffTime = today.getTime() - start.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    data.count = Math.max(1, diffDays);
 
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     setDaysActive(data.count);

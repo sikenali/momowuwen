@@ -14,9 +14,9 @@ const navItems = [
 
 function getActiveFromPath(p: string) {
   if (p === '/') return 'home';
-  if (p === '/blog') return 'blog';
-  if (p === '/projects') return 'projects';
-  if (p === '/about') return 'about';
+  if (p.startsWith('/blog')) return 'blog';
+  if (p.startsWith('/projects')) return 'projects';
+  if (p.startsWith('/about')) return 'about';
   return 'home';
 }
 

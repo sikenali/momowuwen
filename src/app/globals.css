@@ -569,7 +569,7 @@ body {
 .nav-panel-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
   padding: 10px 20px;
   width: 100%;
@@ -592,12 +592,10 @@ body {
 
 .nav-panel-icon {
   font-size: 18px;
-  width: 20px;
   text-align: center;
 }
 
 .nav-panel-label {
-  text-align: center;
 }
 
 /* Social links */
@@ -689,6 +687,14 @@ body {
     display: none;
   }
 
+  .navbar {
+    padding: 16px 24px;
+  }
+
+  .logo-area {
+    flex-shrink: 0;
+  }
+
   .nav-hamburger {
     display: flex;
     align-items: center;
@@ -741,7 +747,7 @@ body {
   }
   
   .footer-content {
-    justify-content: center;
+    justify-content: flex-start;
   }
   
   .footer-logo {
