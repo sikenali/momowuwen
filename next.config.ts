@@ -15,11 +15,11 @@ const cspHeader = `
 
 const cspAdminHeader = `
   default-src 'self';
-  script-src 'self' https://unpkg.com https://cdn.jsdelivr.net;
-  style-src 'self' https://cdn.jsdelivr.net;
-  img-src 'self' data: https:;
-  font-src 'self' https://cdn.jsdelivr.net;
-  connect-src 'self' https://github.com https://api.github.com https://unpkg.com;
+  script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com;
+  img-src 'self' data: blob: https:;
+  font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com;
+  connect-src 'self' https://github.com https://api.github.com https://unpkg.com https://www.githubstatus.com https://fonts.googleapis.com;
   frame-src 'none';
   object-src 'none';
   base-uri 'self';
