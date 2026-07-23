@@ -12,15 +12,6 @@
 <body>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
-      var style = document.createElement('style');
-      style.textContent = `
-        app-nav-bar .logo { max-height: 24px !important; width: auto !important; }
-        app-nav-bar img.logo,
-        app-nav-bar svg.logo,
-        app-nav-bar [alt="Sveltia"] { max-height: 24px !important; width: auto !important; }
-      `;
-      document.head.appendChild(style);
-
       var observer = new MutationObserver(function() {
         var shadowRoots = [];
         function findRoots(el) {
@@ -37,9 +28,29 @@
             s.className = 'cms-custom-style';
             s.textContent = `
               app-nav-bar img[src*="favicon"],
-              app-nav-bar img.logo,
-              app-nav-bar svg.logo,
               .logo.svelte-7ua6x9 { max-height: 24px !important; width: auto !important; display: block !important; }
+              
+              :host { font-size: 16px !important; }
+              *, ::before, ::after { font-size: inherit !important; line-height: inherit !important; }
+              
+              .side-nav, .primary-sidebar, .secondary-sidebar,
+              .listing-grid, .entry-list-item, .page-container,
+              [class*="sidebar"], [class*="nav"], [class*="list"] {
+                font-size: 15px !important;
+              }
+              
+              .editor-toolbar, .code-editor, textarea, input, select,
+              [class*="field"], [class*="input"] {
+                font-size: 15px !important;
+              }
+              
+              h1, h2, h3, h4, h5, h6 {
+                font-size: 1.3em !important;
+              }
+              
+              .content-title, .entry-title {
+                font-size: 1.1em !important;
+              }
             `;
             root.appendChild(s);
           }

@@ -2,10 +2,6 @@
 
 app_title: 墨墨梧文 CMS
 
-logo:
-  src: /favicon.svg
-  show_in_header: true
-
 backend:
   name: github
   repo: sikenali/momowuwen
