@@ -10,6 +10,44 @@
   </style>
 </head>
 <body>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      var style = document.createElement('style');
+      style.textContent = `
+        app-nav-bar .logo { max-height: 24px !important; width: auto !important; }
+        app-nav-bar img.logo,
+        app-nav-bar svg.logo,
+        app-nav-bar [alt="Sveltia"] { max-height: 24px !important; width: auto !important; }
+      `;
+      document.head.appendChild(style);
+
+      var observer = new MutationObserver(function() {
+        var shadowRoots = [];
+        function findRoots(el) {
+          if (el.shadowRoot) {
+            shadowRoots.push(el.shadowRoot);
+            el.shadowRoot.querySelectorAll('*').forEach(findRoots);
+          }
+        }
+        findRoots(document.body);
+        shadowRoots.forEach(function(root) {
+          var existing = root.querySelector('.cms-custom-style');
+          if (!existing) {
+            var s = root.createElement('style');
+            s.className = 'cms-custom-style';
+            s.textContent = `
+              app-nav-bar img[src*="favicon"],
+              app-nav-bar img.logo,
+              app-nav-bar svg.logo,
+              .logo.svelte-7ua6x9 { max-height: 24px !important; width: auto !important; display: block !important; }
+            `;
+            root.appendChild(s);
+          }
+        });
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
   <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 </body>
 </html>
