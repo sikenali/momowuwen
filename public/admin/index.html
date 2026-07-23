@@ -30,27 +30,33 @@
               app-nav-bar img[src*="favicon"],
               .logo.svelte-7ua6x9 { max-height: 24px !important; width: auto !important; display: block !important; }
               
-              :host { font-size: 18px !important; }
+              :host { font-size: 24px !important; }
               
               .side-nav, .primary-sidebar, .secondary-sidebar,
               .listing-grid, .entry-list-item, .page-container,
               [class*="sidebar"], [class*="nav"], [class*="list"],
               .entry-preview, .content-title,
-              .settings-modal, .notification {
-                font-size: 17px !important;
+              .settings-modal, .notification,
+              [class*="dialog"], [class*="modal"], [class*="popup"] {
+                font-size: 20px !important;
               }
               
               .editor-toolbar, .code-editor, textarea, input, select,
-              [class*="field"], [class*="input"], [class*="button"], [class*="btn"] {
-                font-size: 17px !important;
+              [class*="field"], [class*="input"], [class*="button"], [class*="btn"],
+              [class*="label"], [class*="heading"] {
+                font-size: 20px !important;
               }
               
               h1, h2, h3, h4, h5, h6 {
-                font-size: 1.4em !important;
+                font-size: 1.5em !important;
               }
               
               .content-title, .entry-title {
-                font-size: 1.25em !important;
+                font-size: 1.4em !important;
+              }
+              
+              .quick-search-bar {
+                font-size: 20px !important;
               }
             `;
             root.appendChild(s);

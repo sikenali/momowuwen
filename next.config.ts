@@ -19,8 +19,7 @@ const cspAdminHeader = `
   style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://fonts.googleapis.com;
   img-src 'self' data: blob: https:;
   font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com https://fonts.googleapis.com;
-  connect-src 'self' https://github.com https://api.github.com https://unpkg.com https://www.githubstatus.com https://fonts.googleapis.com;
-  manifest-src 'self' blob:;
+  connect-src 'self' https://github.com https://api.github.com https://unpkg.com https://www.githubstatus.com https://fonts.googleapis.com data:;
   frame-src 'none';
   object-src 'none';
   base-uri 'self';
