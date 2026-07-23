@@ -1,12 +1,14 @@
 ---
 title: 我的「钠」五年
 date: 2026-07-09
-slug: my-five-years
-draft: false
-tags: [工作，生活]
+description: 五年时光，关于工作与生活的记录
+tags:
+  - 工作
+  - 生活
 category: 随笔
 cover: /images/cover-default.svg
-description: 五年时光，关于工作与生活的记录
+draft: false
+slug: my-five-years
 ---
 
 ### 关于工作
