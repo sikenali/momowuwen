@@ -2,6 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
+  <meta name="robots" content="noindex" />
   <title>CMS Admin</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -9,44 +10,6 @@
   </style>
 </head>
 <body>
-  <div id="cms"></div>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" crossorigin="anonymous"></script>
-  <script>
-    (function() {
-      function getToken() {
-        try { return localStorage.getItem('cms_token') || ''; } catch(e) { return ''; }
-      }
-      
-      function init(token) {
-        function ready() {
-          if (window.CMS) {
-            window.CMS.init({
-              backend: token ? { 
-                name: 'github', 
-                repo: 'sikenali/momowuwen', 
-                branch: 'main', 
-                auth_type: 'token', 
-                token: token 
-              } : { 
-                name: 'github', 
-                repo: 'sikenali/momowuwen', 
-                branch: 'main' 
-              },
-              locale: {
-                root: { languageName: '简体中文' },
-                locales: { 'zh_Hans': '简体中文' }
-              }
-            });
-          } else { setTimeout(ready, 50); }
-        }
-        ready();
-      }
-      
-      var savedToken = getToken();
-      if (savedToken) {
-        init(savedToken);
-      }
-    })();
-  </script>
+  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
 </body>
 </html>
