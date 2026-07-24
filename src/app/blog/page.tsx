@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { getPosts } from '@/lib/content';
 import { PageHero } from '@/components/page-hero';
