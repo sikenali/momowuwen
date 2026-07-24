@@ -559,6 +559,12 @@ body {
   margin-bottom: 16px;
 }
 
+@media (max-width: 768px) {
+  .nav-panel-divider {
+    margin: 6px 0;
+  }
+}
+
 .nav-panel-divider {
   height: 1px;
   background: rgba(232, 213, 192, 0.5);

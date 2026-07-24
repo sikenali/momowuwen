@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { getPosts } from '@/lib/content';
 import { PageHero } from '@/components/page-hero';
 import { tagColor } from '@/lib/tag-color';
-import { getArticleViews } from '@/lib/article-views';
 
 export default function Blog() {
   const allPosts = getPosts().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -65,15 +64,13 @@ function BlogList({ allPosts }: { allPosts: ReturnType<typeof getPosts> }) {
   );
 }
 
-function LatestCard({ post }: { post: { title: string; description: string; tags: string[]; date: string; slug: string; cover?: string; category?: string } }) {
-  const [views, setViews] = useState(0);
+const FIXED_LIKES = 520;
 
-  useEffect(() => {
-    setViews(getArticleViews(post.slug));
-  }, [post.slug]);
+function LatestCard({ post }: { post: { title: string; description: string; tags: string[]; date: string; slug: string; cover?: string; category?: string } }) {
+  const [clicks, setClicks] = useState(0);
 
   return (
-    <Link href={`/blog/${post.slug}`} className="latest-article-card">
+    <Link href={`/blog/${post.slug}`} className="latest-article-card" onClick={() => setClicks(c => c + 1)}>
       <div className="latest-card-cover">
         <img src={post.cover || '/images/cover-default.svg'} alt={post.title} loading="lazy" />
       </div>
@@ -99,7 +96,11 @@ function LatestCard({ post }: { post: { title: string; description: string; tags
         <div className="latest-card-footer">
           <span className="latest-card-stat">
             <i className="ri-eye-line"></i>
-            {views.toLocaleString()}
+            {clicks.toLocaleString()}
+          </span>
+          <span className="latest-card-stat latest-card-heart">
+            <i className="ri-heart-line"></i>
+            {FIXED_LIKES.toLocaleString()}
           </span>
         </div>
       </div>
