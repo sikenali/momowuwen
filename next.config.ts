@@ -15,10 +15,11 @@ const cspHeader = `
 
 const cspBoomerangHeader = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline';
+  script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com;
+  style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com;
   img-src 'self' data: https:;
-  font-src 'self' https://cdn.jsdelivr.net;
+  font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com;
   connect-src 'self';
   frame-src *;
   object-src 'none';
