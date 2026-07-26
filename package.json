@@ -12,7 +12,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "gen": "velite generate"
+    "gen": "velite generate",
+    "sync:boomerang": "bash scripts/sync-boomerang.sh"
   },
   "dependencies": {
     "@remixicon/react": "^4.9.0",

@@ -8,6 +8,7 @@ import { siteConfig } from '@/lib/site-config';
 const navItems = [
   { id: 'home', label: 'Home', icon: 'ri-home-5-line', href: '/' },
   { id: 'projects', label: 'Project', icon: 'ri-fire-line', href: '/projects' },
+  { id: 'product', label: 'Product', icon: 'ri-briefcase-4-line', href: '/boomerang' },
   { id: 'blog', label: 'Blog', icon: 'ri-book-open-line', href: '/blog' },
   { id: 'about', label: 'About', icon: 'ri-user-heart-line', href: '/about' }
 ];
@@ -16,6 +17,7 @@ function getActiveFromPath(p: string) {
   if (p === '/') return 'home';
   if (p.startsWith('/blog')) return 'blog';
   if (p.startsWith('/projects')) return 'projects';
+  if (p.startsWith('/boomerang')) return 'product';
   if (p.startsWith('/about')) return 'about';
   return 'home';
 }
