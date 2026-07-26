@@ -13,6 +13,19 @@ const cspHeader = `
   form-action 'self' https://github.com;
 `;
 
+const cspBoomerangHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data: https:;
+  font-src 'self' https://cdn.jsdelivr.net;
+  connect-src 'self';
+  frame-src *;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+`;
+
 const cspAdminHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net;
@@ -61,6 +74,15 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+      {
+        source: '/boomerang(/*)?',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: cspBoomerangHeader.replace(/\s{2,}/g, ' ').trim(),
           },
         ],
       },
