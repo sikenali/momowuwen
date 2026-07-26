@@ -20,8 +20,8 @@ const cspBoomerangHeader = `
   style-src-elem 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com;
   img-src 'self' data: https:;
   font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com;
-  connect-src 'self';
-  frame-src *;
+  connect-src 'self' https://www.10012049.xyz;
+  frame-src 'self' https://www.10012049.xyz https://assistant.10012049.xyz blob:;
   object-src 'none';
   base-uri 'self';
   form-action 'self';
